@@ -1,0 +1,31 @@
+﻿<div>
+    <div ui-calendar="$ctrl.uiConfig.calendar" ng-model="$ctrl.eventSources" calendar="myCalendar" class="calendar"></div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-1 col-md-2 col-sm-2">
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.addEvent()">
+                Add Event
+            </button>
+            <div >
+                Events: 
+                {{$ctrl.events.length}}
+            </div>
+        </div>
+        <div class="col-lg-11 col-md-10 col-sm-10">
+            <div class="event-scoll">
+                <ul>
+                    <li ng-repeat="e in $ctrl.events" class="list-unstyled event-calendar">
+                        <div class="alert alert-info">
+                            <a class="close" ng-click="$ctrl.remove($index)"><i class="glyphicon glyphicon-remove"></i></a>
+                            <b> <input ng-model="e.title"></b>
+                            {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}
+                            <a class="close" ng-click="$ctrl.update()"><i class="glyphicon glyphicon-check">Update</i> </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+       
+</div>
+

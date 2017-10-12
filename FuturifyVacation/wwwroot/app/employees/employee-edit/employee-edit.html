@@ -1,0 +1,75 @@
+﻿<div >
+    <div class="container-fluid">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{selectedOption.firstName}} {{selectedOption.lastName}}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" align="center">
+                            <div>
+                                <img alt="User_Pic" src="/image/me-flat.jpg" class="img-responsive">
+                                <hr />
+                                <label>Upload a different photo</label>
+                                 <input type="file"/>
+                            </div>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 ">
+                            <form>
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>ID: </th>
+                                            <td>
+                                                <select id="idEmployee" name="idEmployee" ng-options="option.id for option in data.availableOptions" ng-model="selectedOption"></select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>First Name:</th>
+                                            <td><input id="firstName" name="firstName" value="{{selectedOption.firstName}}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Last Name:</th>
+                                            <td><input id="lastName" name="lastName" value="{{selectedOption.lastName}}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date of Birth:</th>
+                                            <td><input id="dOB" name="dOB" value="{{selectedOption.dob}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender:</th>
+                                            <td><input id="gender" name="gender" value="{{selectedOption.gender}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone Number:</th>
+                                            <td><input id="phoneNumber" name="phoneNumber" value="{{selectedOption.phoneNumber}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email:</th>
+                                            <td><span id="email" name="email">{{selectedOption.email}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Position:</th>
+                                            <td><input id="position" name="position" value="{{selectedOption.position}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Remaining Day Off:</th>
+                                            <td><input id="rDO" name="rDO" value="{{selectedOption.dayoff}}" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer"> 
+                <div align="right">                
+                    <a ng-href="" data-original-title="Save data" data-toggle="tooltip"  class="btn btn-sm btn-success"><i class="glyphicon glyphicon-ok"></i> Save</a>
+                    <a data-original-title="Cancel" data-toggle="tooltip" ng-href="#/employees/detail"  class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

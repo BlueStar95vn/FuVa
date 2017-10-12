@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html ng-app="vacationApp">
+<head>
+    <meta charset="utf-8" />
+    <title>Vacation Tracking</title>
+    <!--CSS-->
+
+    <link href="css/layout.css" rel="stylesheet" />
+    <link href="css/login.css" rel="stylesheet" />
+    <link href="lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="lib/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="lib/jquery-ui/themes/redmond/jquery-ui.css" rel="stylesheet" />
+    <link href="lib/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
+
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div ng-include="'app/partial/navbar.html'" ng-if="location.path() !== '/login'">    
+        </div>
+        <div class="paddingtop">
+            <div class="row">
+                <!--sidebar-->
+                <div class="col-sm-3 col-md-2  bgpage" ng-include="'app/partial/sidebar.html'" ng-if="location.path() !== '/login'"></div>
+
+                <div class="col-sm-9 col-md-10 main">
+                    <div ng-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--JS-->
+    <script src="lib/moment/moment.js"></script>
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/jquery-ui/jquery-ui.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <!--<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>-->
+    <!--Index-->
+
+    <script src="app/app.module.js"></script>
+    <script src="app/app.config.js"></script>
+    <!--<script src="js/notification.js"></script>-->
+    <!--login-->
+
+    
+    <script src="app/login/login.module.js"></script>
+    <script src="app/login/login.component.js"></script>
+    
+
+    <!--Vacation-->
+    <script src="app/vacation/vacation.module.js"></script>
+    <script src="app/vacation/vacation.component.js"></script>
+
+    <script src="lib/angular-ui-calendar/src/calendar.js"></script>
+    <script src="lib/fullcalendar/dist/fullcalendar.js"></script>
+
+    <!--Employees-->
+    <script src="app/employees/employee-list/employee-list.module.js"></script>
+    <script src="app/employees/employee-list/employee-list.component.js"></script>
+
+    <script src="app/employees/employee-detail/employee-detail.module.js"></script>
+    <script src="app/employees/employee-detail/employee-detail.component.js"></script>
+
+    <script src="app/employees/employee-edit/employee-edit.module.js"></script>
+    <script src="app/employees/employee-edit/employee-edit.component.js"></script>
+
+    <script src="app/employees/employee-add/employee-add.module.js"></script>
+    <script src="app/employees/employee-add/employee-add.component.js"></script>
+
+    <!--Teams-->
+    <script src="app/teams/team-list/team-list.module.js"></script>
+    <script src="app/teams/team-list/team-list.component.js"></script>
+
+    <script src="app/teams/team-edit/team-edit.module.js"></script>
+    <script src="app/teams/team-edit/team-edit.component.js"></script>
+
+    <script src="app/teams/team-detail/team-detail.module.js"></script>
+    <script src="app/teams/team-detail/team-detail.component.js"></script>
+
+    <script src="app/teams/team-add/team-add.module.js"></script>
+    <script src="app/teams/team-add/team-add.component.js"></script>
+
+    <!--Report-->
+    <script src="app/report/report.module.js"></script>
+    <script src="app/report/report.component.js"></script>
+</body>
+</html>

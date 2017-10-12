@@ -1,0 +1,30 @@
+﻿<div>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h2 align="center">TEAM NAME</h2>
+        </div>
+        <div class="panel-body">
+            <div class="">
+
+                <div class="well well-sm">
+                    <h4><b>Team Lead Management:</b> ABC</h4>
+                </div>
+                <hr />
+                <div class="well well-sm">
+                    <h4><b>Members: </b>{{members.length}}</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="member in members">
+                            <span><a class="btn btn-sm btn-primary disabled"></a> {{member.name}}</span>
+                        </li>
+                    </ul>
+                </div>
+               
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div align="right">
+                <a ng-href="#/teams/edit" data-original-title="Edit this team" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+            </div>
+        </div>
+    </div>
+</div>

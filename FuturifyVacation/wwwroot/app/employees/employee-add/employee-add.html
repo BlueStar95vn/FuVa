@@ -1,0 +1,71 @@
+﻿<div>
+    <div class="panel panel-primary">
+        <div class="panel panel-heading">
+            <h2 class="panel-title" align="center"><b>Create New Account</b></h2>
+        </div>
+        <div class="panel panel-body">
+            <div class="row iconbg">
+                <div class="col-sm-3 col-md-3 col-lg-3"  >
+                    <div class="iconpadding">
+                        <img alt="User_Pic" src="/image/user.png" class="img-responsive"/>
+                    </div>
+                </div>
+                <div class="col-sm-9 col-md-9 col-lg-9 registerbg">
+                    <form action="" id="signupform" name="signupform" method="post" class="form-horizontal ">
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label col-sm-4">First Name: </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" />
+                                <span class="text-danger" id="firstmess"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Last Name: </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="" />
+                                <span class="text-danger" id="lastmess"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Position: </label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="position" name="position" placeholder="" />
+                                <span class="text-danger" id="positionmess"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Gender: </label>
+                            <div class="col-sm-6">
+                                <label><input type="radio" name="gender" id="male" value="Male" checked="checked" />Male  </label>
+                                <label><input type="radio" name="gender" id="female" value="Female" />Female</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Phone Number: </label>
+                            <div class="col-sm-6">
+                                <input type="tel" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="" />
+                                <span class="text-danger" id="phonemess"> </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Email: </label>
+                            <div class="col-sm-6" name="emaildiv">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="" />
+                                <label class="text-danger" id="emailmess" name="emailmess"> </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-footer">
+            <div align="right">
+                <a ng-href="" id="submit" name="submit" class="btn btn-md btn-success"><i class="glyphicon glyphicon-ok-sign"></i> Register</a>
+                <a ng-href="#/employees" class="btn btn-md btn-danger"><i class="glyphicon glyphicon-remove-sign"></i> Cancel</a>
+            </div>
+        </div>
+    </div>    
+</div>
+

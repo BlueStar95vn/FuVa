@@ -1,0 +1,44 @@
+﻿<div>
+    <div>
+        <a ng-href="#/employees/add"  class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new employee</a>
+        <span class="pull-right"><b> Search employee: </b><input  /></span>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Role</th>
+                    <th>Gender</th>
+                    <th>Dob</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>RDO</th> <!--Remaining day off-->
+                    <th>Status</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Full Name Full Name</td>
+                    <td>Admin</td>
+                    <td>Male</td>
+                    <td>1/1/1990</td>
+                    <td>Outsource</td>
+                    <td>Email@gmail.com</td>
+                    <td>12</td>
+                    <td>Active</td>
+                    <td>
+                        <a ng-href="#/employees/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> |
+                        <a ng-href="#/employees/detail"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i> Detail</a> |
+                        <a href="" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i> Remove</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
