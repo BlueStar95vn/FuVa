@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FuturifyVacation.Models;
 using Microsoft.AspNetCore.Authentication;
-using FuturifyVacation.Models.AccountViewModels;
+using FuturifyVacation.Models.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,13 +35,14 @@ namespace FuturifyVacation.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true     
+               
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
@@ -57,8 +58,7 @@ namespace FuturifyVacation.Controllers
             return BadRequest(new { Success = false, Error = "asdjaks" });
         }
 
-        [HttpPost("logout")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("logout")]        
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

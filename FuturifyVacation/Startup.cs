@@ -34,7 +34,7 @@ namespace FuturifyVacation
                 {
                     // Password settings
                     options.Password.RequireDigit = true;
-                    options.Password.RequiredLength = 8;
+                    options.Password.RequiredLength = 6;
                     options.Password.RequireNonAlphanumeric = true;
                     options.Password.RequireUppercase = true;
                     options.Password.RequireLowercase = true;
@@ -52,8 +52,8 @@ namespace FuturifyVacation
                 options.Cookie.Name = "YourAppCookieName";
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                options.LoginPath = "/Account/Login";
-                options.LogoutPath = "/Account/Logout";
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/Logout";
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
                 // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
