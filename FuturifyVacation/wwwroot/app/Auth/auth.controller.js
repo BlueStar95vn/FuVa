@@ -3,25 +3,24 @@
     'use strict';
 
     angular
-        .module('tokenAuthApp.components.auth', [])
+        .module('AuthApp.components.auth', [])
         .controller('authLoginController', authLoginController)
         .controller('authStatusController', authStatusController);
-      
 
-    authLoginController.$inject = ['$location', 'authService'];   
-    authStatusController.$inject = ['$location','authService'];
-  
+
+    authLoginController.$inject = ['$location', 'authService'];
+    authStatusController.$inject = ['$location', 'authService'];
+
 
     function authLoginController($location, authService) {
 
         /*jshint validthis: true */
         const vm = this;
         vm.user = {};
-        vm.getEmail = '';
         vm.onLogin = function () {
             authService.login(vm.user)
-                .then((user) => {
-                    localStorage.setItem('token', user.data.token);                  
+                .then(/*(user) =>*/ function(){
+                    //localStorage.setItem('isLogged', user.data.token);
                     $location.path('/status');
                     alert("You have been successfully logged in...");
                 })
@@ -40,22 +39,19 @@
         //            });
         //    }         
         //}             
-       
+
     }
-    function authStatusController($location,authService) {
+    function authStatusController($location, authService) {
         /*jshint validthis: true */
         const vm = this;
-        vm.isLoggedIn = false;        
-        const token = localStorage.getItem('token');        
-        if (token) {
-            authService.ensureAuthenticated(token)
-                .then((user) => {
-                    if (user.data.status === 'success');
-                    vm.isLoggedIn = true;                   
-                })
-                .catch((err) => {                  
-                    console.log(err);
-                });
-        }         
-    }    
+        vm.isLoggedIn = false;
+        authService.ensureAuthenticated()
+            .then((user) => {
+                if (user.data.status === 'success');
+                vm.isLoggedIn = true;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 })();

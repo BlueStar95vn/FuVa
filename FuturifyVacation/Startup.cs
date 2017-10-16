@@ -49,7 +49,7 @@ namespace FuturifyVacation
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.Name = "YourAppCookieName";
+                options.Cookie.Name = "UserCookie";
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                 options.LoginPath = "/Login";

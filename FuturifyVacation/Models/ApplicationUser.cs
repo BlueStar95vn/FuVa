@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace FuturifyVacation.Models
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
-       
+        public UserProfile UserProfile { get; set; }
     }
 }

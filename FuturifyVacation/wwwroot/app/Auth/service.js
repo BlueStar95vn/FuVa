@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('tokenAuthApp.services', [])
+        .module('AuthApp.services', [])
         .service('authService', authService);
     authService.$inject = ['$http'];
 
@@ -14,25 +14,19 @@
             return $http({
                 method: 'POST',
                 url: baseURL + 'api/account/login',
-                data: user,
-                headers: { 'Content-Type': 'application/json' }
+                data: user               
             });
         };
-        this.logout = function (token) {
+        this.logout = function () {
             return $http({
                 method: 'POST',
-                url: baseURL + 'api/account/logout',              
-                headers: { 'Content-Type': 'application/json' }
+                url: baseURL + 'api/account/logout'          
             });
         };
-        this.ensureAuthenticated = function (token) {
+        this.ensureAuthenticated = function () {
             return $http({
                 method: 'GET',
-                url: baseURL + 'api/account/check-auth',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + token
-                }
+                url: baseURL + 'api/account/check-auth'               
             });
         };
     }

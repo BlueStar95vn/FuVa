@@ -71,8 +71,7 @@
                     id: id++,
                     title: 'New Event',
                     start: new Date(y, m, 27),                    
-                    end: new Date(y, m, 28),
-                    
+                    end: new Date(y, m, 28),                    
                 });
             };
             /* remove event */
@@ -81,7 +80,6 @@
                 uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents'); 
                 uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.events);                               
             };
-
             vm.update = function () {               
                 uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
                 uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.events);

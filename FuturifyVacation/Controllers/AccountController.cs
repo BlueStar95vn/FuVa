@@ -31,6 +31,8 @@ namespace FuturifyVacation.Controllers
         [HttpGet("check-auth")]
         public async Task IsAuthorized()
         {
+            var user = HttpContext.User;
+
         }
 
         [HttpPost("login")]
@@ -38,6 +40,8 @@ namespace FuturifyVacation.Controllers
         
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
+
+            var acc = new ApplicationUser();
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout

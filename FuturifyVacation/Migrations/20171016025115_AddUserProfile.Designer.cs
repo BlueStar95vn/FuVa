@@ -11,9 +11,10 @@ using System;
 namespace FuturifyVacation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171016025115_AddUserProfile")]
+    partial class AddUserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,26 +75,6 @@ namespace FuturifyVacation.Migrations
             modelBuilder.Entity("FuturifyVacation.Models.UserProfile", b =>
                 {
                     b.Property<string>("UserId");
-
-                    b.Property<string>("Department");
-
-                    b.Property<DateTime>("DoB");
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("Gender");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<string>("Position");
-
-                    b.Property<string>("RemainingDayOff");
-
-                    b.Property<string>("Status");
 
                     b.HasKey("UserId");
 
@@ -211,8 +192,8 @@ namespace FuturifyVacation.Migrations
             modelBuilder.Entity("FuturifyVacation.Models.UserProfile", b =>
                 {
                     b.HasOne("FuturifyVacation.Models.ApplicationUser", "User")
-                        .WithOne("UserProfile")
-                        .HasForeignKey("FuturifyVacation.Models.UserProfile", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

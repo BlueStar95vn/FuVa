@@ -19,6 +19,9 @@
                     <div ng-show="form.password.$dirty && form.password.$invalid" class="text-danger">
                         <div ng-show="form.password.$error.required">Bạn chưa nhập mật khẩu</div>
                     </div>
+                    <!--<div>
+                        <input type="checkbox" id="rememberMe" ng-model="authLoginCtrl.user.rememberMe" value="true" /> Remember Me
+                    </div>-->
                     <input  type="submit" name="Login" id="Login" class="login loginmodal-submit form-control" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" value="Log in">
                     <div >
                         <span ng-show="validationError" class="text-danger">Incorrect email or password</span>

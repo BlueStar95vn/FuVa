@@ -1,4 +1,4 @@
-﻿angular.module('vacationApp', ['ngRoute',  'tokenAuthApp.components.auth', 'tokenAuthApp.services',  
+﻿angular.module('vacationApp', ['ngCookies','ngRoute',  'AuthApp.components.auth', 'AuthApp.services',  
     'login','logout',
     'employeeList', 'employeeDetail', 'employeeEdit', 'employeeAdd',
     'teamList', 'teamDetail', 'teamEdit', 'teamAdd',

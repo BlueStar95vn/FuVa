@@ -7,8 +7,8 @@
                 when('/login', {
                     template: '<login></login>',                    
                     restrictions: {
-                        ensureAuthenticated: false,
-                        loginRedirect: false
+                        ensureAuthenticated: false, //false
+                        loginRedirect: true //true
                     }                 
                 }).
                 when('/logout', {
@@ -100,7 +100,7 @@
                     }
                 }).
                 otherwise({
-                    redirectTo: '/login',
+                    redirectTo: '/',  
                     restrictions: {
                         ensureAuthenticated: true,
                         loginRedirect: false
@@ -108,18 +108,40 @@
                 });
         }
     ]).
-    run(function routeStart($rootScope, $location, $route) {       
+    run(function routeStart($rootScope, $location, $route, $http) {      
+       
         $rootScope.location = $location;
         $rootScope.$on('$routeChangeStart', (event, next, current) => {
+            var check = $http.get('http://localhost:63237/api/account/check-auth')
             if (next.restrictions.ensureAuthenticated) {
-                if (!localStorage.getItem('token')) {
+                //if (!localStorage.getItem('isLogged')) {
+                //    $location.path('/login');
+                //}
+              check.then(function() {
+                    //if (user.data.status === 'success') {
+                    //    $location.path('/status')
+                    //}
+                }).catch(function () {
                     $location.path('/login');
-                }
+                });
+                
             }
             if (next.restrictions.loginRedirect) {
-                if (localStorage.getItem('token')) {                   
-                    $location.path('/status');
-                }
+                //if (localStorage.getItem('isLogged')) {                   
+                //    $location.path('/status');
+                //}
+                //if (!!$cookies.user)
+                //{
+                //    $location.path('/status');
+                //} else {
+                //    $location.path('/login');
+                //}
+                //if (!!check) {
+                //    $location.path('/status');
+                //}
+                check.then(function() {                   
+                        $location.path('/status')
+                })
             }
         })
     });
