@@ -7,8 +7,7 @@
             var getId = localStorage.getItem("userId");
             console.log(getId);
             $http.get('http://localhost:63237/api/employees/' + getId).then(function (response) {
-                vm.employees = response.data;  
-              
+                vm.employees = response.data;                
             });
             
                 //,

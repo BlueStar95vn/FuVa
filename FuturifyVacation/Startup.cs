@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using FuturifyVacation.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using FuturifyVacation.ServicesInterfaces;
+using FuturifyVacation.Services;
 
 namespace FuturifyVacation
 {
@@ -59,6 +61,8 @@ namespace FuturifyVacation
                 // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
             });
+
+            services.AddScoped<IProfileService, ProfileService>();
 
             services.AddMvc();
         }

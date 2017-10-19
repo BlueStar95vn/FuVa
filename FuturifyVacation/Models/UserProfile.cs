@@ -13,14 +13,13 @@ namespace FuturifyVacation.Models
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         [Required]
-        public ApplicationUser User { get; set; }
-        public string Email { set; get; }
+        public ApplicationUser User { get; set; }     
+
         public string FirstName { set; get; }
         public string LastName { set; get; }      
         public string Position { set; get; }
         public string Department { set; get; }
-        public DateTime DoB { set; get; }
-        public string PhoneNumber { set; get; }
+        public DateTime DoB { set; get; }   
         public string Gender { set; get; }
         public string RemainingDayOff { set; get; }
         public string Status { set; get; }

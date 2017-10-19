@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FuturifyVacation.Models.ViewModels;
+using FuturifyVacation.ServicesInterfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,47 +20,64 @@ namespace FuturifyVacation.Controllers
     public class EmployeesController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private ApplicationDbContext db;
-        public EmployeesController(UserManager<ApplicationUser> userManager, ApplicationDbContext _context)
+        private IProfileService _profileService;
+
+        public EmployeesController(UserManager<ApplicationUser> userManager, IProfileService profileService)
         {
             _userManager = userManager;
-            db = _context;
+            _profileService = profileService;
         }
 
         [HttpGet("getall")]
-        public List<UserProfile> Get()
+        public async Task<List<ProfileViewModel>> GetAsync()
         {
-            return db.UserProfiles.ToList();
-        }
-
-        [HttpGet("{userId}")]
-        public UserProfile Get(string userId)
-        {
-            return db.UserProfiles.Find(userId);
-        }
-
-        // POST api/employees/update
-        [HttpPost("Update")]
-        public IActionResult UpdateProfile([FromBody] ProfileViewModel profile)
-        {
-            if(ModelState.IsValid)
+            var profiles = await _profileService.GetAllAsync();
+            return profiles.Select(p => new ProfileViewModel
             {
-                var acc = db.Users.FirstOrDefault(x => x.Id == profile.UserId);
-                acc.Email = profile.Email;
-                acc.PhoneNumber = profile.PhoneNumber;
-                db.SaveChanges();
+                UserId = p.UserId,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                Email = p.User.Email,
+                Gender = p.Gender,
+                Position = p.Position,
+                DoB = p.DoB,
+                Department = p.Department,
+                RemainingDayOff = p.RemainingDayOff,
+                Status = p.Status,
+                PhoneNumber = p.User.PhoneNumber
+            }).ToList();
+        }
 
-                var userProfile = db.UserProfiles.FirstOrDefault(x => x.UserId == profile.UserId);
-                userProfile.FirstName = profile.FirstName;
-                userProfile.LastName = profile.LastName;
-                userProfile.Gender = profile.Gender;
-                userProfile.Position = profile.Position;
-                userProfile.DoB = profile.DoB;
-                userProfile.Department = profile.Department;
-                userProfile.RemainingDayOff = profile.RemainingDayOff;
-                db.SaveChanges();
-            }
-            return Ok();
+        //[HttpGet("{userId}")]
+        //public UserProfile Get(string userId)
+        //{
+        //    return db.UserProfiles.Find(userId);
+        //}
+        [HttpGet("{userId}")]
+        public async Task<ProfileViewModel> GetByIdAsync(string userId)
+        {
+            var profile =  await _profileService.GetByIdAsync(userId);
+            return new ProfileViewModel
+            {
+                UserId = profile.UserId,
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                Email = profile.User.Email,
+                Gender = profile.Gender,
+                Position = profile.Position,
+                DoB = profile.DoB,
+                Department = profile.Department,
+                RemainingDayOff = profile.RemainingDayOff,
+                Status = profile.Status,
+                PhoneNumber = profile.User.PhoneNumber
+            };
+        }
+
+        //POST api/employees/update
+       [HttpPost("Update")]
+        public async Task<ProfileViewModel> UpdateProfile([FromBody] ProfileViewModel profile, string getUserId)
+        {
+            return await _profileService.UpdateByIdAsync(profile, getUserId);
         }
     }
 }
