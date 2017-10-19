@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using FuturifyVacation.Models;
 using Microsoft.AspNetCore.Authentication;
 using FuturifyVacation.Models.ViewModels;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +20,7 @@ namespace FuturifyVacation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
+        
         public AccountController(
            UserManager<ApplicationUser> userManager,
            SignInManager<ApplicationUser> signInManager)
@@ -29,10 +30,10 @@ namespace FuturifyVacation.Controllers
         }
 
         [HttpGet("check-auth")]
-        public async Task IsAuthorized()
+        public async Task<IActionResult> IsAuthorized()
         {
-            var user = HttpContext.User;
-
+            var user = HttpContext.User;            
+            return Ok(new { userId = user.FindFirstValue(ClaimTypes.NameIdentifier) });        
         }
 
         [HttpPost("login")]
@@ -40,8 +41,7 @@ namespace FuturifyVacation.Controllers
         
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
-
-            var acc = new ApplicationUser();
+            var acc = new ApplicationUser();           
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -50,18 +50,15 @@ namespace FuturifyVacation.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return Ok(new { Success = true });
+                    return Ok(new { Success = true, email = model.Email});
                 }
-
                 else
                 {
                     return BadRequest(new { Success = false, Error = "Invalid login attempt." });
                 }
             }
-
             return BadRequest(new { Success = false, Error = "asdjaks" });
         }
-
         [HttpPost("logout")]        
         public async Task<IActionResult> Logout()
         {

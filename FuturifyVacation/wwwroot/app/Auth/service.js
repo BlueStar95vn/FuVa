@@ -1,12 +1,9 @@
 ﻿(function () {
-
     'use strict';
-
     angular
         .module('AuthApp.services', [])
         .service('authService', authService);
     authService.$inject = ['$http'];
-
     function authService($http) {
         /*jshint validthis: true */
         const baseURL = 'http://localhost:63237/';
@@ -29,7 +26,5 @@
                 url: baseURL + 'api/account/check-auth'               
             });
         };
-    }
-    
-
+    }   
 })();

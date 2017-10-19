@@ -7,8 +7,8 @@
                 when('/login', {
                     template: '<login></login>',                    
                     restrictions: {
-                        ensureAuthenticated: false, //false
-                        loginRedirect: true //true
+                        ensureAuthenticated: false, 
+                        loginRedirect: true
                     }                 
                 }).
                 when('/logout', {
@@ -36,14 +36,14 @@
                         loginRedirect: false
                     }
                 }).
-                when('/employees/detail', {
+                when('/employees/detail/', {
                     template: '<employee-detail></employee-detail>',
                     restrictions: {
                         ensureAuthenticated: true,
                         loginRedirect: false
                     }
                 }).
-                when('/employees/edit', {
+                when('/employees/edit/', {
                     template: '<employee-edit></employee-edit>',
                      restrictions: {
                         ensureAuthenticated: true,
@@ -108,40 +108,22 @@
                 });
         }
     ]).
-    run(function routeStart($rootScope, $location, $route, $http) {      
+    run(function routeStart($rootScope, $location, $route, $http,authService) {      
        
         $rootScope.location = $location;
         $rootScope.$on('$routeChangeStart', (event, next, current) => {
-            var check = $http.get('http://localhost:63237/api/account/check-auth')
+          
             if (next.restrictions.ensureAuthenticated) {
-                //if (!localStorage.getItem('isLogged')) {
-                //    $location.path('/login');
-                //}
-              check.then(function() {
-                    //if (user.data.status === 'success') {
-                    //    $location.path('/status')
-                    //}
+                authService.ensureAuthenticated().then(function () {
+                
                 }).catch(function () {
                     $location.path('/login');
-                });
-                
+                });                
             }
-            if (next.restrictions.loginRedirect) {
-                //if (localStorage.getItem('isLogged')) {                   
-                //    $location.path('/status');
-                //}
-                //if (!!$cookies.user)
-                //{
-                //    $location.path('/status');
-                //} else {
-                //    $location.path('/login');
-                //}
-                //if (!!check) {
-                //    $location.path('/status');
-                //}
-                check.then(function() {                   
-                        $location.path('/status')
-                })
+            if (next.restrictions.loginRedirect) {              
+                //authService.ensureAuthenticated().then(function () {
+                //    $location.path('/employees/detail/');
+                //});
             }
         })
     });
