@@ -19,7 +19,6 @@
             $http.get('http://localhost:63237/api/employees/' + userId).then(function (response) {
                 vm.employees = response.data;
             });
-            vm.info = {};
             vm.save = function () {
                 $http.post('http://localhost:63237/api/employees/update', vm.employees).then(function () {
                     alert("Save successfully");

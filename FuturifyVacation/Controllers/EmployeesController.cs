@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FuturifyVacation.Models.ViewModels;
 using FuturifyVacation.ServicesInterfaces;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,7 +38,7 @@ namespace FuturifyVacation.Controllers
                 UserId = p.UserId,
                 FirstName = p.FirstName,
                 LastName = p.LastName,
-                Email = p.User.Email,
+                Email = p.User.UserName,
                 Gender = p.Gender,
                 Position = p.Position,
                 DoB = p.DoB,
@@ -48,13 +49,8 @@ namespace FuturifyVacation.Controllers
             }).ToList();
         }
 
-        //[HttpGet("{userId}")]
-        //public UserProfile Get(string userId)
-        //{
-        //    return db.UserProfiles.Find(userId);
-        //}
         [HttpGet("{userId}")]
-        public async Task<ProfileViewModel> GetByIdAsync(string userId)
+        public async Task<ProfileViewModel> GetAsync(string userId)
         {
             var profile =  await _profileService.GetByIdAsync(userId);
             return new ProfileViewModel
@@ -62,7 +58,7 @@ namespace FuturifyVacation.Controllers
                 UserId = profile.UserId,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
-                Email = profile.User.Email,
+                Email = profile.User.UserName,
                 Gender = profile.Gender,
                 Position = profile.Position,
                 DoB = profile.DoB,
@@ -74,10 +70,25 @@ namespace FuturifyVacation.Controllers
         }
 
         //POST api/employees/update
-       [HttpPost("Update")]
+       [HttpPost("update")]
         public async Task<ProfileViewModel> UpdateProfile([FromBody] ProfileViewModel profile, string getUserId)
         {
-            return await _profileService.UpdateByIdAsync(profile, getUserId);
+            var user = HttpContext.User;
+            getUserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var update = await _profileService.UpdateByIdAsync(profile, getUserId);
+           return new ProfileViewModel
+           {
+               UserId = update.UserId,
+               FirstName = update.FirstName,
+               LastName = update.LastName,           
+               Gender = update.Gender,
+               Position = update.Position,
+               DoB = update.DoB,
+               Department = update.Department,
+               RemainingDayOff = update.RemainingDayOff,
+               Status = update.Status,
+               PhoneNumber = update.User.PhoneNumber
+           };
         }
     }
 }

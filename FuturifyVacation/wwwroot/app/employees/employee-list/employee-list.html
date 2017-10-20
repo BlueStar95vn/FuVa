@@ -8,8 +8,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Full Name</th>
-                    <th>Role</th>
+                    <th>Full Name</th>               
                     <th>Gender</th>
                     <th>Dob</th>
                     <th>Department</th>
@@ -21,20 +20,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Full Name Full Name</td>
-                    <td>Admin</td>
-                    <td>Male</td>
-                    <td>1/1/1990</td>
-                    <td>Outsource</td>
-                    <td>Email@gmail.com</td>
-                    <td>12</td>
-                    <td>Active</td>
+                <tr ng-repeat="employee in $ctrl.employees">
+                    <td>{{$index+1}}</td>
+                    <td>{{employee.firstName}} {{employee.lastName}}</td>
+                    <td>{{employee.gender}}</td>
+                    <td>{{employee.doB|date}}</td>
+                    <td>{{employee.department}}</td>
+                    <td>{{employee.email}}</td>
+                    <td>{{employee.remainingDayOff}}</td>
+                    <td>{{employee.status}}</td>                    
                     <td>
-                        <a ng-href="#/employees/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> |
-                        <a ng-href="#/employees/detail"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i> Detail</a> |
-                        <a href="" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i> Remove</a>
+                        <a ng-href="#/employees/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> |
+                        <a ng-href="#/employees/detail"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a> |
+                        <a href="" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                 </tr>
             </tbody>
