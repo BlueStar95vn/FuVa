@@ -2,7 +2,7 @@
     module('employeeEdit').
     component('employeeEdit', {
         templateUrl: '/app/employees/employee-edit/employee-edit.html',
-        controller: function ($http,$location) {
+        controller: function ($http,$location,$routeParams) {
             //$scope.data = {
             //    model: null,
             //    availableOptions:
@@ -14,19 +14,20 @@
             //    ]
             //}
             //$scope.selectedOption = $scope.data.availableOptions[0];
-            var vm = this;
-            var userId = localStorage.getItem("userId");
-            $http.get('http://localhost:63237/api/employees/' + userId).then(function (response) {
+            var vm = this;            
+            $http.get('http://localhost:63237/api/employees/'+ $routeParams.userId).then(function (response) {
                 vm.employees = response.data;
             });
             vm.save = function () {
-                $http.post('http://localhost:63237/api/employees/update', vm.employees).then(function () {
+                $http.post('http://localhost:63237/api/employees/update/' + $routeParams.userId, vm.employees).then(function () {
                     alert("Save successfully");
-                    $location.path('/employees/detail');
+                    $location.path('/employees/detail/' + $routeParams.userId);
                 }).catch(function(error){
                     console.log(error);
                 });
-
+            }
+            vm.detailId = function (userId) {
+                $location.path('/employees/detail/' + userId);
             }
         }
     });

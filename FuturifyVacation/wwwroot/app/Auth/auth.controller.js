@@ -31,9 +31,9 @@
         const vm = this;
         vm.isLoggedIn = false;
         authService.ensureAuthenticated()
-            .then(function(response) {
-                vm.getId = response.data;
-                localStorage.setItem("userId", vm.getId.userId);
+            .then(function(/*response*/) {
+                //vm.getId = response.data;
+                //localStorage.setItem("userId", vm.getId.userId);
                 vm.isLoggedIn = true;
             })
             .catch((err) => {

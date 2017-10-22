@@ -1,1 +1,1 @@
-﻿angular.module('employeeList', ['ngRoute']);
+﻿angular.module('employeeList', ['ngRoute', 'ui.bootstrap']);

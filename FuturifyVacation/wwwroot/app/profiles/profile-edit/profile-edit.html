@@ -1,0 +1,77 @@
+﻿<div>
+    <div class="container-fluid">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
+            <form > 
+                <div class="panel panel-info">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{$ctrl.employees.firstName}} {{$ctrl.employees.lastName}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" align="center">
+                                <div>
+                                    <img alt="User_Pic" src="/image/me-flat.jpg" class="img-responsive">
+                                    <hr />
+                                    <label>Upload a different photo</label>
+                                    <input type="file" />
+                                </div>
+                            </div>
+                            <div class="col-sm-9 col-md-9 col-lg-9 ">
+
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>Id:</th>
+                                            <td><span id="userId" name="userId" ng-model="$ctrl.employees.userId">{{$ctrl.employees.userId}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <th>First Name:</th>
+                                            <td><input id="firstName" name="firstName" ng-model="$ctrl.employees.firstName" value="{{$ctrl.employees.firstName}}" /></td>
+
+                                        </tr>
+                                        <tr>
+                                            <th>Last Name:</th>
+                                            <td><input id="lastName" name="lastName" ng-model="$ctrl.employees.lastName" value="{{$ctrl.employees.lastName}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date of Birth:</th>
+                                            <td><input id="dOB" name="dOB" type="datetime" value="{{$ctrl.employees.doB|date:medium}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender:</th>
+                                            <td><input id="gender" name="gender" ng-model="$ctrl.employees.gender" value="{{$ctrl.employees.gender}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone Number:</th>
+                                            <td><input id="phoneNumber" name="phoneNumber" ng-model="$ctrl.employees.phoneNumber" value="{{$ctrl.employees.phoneNumber}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email:</th>
+                                            <td><span id="email" name="email">{{$ctrl.employees.email}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Position:</th>
+                                            <td><input id="position" name="position" ng-model="$ctrl.employees.position" value="{{$ctrl.employees.position}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Remaining Day Off:</th>
+                                            <td><input id="remainingDayOff" name="remainingDayOff" ng-model="$ctrl.employees.remainingDayOff" value="{{$ctrl.employees.remainingDayOff}}" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div align="right">
+                        <a class="btn btn-sm btn-success" type="submit" ng-click="$ctrl.save()" href="" ><i class="glyphicon glyphicon-ok"></i> Save</a>
+                        <a data-original-title="Cancel" data-toggle="tooltip" ng-href="#/profile" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -63,7 +63,7 @@ namespace FuturifyVacation
             });
 
             services.AddScoped<IProfileService, ProfileService>();
-
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddMvc();
         }
 

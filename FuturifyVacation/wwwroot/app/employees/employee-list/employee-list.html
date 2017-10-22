@@ -1,4 +1,21 @@
 ﻿<div>
+    <div inner-html-bind inner-html="modal_html_template" class="hidden">
+        <div class="modal-header">
+            <h3>I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li ng-repeat="item in items">
+                    <a ng-click="selected.item = item">{{ item }}</a>
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
     <div>
         <a ng-href="#/employees/add"  class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new employee</a>
         <span class="pull-right"><b> Search employee: </b><input  /></span>
@@ -30,13 +47,15 @@
                     <td>{{employee.remainingDayOff}}</td>
                     <td>{{employee.status}}</td>                    
                     <td>
-                        <a ng-href="#/employees/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> |
-                        <a ng-href="#/employees/detail"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a> |
-                        <a href="" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i></a>
+                        <a href="" ng-click="$ctrl.editId(employee.userId)" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> 
+                        <a href="" ng-click="$ctrl.detailId(employee.userId)"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a> 
+                        <a href="" type="button" class="btn btn-sm btn-danger" ng-confirm-click="Are you sure to delete this employee ?" confirmed-click="$ctrl.removeUser(employee.userId)"><i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        
+       
     </div>
 </div>
 

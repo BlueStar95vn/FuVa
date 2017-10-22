@@ -1,0 +1,71 @@
+﻿<div>
+    <div class="container-fluid">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
+            <div class="panel panel-info">
+                <div class="panel panel-heading">
+                    <h3 class="panel-title"><b>{{$ctrl.employees.firstName}} {{$ctrl.employees.lastName}}</b></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3"  align="center">
+                            <div>
+                                <img alt="User_Pic" src="/image/me-flat.jpg" class="img-responsive">
+                            </div>
+                        </div>
+                        <div class="col-sm-9 col-md-9 col-lg-9 ">
+                            <form>
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th>ID: </th>                                           
+                                            <td><label id="firstName" name="firstName">{{$ctrl.employees.userId}}</label></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th>First Name:</th>
+                                            <td><label id="firstName" name="firstName">{{$ctrl.employees.firstName}}</label></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Last Name:</th>
+                                            <td><label id="lastName" name="lastName">{{$ctrl.employees.lastName}}</label></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Date of Birth:</th>
+                                            <td><label id="dOB" name="dOB"></label>{{$ctrl.employees.doB | date}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender:</th>
+                                            <td><label id="gender" name="gender"></label>{{$ctrl.employees.gender}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone Number:</th>
+                                            <td><label id="phoneNumber" name="phoneNumber">{{$ctrl.employees.phoneNumber}}</label></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email:</th>
+                                            <td><label id="email" name="email"></label>{{$ctrl.employees.email}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Position:</th>
+                                            <td><label id="position" name="position"></label>{{$ctrl.employees.position}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Remaining Day Off:</th>
+                                            <td><label id="rDO" name="rDO"></label>{{$ctrl.employees.remainingDayOff}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <!--<a data-original-title="Broadcast Message" data-toggle="tooltip" href="#" type="button" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-envelope"></i></a>-->
+                <div align="right">
+                    <a ng-href="#/profile/edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

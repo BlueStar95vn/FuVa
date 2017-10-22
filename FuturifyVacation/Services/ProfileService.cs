@@ -20,10 +20,6 @@ namespace FuturifyVacation.Services
             _db = db;
         }
 
-        public async Task<List<UserProfile>> GetAllAsync()
-        {
-            return await _db.UserProfiles.Include(u => u.User).ToListAsync();
-        }
 
         public async Task<UserProfile> GetByIdAsync(string userId)
         {
@@ -45,7 +41,6 @@ namespace FuturifyVacation.Services
             return getProfile;
 
         }
-
 
     }
 }

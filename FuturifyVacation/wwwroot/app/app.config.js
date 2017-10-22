@@ -29,6 +29,20 @@
                         loginRedirect: false
                     }
                 }).
+                when('/profile/', {
+                    template: '<profile-detail></profile-detail>',
+                    restrictions: {
+                        ensureAuthenticated: true,
+                        loginRedirect: false
+                    }
+                }).
+                when('/profile/edit/', {
+                    template: '<profile-edit></profile-edit>',
+                    restrictions: {
+                        ensureAuthenticated: true,
+                        loginRedirect: false
+                    }
+                }).
                 when('/employees', {
                     template: '<employee-list></employee-list>',
                     restrictions: {
@@ -36,14 +50,14 @@
                         loginRedirect: false
                     }
                 }).
-                when('/employees/detail/', {
+                when('/employees/detail/:userId', {
                     template: '<employee-detail></employee-detail>',
                     restrictions: {
                         ensureAuthenticated: true,
                         loginRedirect: false
                     }
                 }).
-                when('/employees/edit/', {
+                when('/employees/edit/:userId', {
                     template: '<employee-edit></employee-edit>',
                      restrictions: {
                         ensureAuthenticated: true,
@@ -108,14 +122,14 @@
                 });
         }
     ]).
-    run(function routeStart($rootScope, $location, $route, $http,authService) {      
+    run(function routeStart($rootScope, $location, $route, authService) {      
        
         $rootScope.location = $location;
         $rootScope.$on('$routeChangeStart', (event, next, current) => {
           
             if (next.restrictions.ensureAuthenticated) {
                 authService.ensureAuthenticated().then(function () {
-                
+                    
                 }).catch(function () {
                     $location.path('/login');
                 });                

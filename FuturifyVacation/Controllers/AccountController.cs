@@ -30,10 +30,10 @@ namespace FuturifyVacation.Controllers
         }
 
         [HttpGet("check-auth")]
-        public async Task<IActionResult> IsAuthorized()
+        public async Task IsAuthorized()
         {
-            var user = HttpContext.User;            
-            return Ok(new { userId = user.FindFirstValue(ClaimTypes.NameIdentifier) });        
+            //var user = HttpContext.User;            
+            //return Ok(new { userId = user.FindFirstValue(ClaimTypes.NameIdentifier) });        
         }
 
         [HttpPost("login")]

@@ -10,8 +10,8 @@ namespace FuturifyVacation.ServicesInterfaces
 {
     public interface IProfileService
     {
-        Task<List<UserProfile>> GetAllAsync();
         Task<UserProfile> GetByIdAsync(string userId);
         Task <UserProfile> UpdateByIdAsync(ProfileViewModel profile,string userId);
+
     }
 }

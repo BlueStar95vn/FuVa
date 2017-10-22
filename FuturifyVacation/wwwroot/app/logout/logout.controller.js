@@ -11,7 +11,7 @@
             $location.path('/logout');
             authService.logout()
                 .then(function () {
-                    //localStorage.removeItem('isLogged');
+                    //localStorage.removeItem('userId');
                     $location.path('/login');
                 })
                 .catch(function (err) {
