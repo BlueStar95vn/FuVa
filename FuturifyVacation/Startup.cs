@@ -36,7 +36,7 @@ namespace FuturifyVacation
                 {
                     // Password settings
                     options.Password.RequireDigit = true;
-                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredLength = 8;
                     options.Password.RequireNonAlphanumeric = true;
                     options.Password.RequireUppercase = true;
                     options.Password.RequireLowercase = true;
@@ -64,6 +64,7 @@ namespace FuturifyVacation
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddMvc();
         }
 

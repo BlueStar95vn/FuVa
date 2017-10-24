@@ -20,6 +20,7 @@ namespace FuturifyVacation.Controllers
     [Route("api/profiles")]
     public class ProfilesController : Controller
     {
+
         private readonly UserManager<ApplicationUser> _userManager;
         private IProfileService _profileService;
 
@@ -27,6 +28,7 @@ namespace FuturifyVacation.Controllers
         {
             _userManager = userManager;
             _profileService = profileService;
+          
         }
 
         [HttpGet("myId")]
@@ -71,6 +73,29 @@ namespace FuturifyVacation.Controllers
                Status = update.Status,
                PhoneNumber = update.User.PhoneNumber
            };
+        }
+        [HttpPost("changepassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePassViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                return BadRequest();
+            }           
+            return Ok();
+        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
     }
 }

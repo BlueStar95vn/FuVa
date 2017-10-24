@@ -20,18 +20,20 @@ namespace FuturifyVacation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private IEmployeeService _employeeService;
+        private readonly IEmailSender _emailSender;
 
-        public EmployeesController(UserManager<ApplicationUser> userManager, IEmployeeService employeeService)
+        public EmployeesController(UserManager<ApplicationUser> userManager, IEmployeeService employeeService, IEmailSender emailSender)
         {
             _userManager = userManager;
             _employeeService = employeeService;
+            _emailSender = emailSender;
         }
 
         [HttpGet("getall")]
-        public async Task<List<ProfileViewModel>> GetAllAsync()
+        public async Task<List<EmployeeViewModel>> GetAllAsync()
         {
             var profiles = await _employeeService.GetAllAsync();
-            return profiles.Select(p => new ProfileViewModel
+            return profiles.Select(p => new EmployeeViewModel
             {
                 UserId = p.UserId,
                 FirstName = p.FirstName,
@@ -48,10 +50,10 @@ namespace FuturifyVacation.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<ProfileViewModel> GetAsync(string userId)
+        public async Task<EmployeeViewModel> GetAsync(string userId)
         {
             var profile = await _employeeService.GetByIdAsync(userId);
-            return new ProfileViewModel
+            return new EmployeeViewModel
             {
                 UserId = profile.UserId,
                 FirstName = profile.FirstName,
@@ -69,12 +71,12 @@ namespace FuturifyVacation.Controllers
 
         //POST api/employees/update
         [HttpPost("update/{userId}")]
-        public async Task<ProfileViewModel> UpdateProfile([FromBody] ProfileViewModel profile, string userId)
+        public async Task<EmployeeViewModel> UpdateProfile([FromBody] EmployeeViewModel employee, string userId)
         {
             //var user = HttpContext.User;
             //UserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
-            var update = await _employeeService.UpdateByIdAsync(profile, userId);
-            return new ProfileViewModel
+            var update = await _employeeService.UpdateByIdAsync(employee, userId);
+            return new EmployeeViewModel
             {
                 UserId = update.UserId,
                 FirstName = update.FirstName,
@@ -90,8 +92,82 @@ namespace FuturifyVacation.Controllers
         }
         [HttpDelete("delete/{userId}")]
         public async Task DeleteProfile(string userId)
-        {                   
+        {
             await _employeeService.DeleteByIdAsync(userId);
+        }
+        [HttpPost("register")]
+        public async Task<EmployeeViewModel> Register([FromBody]EmployeeViewModel employee)
+        {
+            var user = new ApplicationUser { UserName = employee.Email, Email = employee.Email, PhoneNumber = employee.PhoneNumber };
+            user.UserProfile = new UserProfile
+            {
+                //UserId = user.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Position = employee.Position,
+                Gender = employee.Gender
+
+            };
+            var password = GenerateRandomPassword();
+            var result = await _userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+                var subject = "[Vacation Tracking] Your account information";
+                var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
+                    "\n This is your password: " + password;
+                await _emailSender.SendEmailAsync(employee.Email, subject, message);
+            }
+            return employee;
+        }
+
+        public string GenerateRandomPassword(PasswordOptions opts = null)
+        {
+            if (opts == null) opts = new PasswordOptions()
+            {
+                RequiredLength = 8,
+                RequiredUniqueChars = 2,
+                RequireDigit = true,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = true,
+                RequireUppercase = true
+            };
+
+            string[] randomChars = new[]
+            {
+            "ABCDEFGHJKLMNOPQRSTUVWXYZ",    // uppercase 
+            "abcdefghijkmnopqrstuvwxyz",    // lowercase
+            "0123456789",                   // digits
+            "!@$?_-"                        // non-alphanumeric
+            };
+
+            Random rand = new Random(Environment.TickCount);
+            List<char> chars = new List<char>();
+
+            if (opts.RequireUppercase)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[0][rand.Next(0, randomChars[0].Length)]);
+
+            if (opts.RequireLowercase)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[1][rand.Next(0, randomChars[1].Length)]);
+
+            if (opts.RequireDigit)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[2][rand.Next(0, randomChars[2].Length)]);
+
+            if (opts.RequireNonAlphanumeric)
+                chars.Insert(rand.Next(0, chars.Count),
+                    randomChars[3][rand.Next(0, randomChars[3].Length)]);
+
+            for (int i = chars.Count; i < opts.RequiredLength
+                || chars.Distinct().Count() < opts.RequiredUniqueChars; i++)
+            {
+                string rcs = randomChars[rand.Next(0, randomChars.Length)];
+                chars.Insert(rand.Next(0, chars.Count),
+                    rcs[rand.Next(0, rcs.Length)]);
+            }
+
+            return new string(chars.ToArray());
         }
     }
 }

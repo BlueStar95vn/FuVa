@@ -11,7 +11,8 @@ namespace FuturifyVacation.ServicesInterfaces
     {
         Task<List<UserProfile>> GetAllAsync();
         Task<UserProfile> GetByIdAsync(string userId);
-        Task<UserProfile> UpdateByIdAsync(ProfileViewModel profile, string userId);
+        Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId);
         Task DeleteByIdAsync(string userId);
+       
     }
 }

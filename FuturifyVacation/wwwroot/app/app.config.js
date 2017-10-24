@@ -43,6 +43,9 @@
                         loginRedirect: false
                     }
                 }).
+                when('/change-password', {
+                    template:'<change-password></change-password>'
+                }).
                 when('/employees', {
                     template: '<employee-list></employee-list>',
                     restrictions: {

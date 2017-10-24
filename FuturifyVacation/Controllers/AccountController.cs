@@ -20,7 +20,7 @@ namespace FuturifyVacation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        
+
         public AccountController(
            UserManager<ApplicationUser> userManager,
            SignInManager<ApplicationUser> signInManager)
@@ -38,19 +38,19 @@ namespace FuturifyVacation.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-        
+
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
-            var acc = new ApplicationUser();           
+            var acc = new ApplicationUser();
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true     
-               
+
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return Ok(new { Success = true, email = model.Email});
+                    return Ok(new { Success = true, email = model.Email });
                 }
                 else
                 {
@@ -59,12 +59,13 @@ namespace FuturifyVacation.Controllers
             }
             return BadRequest(new { Success = false, Error = "asdjaks" });
         }
-        [HttpPost("logout")]        
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-
+            
             return Ok();
         }
+      
     }
 }

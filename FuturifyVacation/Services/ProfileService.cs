@@ -20,6 +20,7 @@ namespace FuturifyVacation.Services
             _db = db;
         }
 
+       
 
         public async Task<UserProfile> GetByIdAsync(string userId)
         {

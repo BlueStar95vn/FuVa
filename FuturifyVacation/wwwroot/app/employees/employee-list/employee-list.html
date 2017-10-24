@@ -17,15 +17,31 @@
         </div>
     </div>
     <div>
-        <a ng-href="#/employees/add"  class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new employee</a>
-        <span class="pull-right"><b> Search employee: </b><input  /></span>
+        <a ng-href="#/employees/add" class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new employee</a>
+        <div  class="pull-right">
+            <span>
+                <b>Sort By:  </b>
+                <select type="" ng-model="$ctrl.sort">
+                    <option>None</option>
+                    <option value="firstName">First Name</option>
+                    <option value="doB"> Day of birth</option>
+                    <option value="department">Department</option>
+                    <option value="email">Email</option>
+                    <option value="remainingDayOff">Remaining day off</option>
+                </select>
+            </span>
+            <span ><b> Search employee: </b><input ng-model="$ctrl.search" /></span>
+        </div>
+        
+        
+     
     </div>
     <div>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Full Name</th>               
+                    <th>Full Name</th>
                     <th>Gender</th>
                     <th>Dob</th>
                     <th>Department</th>
@@ -37,7 +53,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="employee in $ctrl.employees">
+                <tr ng-repeat="employee in $ctrl.employees|filter:$ctrl.search|orderBy:$ctrl.sort">
                     <td>{{$index+1}}</td>
                     <td>{{employee.firstName}} {{employee.lastName}}</td>
                     <td>{{employee.gender}}</td>
@@ -45,17 +61,17 @@
                     <td>{{employee.department}}</td>
                     <td>{{employee.email}}</td>
                     <td>{{employee.remainingDayOff}}</td>
-                    <td>{{employee.status}}</td>                    
+                    <td>{{employee.status}}</td>
                     <td>
-                        <a href="" ng-click="$ctrl.editId(employee.userId)" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a> 
-                        <a href="" ng-click="$ctrl.detailId(employee.userId)"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a> 
+                        <a href="" ng-click="$ctrl.editId(employee.userId)" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a href="" ng-click="$ctrl.detailId(employee.userId)" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a>
                         <a href="" type="button" class="btn btn-sm btn-danger" ng-confirm-click="Are you sure to delete this employee ?" confirmed-click="$ctrl.removeUser(employee.userId)"><i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                 </tr>
             </tbody>
         </table>
-        
-       
+
+
     </div>
 </div>
 

@@ -17,10 +17,12 @@
                 $http.delete('http://localhost:63237/api/employees/delete/'+userId)
                     .then(function () {
                         alert("Delete Successfully!");
+                        
                     }).catch(function (error) {
                         console.log(error)
                     });
             }
+            
         }
     });
 

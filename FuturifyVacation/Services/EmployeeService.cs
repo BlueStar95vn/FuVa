@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FuturifyVacation.Services
 {
-    public class EmployeeService:IEmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private ApplicationDbContext _db;
 
@@ -29,26 +29,28 @@ namespace FuturifyVacation.Services
             return await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
         }
 
-        public async Task<UserProfile> UpdateByIdAsync(ProfileViewModel profile, string userId)
+        public async Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId)
         {
-            var getProfile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
-            getProfile.FirstName = profile.FirstName;
-            getProfile.LastName = profile.LastName;
-            getProfile.Gender = profile.Gender;
-            getProfile.Position = profile.Position;
-            getProfile.DoB = profile.DoB;
-            getProfile.Department = profile.Department;
-            getProfile.User.PhoneNumber = profile.PhoneNumber;
-            getProfile.RemainingDayOff = profile.RemainingDayOff;
+            var getEmployee = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
+            getEmployee.FirstName = employee.FirstName;
+            getEmployee.LastName = employee.LastName;
+            getEmployee.Gender = employee.Gender;
+            getEmployee.Position = employee.Position;
+            getEmployee.DoB = employee.DoB;
+            getEmployee.Department = employee.Department;
+            getEmployee.User.PhoneNumber = employee.PhoneNumber;
+            getEmployee.RemainingDayOff = employee.RemainingDayOff;
             await _db.SaveChangesAsync();
-            return getProfile;
+            return getEmployee;
         }
         public async Task DeleteByIdAsync(string userId)
-        {            
+        {
             var profile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
             //_db.UserProfiles.Remove(profile);
             _db.Users.Remove(profile.User);
             await _db.SaveChangesAsync();
         }
+
+     
     }
 }

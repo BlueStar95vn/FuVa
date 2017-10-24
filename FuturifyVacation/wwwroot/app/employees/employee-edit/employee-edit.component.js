@@ -21,13 +21,15 @@
             vm.save = function () {
                 $http.post('http://localhost:63237/api/employees/update/' + $routeParams.userId, vm.employees).then(function () {
                     alert("Save successfully");
-                    $location.path('/employees/detail/' + $routeParams.userId);
+                    //$location.path('/employees/detail/' + $routeParams.userId);
+                    $location.path('/employees');
                 }).catch(function(error){
                     console.log(error);
                 });
             }
             vm.detailId = function (userId) {
-                $location.path('/employees/detail/' + userId);
+                $location.path('/employees');
+                //$location.path('/employees/detail/' + userId);
             }
         }
     });
