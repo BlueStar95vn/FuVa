@@ -30,7 +30,7 @@ namespace FuturifyVacation
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-           
+
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
@@ -47,7 +47,7 @@ namespace FuturifyVacation
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            
+
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -65,7 +65,10 @@ namespace FuturifyVacation
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddMvc();
+            services.AddScoped<IVacationService, VacationService>();
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

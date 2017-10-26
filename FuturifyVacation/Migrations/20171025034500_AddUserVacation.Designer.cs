@@ -11,9 +11,10 @@ using System;
 namespace FuturifyVacation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171025034500_AddUserVacation")]
+    partial class AddUserVacation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,11 +102,11 @@ namespace FuturifyVacation.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("End");
-
-                    b.Property<DateTime>("Start");
+                    b.Property<DateTime>("FromDate");
 
                     b.Property<string>("Title");
+
+                    b.Property<DateTime>("ToDate");
 
                     b.Property<string>("UserId")
                         .IsRequired();

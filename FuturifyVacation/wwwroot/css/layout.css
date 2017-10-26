@@ -12,8 +12,10 @@ html {
 
 .heightbar {
     height: 900px;
-  
-   
+}
+
+.eventbackground{
+    background-color:#c2eaba;
 }
 
 .fixsidebar {

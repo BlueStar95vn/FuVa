@@ -1,20 +1,67 @@
 ﻿<div>
     <div ui-calendar="$ctrl.uiConfig.calendar" ng-model="$ctrl.eventSources" calendar="myCalendar" class="calendar"></div>
     <hr />
+    <form>
+        <div class="panel panel-info ">
+            <div class="panel panel-body">
+                <span>Reason: <input class="form-control" ng-model="$ctrl.newVacations.title"/> </span>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                From Date:
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.newVacations.start" is-open="$ctrl.popup1.opened" datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="$ctrl.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <div uib-timepicker ng-model="$ctrl.newVacations.start" ng-change="$ctrl.fromChanged()" hour-step="$ctrl.hstep" minute-step="$ctrl.mstep"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                To Date:
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.newVacations.end" is-open="$ctrl.popup2.opened" datepicker-options="$ctrl.toDateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="$ctrl.open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <div uib-timepicker ng-model="$ctrl.newVacations.end" ng-change="$ctrl.changed()" hour-step="$ctrl.hstep" minute-step="$ctrl.mstep"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <a type="submit" href="" ng-click="$ctrl.bookVacation()" class="btn-lg btn-success">Book</a>
+            </div>
+
+        </div>
+    </form>
+
+
     <div class="row">
         <div class="col-lg-1 col-md-2 col-sm-2">
             <button type="button" class="btn btn-primary" ng-click="$ctrl.addEvent()">
                 Add Event
             </button>
-            <div >
-                Events: 
+            <div>
+                Events:
                 {{$ctrl.events.length}}
             </div>
         </div>
         <div class="col-lg-11 col-md-10 col-sm-10">
             <div class="event-scoll">
                 <ul>
-                    <li ng-repeat="e in $ctrl.events" class="list-unstyled event-calendar">
+                    <li ng-repeat="e in $ctrl.vacations" class="list-unstyled event-calendar">
                         <div class="alert alert-info">
                             <a class="close" ng-click="$ctrl.remove($index)"><i class="glyphicon glyphicon-remove"></i></a>
                             <b> <input ng-model="e.title"></b>
@@ -26,6 +73,6 @@
             </div>
         </div>
     </div>
-       
+
 </div>
 

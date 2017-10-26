@@ -20,8 +20,6 @@ namespace FuturifyVacation.Services
             _db = db;
         }
 
-       
-
         public async Task<UserProfile> GetByIdAsync(string userId)
         {
             return await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
@@ -40,8 +38,6 @@ namespace FuturifyVacation.Services
             getProfile.RemainingDayOff = profile.RemainingDayOff;
             await _db.SaveChangesAsync();
             return getProfile;
-
         }
-
     }
 }

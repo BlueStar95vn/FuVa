@@ -16,6 +16,7 @@ namespace FuturifyVacation.Data
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<UserVacation> UserVacations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
