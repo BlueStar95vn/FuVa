@@ -12,7 +12,7 @@
 
             <div class="collapse navbar-collapse " id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-controller="authLoginController as authLoginCtrl"><a ng-href="#/profile"><span class="glyphicon glyphicon-user"></span>Welcome <i>{{currentUser.email}}</i></a></li>
+                    <li ng-controller="authStatusController as auth"><a ng-href="#/profile"><span class="glyphicon glyphicon-user"></span>Hello <i>{{auth.roles.name}}</i></a></li>
                     <li ng-controller="authLogoutController as logoutCtrl"><a href="" ng-click="logoutCtrl.onLogout()"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
                 </ul>
             </div>

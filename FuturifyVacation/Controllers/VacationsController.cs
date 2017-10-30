@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using FuturifyVacation.ServicesInterfaces;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using FuturifyVacation.Models.BindingModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -94,12 +95,14 @@ namespace FuturifyVacation.Controllers
         public async Task AprroveVacation(int Id)
         {
             await _vacationService.ApproveVacation(Id);
+            
+          
         }
 
         [HttpPost("disapprove/{Id}")]
-        public async Task DisaprroveVacation(int Id)
-        {
-            await _vacationService.DisapproveVacation(Id);
+        public async Task DisaprroveVacation(int Id, [FromBody]DisapproveBindingModel model)
+        {           
+            await _vacationService.DisapproveVacation(Id, model.Reason);
         }
     }
 }

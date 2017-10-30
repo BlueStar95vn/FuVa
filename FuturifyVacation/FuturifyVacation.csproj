@@ -16,9 +16,7 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
-    <Folder Include="Models\BindingModels\" />
     <Folder Include="logs\" />
-    <Folder Include="Models\BindingModels\" />
   </ItemGroup>
 
 </Project>

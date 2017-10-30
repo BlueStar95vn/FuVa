@@ -16,7 +16,8 @@
         vm.user = {};
         vm.onLogin = function () {
             authService.login(vm.user)
-                .then(/*(user) =>*/ function () {                  
+                .then(/*(user) =>*/ function () {
+                 
                     $location.path('/status');
                     alert("You have been successfully logged in...");
                 })
@@ -30,8 +31,10 @@
         /*jshint validthis: true */
         const vm = this;
         vm.isLoggedIn = false;
+        vm.roles = {};
         authService.ensureAuthenticated()
-            .then(function(/*response*/) {
+            .then(function (response) {
+                vm.roles = response.data;
                 //vm.getId = response.data;
                 //localStorage.setItem("userId", vm.getId.userId);
                 vm.isLoggedIn = true;

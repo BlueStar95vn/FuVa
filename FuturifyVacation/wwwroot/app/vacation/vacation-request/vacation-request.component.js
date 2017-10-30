@@ -66,9 +66,9 @@ angular.module('vacationRequest').component('modalComponent', {
             vm.vacations = vm.resolve.vacations;
             vm.index = vm.resolve.index;
         };
-
+        vm.reasons = {};
         vm.ok = function () {
-            $http.post('http://localhost:63237/api/vacations/disapprove/' + vm.resolve.vacationId).then(function () {
+            $http.post('http://localhost:63237/api/vacations/disapprove/' + vm.resolve.vacationId, vm.reasons).then(function () {
                 vm.vacations.splice(vm.index, 1);
                 console.log(vm.index);
                 vm.close({ $value: 'cancel' });

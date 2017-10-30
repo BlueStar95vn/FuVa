@@ -1,16 +1,21 @@
 ﻿<div class="modal-demo">
     <!--Modal-->
     <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">Disapprove this vacation!</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <label>Reason:</label> <input class="form-control" />
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-        </div>
+        <form name="form" novalidate>
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Disapprove this vacation!</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <label>Reason:</label> <input class="form-control" name="reason" ng-model="$ctrl.reasons.reason" required />
+                <div ng-if="form.reason.$touched">
+                    <p ng-show="form.reason.$error.required" class="text-danger">Reason is required</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.ok()">OK</button>
+                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            </div>
+        </form>       
     </script>
  
     <!--Request-->
@@ -19,6 +24,7 @@
         <div class="panel panel-primary">
             <div class="panel panel-heading">
                 <div class="panel-title">{{vacation.firstName}} {{vacation.lastName}}</div>
+
             </div>
             <div class="vacation-request">
                 <table>

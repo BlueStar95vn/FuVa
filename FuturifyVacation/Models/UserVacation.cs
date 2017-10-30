@@ -17,6 +17,7 @@ namespace FuturifyVacation.Models
         public string UserId { get; set; }
         [Required]
         public UserProfile User { get; set; }
+        //public ApplicationUser User { get; set; }
         
         public string Title { set; get; }
         public DateTime Start { get; set; }

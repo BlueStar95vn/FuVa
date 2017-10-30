@@ -9,6 +9,8 @@ using FuturifyVacation.Models;
 using Microsoft.AspNetCore.Authentication;
 using FuturifyVacation.Models.ViewModels;
 using System.Security.Claims;
+using FuturifyVacation.Models.BindingModels;
+using FuturifyVacation.ServicesInterfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,20 +22,34 @@ namespace FuturifyVacation.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
+        private readonly IProfileService _profileService;
         public AccountController(
            UserManager<ApplicationUser> userManager,
-           SignInManager<ApplicationUser> signInManager)
+           SignInManager<ApplicationUser> signInManager,
+           IProfileService profileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _profileService = profileService;
         }
 
         [HttpGet("check-auth")]
-        public async Task IsAuthorized()
+        public async Task<IActionResult> IsAuthorized()
         {
-            //var user = HttpContext.User;            
-            //return Ok(new { userId = user.FindFirstValue(ClaimTypes.NameIdentifier) });        
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);           
+            var role = await _userManager.GetRolesAsync(user);
+            var getUser = await _userManager.GetUserAsync(User);
+            var getName = await _profileService.GetByIdAsync(getUser.Id);
+            
+
+
+            return Ok(new
+            {
+                Role = role.FirstOrDefault(),
+                Name = getName.FirstName
+                //var user = HttpContext.User;            
+                //return Ok(new { userId = user.FindFirstValue(ClaimTypes.NameIdentifier) });        
+            });
         }
 
         [HttpPost("login")]

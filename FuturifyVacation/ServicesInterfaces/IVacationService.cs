@@ -1,4 +1,5 @@
 ﻿using FuturifyVacation.Models;
+using FuturifyVacation.Models.BindingModels;
 using FuturifyVacation.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,6 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<UserVacation> UpdateVacationAsync(int vacationId);
         Task<UserVacation> DeleteVacationAsync(int vacationId);
         Task ApproveVacation(int vacationId);
-        Task DisapproveVacation(int vacationId);
+        Task DisapproveVacation(int vacationId, string reason);
     }
 }

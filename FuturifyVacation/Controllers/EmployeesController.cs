@@ -14,7 +14,7 @@ using System.Security.Claims;
 
 namespace FuturifyVacation.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "ADMIN")]
     [Route("api/employees")]
     public class EmployeesController : Controller
     {
@@ -95,6 +95,8 @@ namespace FuturifyVacation.Controllers
         {
             await _employeeService.DeleteByIdAsync(userId);
         }
+
+       
         [HttpPost("register")]
         public async Task<EmployeeViewModel> Register([FromBody]EmployeeViewModel employee)
         {
@@ -112,10 +114,12 @@ namespace FuturifyVacation.Controllers
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "ADMIN");
+
                 var subject = "[Vacation Tracking] Your account information";
                 var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
                     "\n This is your password: " + password;
-                await _emailSender.SendEmailAsync(employee.Email, subject, message);
+               // await _emailSender.SendEmailAsync(employee.Email, subject, message);
             }
             return employee;
         }

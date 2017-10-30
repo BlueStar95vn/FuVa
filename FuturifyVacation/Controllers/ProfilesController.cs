@@ -22,7 +22,7 @@ namespace FuturifyVacation.Controllers
     {
 
         private readonly UserManager<ApplicationUser> _userManager;
-        private IProfileService _profileService;
+        private readonly IProfileService _profileService;
 
         public ProfilesController(UserManager<ApplicationUser> userManager, IProfileService profileService)
         {
@@ -90,12 +90,12 @@ namespace FuturifyVacation.Controllers
             }           
             return Ok();
         }
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
+        //private void AddErrors(IdentityResult result)
+        //{
+        //    foreach (var error in result.Errors)
+        //    {
+        //        ModelState.AddModelError(string.Empty, error.Description);
+        //    }
+        //}
     }
 }

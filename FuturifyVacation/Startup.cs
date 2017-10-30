@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using FuturifyVacation.ServicesInterfaces;
 using FuturifyVacation.Services;
+using FuturifyVacation.Setup;
 
 namespace FuturifyVacation
 {
@@ -56,7 +57,6 @@ namespace FuturifyVacation
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
-                options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
                 // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
@@ -93,6 +93,10 @@ namespace FuturifyVacation
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.InitializeRoles();
+
+            
         }
     }
 }

@@ -44,7 +44,11 @@
                     }
                 }).
                 when('/change-password', {
-                    template:'<change-password></change-password>'
+                    template: '<change-password></change-password>',
+                     restrictions: {
+                        ensureAuthenticated: true,
+                        loginRedirect: false
+                    }
                 }).
                 when('/employees', {
                     template: '<employee-list></employee-list>',
@@ -136,18 +140,26 @@
        
         $rootScope.location = $location;
         $rootScope.$on('$routeChangeStart', (event, next, current) => {
-          
+           
             if (next.restrictions.ensureAuthenticated) {
-                authService.ensureAuthenticated().then(function () {
-                    
+                authService.ensureAuthenticated().then(function (response) {
+                    if (response.data.myRole != 'ADMIN' && (next.$$route.originalPath == "/employees"
+                        || next.$$route.originalPath == "/employees/detail/:userId" || next.$$route.originalPath == "/employees/add"
+                        || next.$$route.originalPath == "/employees/edit/:userId"  || next.$$route.originalPath == "/teams" 
+                        || next.$$route.originalPath == "/teams/detail" || next.$$route.originalPath == "/teams/edit" 
+                        || next.$$route.originalPath == "/teams/add" || next.$$route.originalPath == "/vacation/request"
+                        || next.$$route.originalPath == "/report")) 
+                    {
+                        $location.path('/status');
+                    }
                 }).catch(function () {
                     $location.path('/login');
                 });                
             }
             if (next.restrictions.loginRedirect) {              
-                //authService.ensureAuthenticated().then(function () {
-                //    $location.path('/employees/detail/');
-                //});
+                authService.ensureAuthenticated().then(function () {
+                    $location.path('/profile/');
+                });
             }
         })
     });
