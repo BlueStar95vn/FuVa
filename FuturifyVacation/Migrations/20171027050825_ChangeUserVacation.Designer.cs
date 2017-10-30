@@ -11,9 +11,10 @@ using System;
 namespace FuturifyVacation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171027050825_ChangeUserVacation")]
+    partial class ChangeUserVacation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,7 +238,7 @@ namespace FuturifyVacation.Migrations
 
             modelBuilder.Entity("FuturifyVacation.Models.UserVacation", b =>
                 {
-                    b.HasOne("FuturifyVacation.Models.UserProfile", "User")
+                    b.HasOne("FuturifyVacation.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

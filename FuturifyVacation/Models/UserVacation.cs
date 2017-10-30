@@ -16,11 +16,12 @@ namespace FuturifyVacation.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
         [Required]
-        public ApplicationUser User { get; set; }
+        public UserProfile User { get; set; }
         
         public string Title { set; get; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public string Color { get; set; }
 
     }
 }

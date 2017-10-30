@@ -1,0 +1,49 @@
+﻿<div class="modal-demo">
+    <!--Modal-->
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Disapprove this vacation!</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <label>Reason:</label> <input class="form-control" />
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        </div>
+    </script>
+ 
+    <!--Request-->
+    <div><h1><b>Vacation Request</b></h1></div>
+    <div ng-repeat="vacation in $ctrl.vacations">
+        <div class="panel panel-primary">
+            <div class="panel panel-heading">
+                <div class="panel-title">{{vacation.firstName}} {{vacation.lastName}}</div>
+            </div>
+            <div class="vacation-request">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Reason: </th>
+                            <td>{{vacation.title}}</td>
+                        </tr>
+                        <tr>
+                            <th>From date: </th>
+                            <td>{{vacation.start | date: "dd/MM/yyyy hh:mm a"}}</td>
+                        </tr>
+                        <tr>
+                            <th>To date: </th>
+                            <td>{{vacation.end | date: "dd/MM/yyyy hh:mm a"}}</td>
+                        </tr>
+                        <tr>
+                            <th><a href="" class="btn btn-success" ng-click="$ctrl.approve(vacation.id,$index)">Approve</a></th>
+                            <td><a href="" class="btn btn-danger" ng-click="$ctrl.disaprrove(vacation.id,$index)">Disapprove</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

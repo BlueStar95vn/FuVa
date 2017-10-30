@@ -109,6 +109,13 @@
                         loginRedirect: false
                     }
                 }).
+                when('/vacation/request', {
+                    template: '<vacation-request></vacation-request>',
+                    restrictions: {
+                        ensureAuthenticated: true,
+                        loginRedirect: false
+                    }
+                }).
                 when('/report', {
                     template: '<report></report>',
                      restrictions: {

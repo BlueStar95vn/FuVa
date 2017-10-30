@@ -9,9 +9,11 @@ namespace FuturifyVacation.Models.ViewModels
     {
         public int Id { get; set; }
         public string UserId { get; set; } 
-        public ApplicationUser User { get; set; }
         public string Title { set; get; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public string Color { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

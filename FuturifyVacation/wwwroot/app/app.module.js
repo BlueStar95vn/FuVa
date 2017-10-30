@@ -3,6 +3,6 @@
     'profileDetail','profileEdit', 'changePassword',
     'employeeList', 'employeeDetail', 'employeeEdit', 'employeeAdd',
     'teamList', 'teamDetail', 'teamEdit', 'teamAdd',
-    'vacation',
+    'vacation','vacationRequest',
     'report'
 ]);

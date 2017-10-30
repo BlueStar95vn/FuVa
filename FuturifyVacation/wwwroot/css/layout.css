@@ -11,13 +11,15 @@ html {
 }
 
 .heightbar {
-    height: 900px;
+    height: 950px;
 }
 
 .eventbackground{
     background-color:#c2eaba;
 }
-
+.vacation-request{
+    padding:0 20px 20px 20px;
+}
 .fixsidebar {
     position: fixed;
 }
@@ -41,12 +43,12 @@ html {
 }
 .sortorder:after {
     content: '\25b2';
-    // BLACK UP-POINTING TRIANGLE
+    /*// BLACK UP-POINTING TRIANGLE*/
 }
 
 .sortorder.reverse:after {
     content: '\25bc';
-    // BLACK DOWN-POINTING TRIANGLE
+    /*// BLACK DOWN-POINTING TRIANGLE*/
 }
 
 .event-scoll{

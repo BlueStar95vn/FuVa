@@ -9,10 +9,14 @@ namespace FuturifyVacation.ServicesInterfaces
 {
     public interface IVacationService
     {
-        Task<UserVacation> GetVacationByIdAsync(string userId);
-        Task<List<UserVacation>> GetAllVacationAsync();
+        Task<List<UserVacation>> GetVacationByUserIdAsync(string userId);
+        Task<UserVacation> GetVacationByVacationIdAsync(int vacationId);
+        Task<List<UserVacation>> GetRequestVacationAsync();
+       Task<List<UserVacation>> GetAllVacationAsync();
         Task AddVacationAsync(UserVacationViewModel model, string userId);
-        Task<UserVacation> UpdateVacationAsync(string vacationId);
-        Task<UserVacation> DeleteVacationAsync(string vacationId);
+        Task<UserVacation> UpdateVacationAsync(int vacationId);
+        Task<UserVacation> DeleteVacationAsync(int vacationId);
+        Task ApproveVacation(int vacationId);
+        Task DisapproveVacation(int vacationId);
     }
 }

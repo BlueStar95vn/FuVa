@@ -22,37 +22,66 @@ namespace FuturifyVacation.Services
         }
 
         public async Task AddVacationAsync(UserVacationViewModel model, string userId)
-        {           
+        {
+           
             var vacation = new UserVacation
             {
                 Id = model.Id,
                 Title = model.Title,
                 UserId = userId,
                 Start = model.Start,
-                End = model.End
+                End = model.End,
+                Color=model.Color
             };
             await _db.UserVacations.AddAsync(vacation);
             await _db.SaveChangesAsync();
         }
 
-        public Task<UserVacation> DeleteVacationAsync(string vacationId)
+        public Task<UserVacation> DeleteVacationAsync(int vacationId)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task ApproveVacation(int vacationId)
+        {
+            var getVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            getVacation.Color = "Green";
+            await _db.SaveChangesAsync();
+        }
+        public Task DisapproveVacation(string vacationId)
         {
             throw new NotImplementedException();
         }
 
         public async Task<List<UserVacation>> GetAllVacationAsync()
         {
-            return await _db.UserVacations.ToListAsync();
+            return await _db.UserVacations.Include(u=>u.User).ToListAsync();
         }
 
-        public Task<UserVacation> GetVacationByIdAsync(string userId)
+
+        public async Task<UserVacation> GetVacationByVacationIdAsync(int vacationId)
+        {
+           var getVacation =  await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            return getVacation;
+        }
+        public async Task<List<UserVacation>> GetRequestVacationAsync()
+        {
+            return await _db.UserVacations.Include(u=>u.User).Where(u=>u.Color=="blue").ToListAsync();
+        }
+        public Task<UserVacation> UpdateVacationAsync(int vacationId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserVacation> UpdateVacationAsync(string vacationId)
+        public async Task<List<UserVacation>> GetVacationByUserIdAsync(string userId)
         {
-            throw new NotImplementedException();
+            return await _db.UserVacations.Where(u => u.UserId == userId).ToListAsync();
+        }
+
+        public async Task DisapproveVacation(int vacationId)
+        {
+            var vacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            _db.UserVacations.Remove(vacation);
+            await _db.SaveChangesAsync();
         }
     }
 }

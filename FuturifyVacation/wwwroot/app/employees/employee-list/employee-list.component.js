@@ -13,16 +13,16 @@
             vm.editId = function (userId) {
                 $location.path('/employees/edit/' + userId);
             }
-            vm.removeUser = function (userId) {
+            vm.removeUser = function (userId, index) {
                 $http.delete('http://localhost:63237/api/employees/delete/'+userId)
                     .then(function () {
                         alert("Delete Successfully!");
+                        vm.employees.splice(index, 1);
                         
                     }).catch(function (error) {
                         console.log(error)
                     });
             }
-            
         }
     });
 

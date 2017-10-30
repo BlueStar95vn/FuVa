@@ -28,27 +28,78 @@ namespace FuturifyVacation.Controllers
             _emailSender = emailSender;
             _vacationService = vacationService;
         }
+        //User
 
         [HttpPost("bookvacation")]
         public async Task<UserVacationViewModel> BookVacation([FromBody]UserVacationViewModel model, string userId)
         {
             var user = HttpContext.User;
             userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.Color = "blue";
             await _vacationService.AddVacationAsync(model, userId);
             return model;
         }
+
+        [HttpGet("getuservacation")]
+        public async Task<List<UserVacationViewModel>> GetUserVacation()
+        {
+            var user = HttpContext.User;
+            string userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var getUserVacation = await _vacationService.GetVacationByUserIdAsync(userId);
+            return getUserVacation.Select(p => new UserVacationViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Start = p.Start,
+                End = p.End,
+                UserId = p.UserId,
+                Color = p.Color
+            }).ToList();
+        }
+
+        //Admin
         [HttpGet("getallvacation")]
         public async Task<List<UserVacationViewModel>> GetAllVacation()
         {
             var getAllVacation = await _vacationService.GetAllVacationAsync();
             return getAllVacation.Select(p => new UserVacationViewModel
             {
-               Id = p.Id,
-               Title=p.Title,
-               Start=p.Start,
-               End=p.End,
-               UserId=p.UserId
+                Id = p.Id,
+                Title = p.User.FirstName + " " + p.User.LastName + ": " + p.Title,
+                Start = p.Start,
+                End = p.End,
+                UserId = p.UserId,
+                Color = p.Color
+
             }).ToList();
+        }
+        [HttpGet("getrequestvacation")]
+        public async Task<List<UserVacationViewModel>> GetRequestVacation()
+        {
+            var getRequestVacation = await _vacationService.GetRequestVacationAsync();
+            return getRequestVacation.Select(p => new UserVacationViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Start = p.Start,
+                End = p.End,
+                UserId = p.UserId,
+                Color = p.Color,
+                FirstName = p.User.FirstName,
+                LastName = p.User.LastName
+            }).ToList();
+        }
+
+        [HttpPost("approve/{Id}")]
+        public async Task AprroveVacation(int Id)
+        {
+            await _vacationService.ApproveVacation(Id);
+        }
+
+        [HttpPost("disapprove/{Id}")]
+        public async Task DisaprroveVacation(int Id)
+        {
+            await _vacationService.DisapproveVacation(Id);
         }
     }
 }
