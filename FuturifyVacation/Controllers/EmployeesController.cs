@@ -119,7 +119,7 @@ namespace FuturifyVacation.Controllers
                 var subject = "[Vacation Tracking] Your account information";
                 var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
                     "\n This is your password: " + password;
-               // await _emailSender.SendEmailAsync(employee.Email, subject, message);
+               await _emailSender.SendEmailAsync(employee.Email, subject, message);
             }
             return employee;
         }

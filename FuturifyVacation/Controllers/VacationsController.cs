@@ -58,7 +58,14 @@ namespace FuturifyVacation.Controllers
             }).ToList();
         }
 
+        [HttpPost("updateuservacation")]
+        public async Task UpdateUserVacation([FromBody] UserVacationViewModel model)
+        {
+            await _vacationService.UpdateVacationAsync(model);
+        }
+
         //Admin
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getallvacation")]
         public async Task<List<UserVacationViewModel>> GetAllVacation()
         {
@@ -74,6 +81,7 @@ namespace FuturifyVacation.Controllers
 
             }).ToList();
         }
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getrequestvacation")]
         public async Task<List<UserVacationViewModel>> GetRequestVacation()
         {
@@ -90,7 +98,7 @@ namespace FuturifyVacation.Controllers
                 LastName = p.User.LastName
             }).ToList();
         }
-
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("approve/{Id}")]
         public async Task AprroveVacation(int Id)
         {
@@ -98,7 +106,7 @@ namespace FuturifyVacation.Controllers
             
           
         }
-
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("disapprove/{Id}")]
         public async Task DisaprroveVacation(int Id, [FromBody]DisapproveBindingModel model)
         {           

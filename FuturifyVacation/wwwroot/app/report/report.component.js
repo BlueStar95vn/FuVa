@@ -93,7 +93,7 @@
             /* config object */
             vm.uiConfig = {
                 calendar: {
-                    height: 600,
+                    height: 700,
                     editable: true,
                     navLinks: true,
                     selectable: true,

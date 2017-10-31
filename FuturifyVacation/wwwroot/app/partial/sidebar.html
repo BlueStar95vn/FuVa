@@ -4,19 +4,19 @@
             <li class="widthbar">
                 <a ng-href="#/profile" class="textcolor"><i class="glyphicon glyphicon-user"></i><b> Profile</b></a>
             </li>
-            <li class="widthbar" ng-if="auth.roles.myRole=='ADMIN'">
+            <li class="widthbar" ng-if="auth.roles.role=='ADMIN'">
                 <a ng-href="#/employees" class="textcolor"><i class="glyphicon glyphicon-th-list"></i><b> Employee Management</b></a>
             </li>
-            <li class="widthbar"  ng-if="auth.roles.myRole=='ADMIN'">
+            <li class="widthbar"  ng-if="auth.roles.role=='ADMIN'">
                 <a ng-href="#/teams" class="textcolor"> <i class="glyphicon glyphicon-grain"></i><b> Team Management</b></a>
             </li>
             <li class="widthbar">
                 <a ng-href="#/vacation" class="textcolor"><i class="glyphicon glyphicon-calendar"></i><b> Vacation Booking</b></a>
             </li>
-            <li class="widthbar"  ng-if="auth.roles.myRole=='ADMIN'">
+            <li class="widthbar"  ng-if="auth.roles.role=='ADMIN'">
                 <a ng-href="#/vacation/request" class="textcolor"><i class="glyphicon glyphicon-transfer"></i><b> Vacation Request</b></a>
             </li>
-            <li class="widthbar"  ng-if="auth.roles.myRole=='ADMIN'">
+            <li class="widthbar"  ng-if="auth.roles.role=='ADMIN'">
                 <a ng-href="#/report" class="textcolor"><i class="glyphicon glyphicon-file"></i><b> Report</b></a>
             </li>
         </ul>

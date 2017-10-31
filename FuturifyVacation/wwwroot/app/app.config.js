@@ -143,7 +143,7 @@
            
             if (next.restrictions.ensureAuthenticated) {
                 authService.ensureAuthenticated().then(function (response) {
-                    if (response.data.myRole != 'ADMIN' && (next.$$route.originalPath == "/employees"
+                    if (response.data.role != 'ADMIN' && (next.$$route.originalPath == "/employees"
                         || next.$$route.originalPath == "/employees/detail/:userId" || next.$$route.originalPath == "/employees/add"
                         || next.$$route.originalPath == "/employees/edit/:userId"  || next.$$route.originalPath == "/teams" 
                         || next.$$route.originalPath == "/teams/detail" || next.$$route.originalPath == "/teams/edit" 

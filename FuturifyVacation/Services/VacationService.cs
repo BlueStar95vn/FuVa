@@ -25,7 +25,7 @@ namespace FuturifyVacation.Services
 
         public async Task AddVacationAsync(UserVacationViewModel model, string userId)
         {
-           
+
             var vacation = new UserVacation
             {
                 Id = model.Id,
@@ -44,10 +44,19 @@ namespace FuturifyVacation.Services
             throw new NotImplementedException();
         }
 
-        public Task DisapproveVacation(string vacationId)
+        public async Task<UserVacation> UpdateVacationAsync(UserVacationViewModel model)
         {
-            throw new NotImplementedException();
+            var getVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == model.Id);
+            getVacation.Title = model.Title;
+            getVacation.Start = model.Start;
+            getVacation.End = model.End;
+            getVacation.Color = "blue"; //Return pending status
+            await _db.SaveChangesAsync();
+            return getVacation;
         }
+
+
+        #region admin
 
         public async Task<List<UserVacation>> GetAllVacationAsync()
         {
@@ -64,10 +73,7 @@ namespace FuturifyVacation.Services
         {
             return await _db.UserVacations.Include(u => u.User).Where(u => u.Color == "blue").ToListAsync();
         }
-        public Task<UserVacation> UpdateVacationAsync(int vacationId)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task<List<UserVacation>> GetVacationByUserIdAsync(string userId)
         {
@@ -77,38 +83,39 @@ namespace FuturifyVacation.Services
         public async Task ApproveVacation(int vacationId)
         {
             var getVacation = await _db.UserVacations.Include(u => u.User).Include(x => x.User.User).FirstOrDefaultAsync(u => u.Id == vacationId);
+            int hours = CountHours(getVacation.Start, getVacation.End);
+            int hoursleft = int.Parse(getVacation.User.RemainingDayOff) - hours;
             //var email = getVacation.User.User.Email;
             //var subject = "[Vacation Tracking] - Your vacation has been approved!";
             //var message = "\nHi " + getVacation.User.FirstName
             //                + ",\n\n Your vacation has been approved,"
+            //                + "\n\nVacation Request Detail: "
+            //                + "\n\nTitle: " + getVacation.Title
             //                + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
-            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString();
+            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString()
+            //                + "\n\nYour Remaining Time: " + hoursleft.ToString() + " hour(s)";
             //await _emailSender.SendEmailAsync(email, subject, message);
             getVacation.Color = "Green";
+            getVacation.User.RemainingDayOff = hoursleft.ToString();
             await _db.SaveChangesAsync();
         }
         public async Task DisapproveVacation(int vacationId, string reason)
-        {          
+        {
             var vacation = await _db.UserVacations.Include(u => u.User).Include(x => x.User.User).FirstOrDefaultAsync(u => u.Id == vacationId);
             _db.UserVacations.Remove(vacation);
 
-
-            //int totalDays = (vacation.End - vacation.Start).Days;
-            //int totalHours = 0;
-            //if(totalDays>=2)
-            //{
-            //    totalHours = 8 * (totalDays - 1);
-            //}
             int hours = CountHours(vacation.Start, vacation.End);
 
-            var email = vacation.User.User.Email;
-            var subject = "[Vacation Tracking] - Your vacation has been disapproved!";
-            var message = "\nHi " + vacation.User.FirstName
-                            + ",\n\n Your vacation has been disapproved,"
-                            + "\n\nFrom: " + vacation.Start.ToShortDateString() + " " + vacation.Start.ToShortTimeString()
-                            + "\n\nTo: " + vacation.End.ToShortDateString() + " " + vacation.End.ToShortTimeString()
-                            + "\n\nReason: " + reason + hours;
-            await _emailSender.SendEmailAsync(email, subject, message);
+            //var email = vacation.User.User.Email;
+            //var subject = "[Vacation Tracking] - Your vacation has been disapproved!";
+            //var message = "\nHi " + vacation.User.FirstName
+            //                + ",\n\n Your vacation has been disapproved,"
+            //                 + "\n\nVacation Request Detail: "
+            //                + "\n\nTitle: " + vacation.Title
+            //                + "\n\nFrom: " + vacation.Start.ToShortDateString() + " " + vacation.Start.ToShortTimeString()
+            //                + "\n\nTo: " + vacation.End.ToShortDateString() + " " + vacation.End.ToShortTimeString()
+            //                + "\n\nReason: " + reason;
+            //await _emailSender.SendEmailAsync(email, subject, message);
             await _db.SaveChangesAsync();
         }
 
@@ -119,7 +126,7 @@ namespace FuturifyVacation.Services
             {
                 if (i.DayOfWeek != DayOfWeek.Saturday && i.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    if ( i.TimeOfDay.Hours >= 9 && i.TimeOfDay.Hours < 12 || i.TimeOfDay.Hours >= 13 && i.TimeOfDay.Hours < 18)
+                    if (i.TimeOfDay.Hours >= 9 && i.TimeOfDay.Hours < 12 || i.TimeOfDay.Hours >= 13 && i.TimeOfDay.Hours < 18)
                     {
                         hours++;
                     }
@@ -127,5 +134,6 @@ namespace FuturifyVacation.Services
             }
             return hours;
         }
+        #endregion
     }
 }
