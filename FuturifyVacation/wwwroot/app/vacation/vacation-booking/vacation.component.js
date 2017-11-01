@@ -7,19 +7,18 @@
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
-            var y = date.getFullYear();           
-           
+            var y = date.getFullYear();
+
             vm.eventSources = [];
             vm.vacations = {};
             $http.get("http://localhost:63237/api/vacations/getuservacation").then(function (response) {
-               
-                vm.vacations = response.data;               
-                uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.vacations);                
+                vm.vacations = response.data;
+                uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.vacations);
             }).catch(function (err) {
                 console.log(err);
             });
-           
             vm.eventSources = [vm.vacations];
+
 
             vm.animationsEnabled = true;
 
@@ -28,10 +27,7 @@
                 var modalInstance = $uibModal.open({
                     animation: vm.animationsEnabled,
                     component: 'vacationModalComponent',
-                    resolve: {  
-                        //vacationDetails = function () {
-                        //    return vm.vacations;
-                        //},
+                    resolve: {
                         id: function () {
                             return event.id;
                         },
@@ -39,7 +35,7 @@
                             return event.title;
                         },
                         start: function () {
-                            return event.start;                            
+                            return event.start;
                         },
                         end: function () {
                             return event.end;
@@ -47,13 +43,25 @@
                     }
                 });
 
-                modalInstance.result.then(function () {                  
+                modalInstance.result.then(function () {
+                    vm.refreshEvent();
                 }, function () {
                     $log.info('modal-component dismissed at: ' + new Date());
-                    uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
-                    uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.vacations);
+                    vm.refreshEvent();
                 });
             };
+
+
+            vm.refreshEvent = function () {
+                $http.get("http://localhost:63237/api/vacations/getuservacation").then(function (response) {
+                    vm.vacations = response.data;
+                    uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
+                    uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.vacations);
+                })
+            };
+
+
+
             /* alert on Drop */
             vm.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
                 vm.alertMessage = ('Event Dropped to make dayDelta ' + delta);
@@ -76,29 +84,29 @@
                 }
             };
             /* add custom event*/
-            vm.addEvent = function () {
-                var id = 1000;
-                vm.events.push({
-                    id: id++,
-                    title: 'New Event',
-                    start: new Date(y, m, 27),
-                    end: new Date(y, m, 28),
+            vm.addEvent = function (id, title, start, end) {
+                vm.vacations.push({
+                    id: id,
+                    title: title,
+                    start: new Date(start),
+                    end: new Date(end),
+                    color: 'blue'
                 });
             };
-            /* remove event */
-            vm.remove = function (index) {
-                vm.events.splice(index, 1);
-                uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
-                uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.events);
-            };
-            vm.update = function () {
-                uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
-                uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.events);
-            };
-            /* Change View */
-            vm.changeView = function (view, calendar) {
-                uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
-            };
+            ///* remove event */
+            //vm.remove = function (index) {
+            //    vm.events.splice(index, 1);
+            //    uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
+            //    uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.events);
+            //};
+            //vm.update = function () {
+            //    uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
+            //    uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.events);
+            //};
+            ///* Change View */
+            //vm.changeView = function (view, calendar) {
+            //    uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
+            //};
             /* Change View */
             vm.renderCalendar = function (calendar) {
                 $timeout(function () {
@@ -178,15 +186,15 @@
                 var date = data.date,
                     mode = data.mode;
                 return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-            }          
+            }
             vm.altInputFormats = ['M!/d!/yyyy'];
-            
+
             /* config object */
             vm.newVacations = {};
             //add time
             vm.hstep = 1;
             vm.mstep = 60;
-         
+
 
             var fromTime = new Date();
             fromTime.setHours(9);
@@ -198,12 +206,11 @@
             toTime.setHours(18);
             toTime.setMinutes(0);
             vm.newVacations.end = toTime;
- 
+
             vm.bookVacation = function () {
                 $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function () {
-                    uiCalendarConfig.calendars['myCalendar'].fullCalendar('removeEvents');
-                    uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.vacations);
                     alert("Success");
+                    vm.refreshEvent();
                 }).catch(function (err) {
                     console.log(err);
                 });
@@ -225,7 +232,7 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.vacationDetail = {};
         vm.getDate = new Date();
         vm.$onInit = function () {
-           
+
             vm.vacationDetail.id = vm.resolve.id;
             vm.vacationDetail.title = vm.resolve.title;
             vm.vacationDetail.start = new Date(vm.resolve.start);
@@ -233,7 +240,7 @@ angular.module('vacation').component('vacationModalComponent', {
         };
         vm.hstep = 1;
         vm.mstep = 60;
-     
+
         vm.open1 = function () {
             vm.popup1.opened = true;
         };
@@ -271,14 +278,37 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.update = function () {
             $http.post('http://localhost:63237/api/vacations/updateuservacation', vm.vacationDetail).then(function () {
                 alert("Update successfully");
-            }).catch(function () {
-
+            }).catch(function (err) {
+                console.log(err);
             });
         };
+        vm.cancel = function (id) {
+            $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function () {
+                alert("Delete Successfully");
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
         vm.close = function () {
             vm.dismiss({ $value: 'cancel' });
-            
+
         };
 
     }
 });
+
+//angular.
+//    module('vacation').directive('ngConfirmClick', [
+//        function () {
+//            return {
+//                link: function (scope, element, attr) {
+//                    var msg = attr.ngConfirmClick || "Are you sure?";
+//                    var clickAction = attr.confirmedClick;
+//                    element.bind('click', function (event) {
+//                        if (window.confirm(msg)) {
+//                            scope.$eval(clickAction)
+//                        }
+//                    });
+//                }
+//            };
+//        }])

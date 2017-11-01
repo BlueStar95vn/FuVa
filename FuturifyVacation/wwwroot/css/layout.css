@@ -41,6 +41,11 @@ html {
 .iconpadding{
     padding-top:40px;
 }
+.centerinput{
+    text-align:center;
+}
+
+
 .sortorder:after {
     content: '\25b2';
     /*// BLACK UP-POINTING TRIANGLE*/
@@ -53,6 +58,10 @@ html {
 
 .event-scoll{
     height:250px;
+    overflow:scroll;
+}
+.request-scoll {
+    height: 900px;
     overflow:scroll;
 }
 .event-calendar{

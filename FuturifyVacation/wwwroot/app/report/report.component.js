@@ -2,7 +2,7 @@
     module('report').
     component('report', {
         templateUrl: "/app/report/report.html",
-        controller: function ($compile, $timeout, uiCalendarConfig, $http) {
+        controller: function ($compile, $timeout, uiCalendarConfig, $http, $uibModal, $log) {
             var vm = this;
 
             var date = new Date();
@@ -10,6 +10,11 @@
             var m = date.getMonth();
             var y = date.getFullYear();
             /* config object */
+            vm.employees = {};
+            $http.get('http://localhost:63237/api/employees/getall').then(function (response) {
+                vm.employees = response.data;
+            });
+
 
             vm.eventSources = [];
             vm.vacations = {};
@@ -23,11 +28,33 @@
             });
 
             vm.eventSources = [vm.vacations];
-           
 
-            /* alert on eventClick */
-            vm.alertOnEventClick = function (date, jsEvent, view) {
-                vm.alertMessage = (date.title + ' was clicked ');
+            vm.detailVacation = function (event, date, jsEvent, view) {
+                var modalInstance = $uibModal.open({
+                    animation: vm.animationsEnabled,
+                    component: 'vacationReportModalComponent',
+                    resolve: {
+                        id: function () {
+                            return event.id;
+                        },
+                        title: function () {
+                            return event.title;
+                        },
+                        start: function () {
+                            return event.start;
+                        },
+                        end: function () {
+                            return event.end;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function () {
+                   
+                }, function () {
+                    $log.info('modal-component dismissed at: ' + new Date());
+                   
+                });
             };
             /* alert on Drop */
             vm.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -80,8 +107,18 @@
                     if (uiCalendarConfig.calendars[calendar]) {
                         uiCalendarConfig.calendars[calendar].fullCalendar('render');
                     }
-                });
+                }, 200);
             };
+            vm.getMonthYear = function (calendar) {
+                var date = new Date(uiCalendarConfig.calendars[calendar].fullCalendar('getDate'));
+                vm.getMY = date;
+                vm.intMonth = vm.getMY.getMonth()+1;
+                vm.intYear = vm.getMY.getFullYear();
+                vm.monthYear = vm.intYear + "-" + vm.intMonth;
+            };
+
+           
+           
             /* Render Tooltip */
             vm.eventRender = function (event, element, view) {
                 element.attr({
@@ -90,10 +127,11 @@
                 });
                 $compile(element)(vm);
             };
+
             /* config object */
             vm.uiConfig = {
                 calendar: {
-                    height: 700,
+                    height: 600,
                     editable: true,
                     navLinks: true,
                     selectable: true,
@@ -103,9 +141,9 @@
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listMonth'
+                        right: 'month,agendaWeek,agendaDay'
                     },
-                    eventClick: vm.alertOnEventClick,
+                    eventClick: vm.detailVacation,
                     eventDrop: vm.alertOnDrop,
                     eventResize: vm.alertOnResize,
                     eventRender: vm.eventRender,
@@ -127,5 +165,67 @@
             //vm.eventSources = [vm.calEventsExt, vm.eventsF, vm.events];
 
         }
-        
+
     });
+angular.module('vacation').component('vacationReportModalComponent', {
+    templateUrl: 'vacationReportModal.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    controller: function ($http) {
+        var vm = this;
+        vm.formatModal = 'dd/MM/yyyy hh:mm a';
+        vm.vacationDetail = {};
+        vm.getDate = new Date();
+        vm.$onInit = function () {
+
+            vm.vacationDetail.id = vm.resolve.id;
+            vm.vacationDetail.title = vm.resolve.title;
+            vm.vacationDetail.start = new Date(vm.resolve.start);
+            vm.vacationDetail.end = new Date(vm.resolve.end);
+        };
+        vm.hstep = 1;
+        vm.mstep = 60;
+
+        vm.open1 = function () {
+            vm.popup1.opened = true;
+        };
+        vm.open2 = function () {
+            vm.popup2.opened = true;
+        };
+        vm.popup1 = {
+            opened: false
+        };
+        vm.popup2 = {
+            opened: false
+        };
+        vm.dateOptions = {
+            dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2050, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+        vm.toDateOptions = {
+            dateDisabled: disabled,
+            formatYear: 'yy',
+            maxDate: new Date(2050, 5, 22),
+            minDate: new Date(),
+            startingDay: 1
+        };
+        function disabled(data) {
+            var date = data.date,
+                mode = data.mode;
+            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        }
+
+        vm.altInputFormats = ['M!/d!/yyyy'];
+        
+        vm.close = function () {
+            vm.dismiss({ $value: 'cancel' });
+        };
+
+    }
+});

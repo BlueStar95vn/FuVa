@@ -1,14 +1,120 @@
-﻿<div>
-    <div>
-        <span>
-            <b>Filter by employee: </b> <input ng-model="$ctrl.searchValue" value="" /> <a class="btn btn-sm btn-primary" ng-click="" id="filter">
-                <i class="glyphicon glyphicon-filter"></i>
-            </a>
-        </span>
-    </div>
-    <div>
-        <div ui-calendar="$ctrl.uiConfig.calendar" ng-model="$ctrl.eventSources" calendar="myCalendar" class="calendar"></div>
-    </div>
+﻿ <!--Modal-->
+<script type="text/ng-template" id="vacationReportModal.html">
+    <form name="form" novalidate>
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Vacation Detail</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <span><input class="form-control" ng-model="$ctrl.vacationDetail.title" disabled /> </span>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>From Date:</label>
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.formatModal}}" ng-model="$ctrl.vacationDetail.start" is-open="$ctrl.popup1.opened" datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" disabled/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="$ctrl.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <label>To Date:</label>
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.formatModal}}" ng-model="$ctrl.vacationDetail.end" is-open="$ctrl.popup2.opened" datepicker-options="$ctrl.toDateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" disabled/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="$ctrl.open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.close()">Close</button>
+        </div>
+    </form>
+</script>
 
-</div>
+<uib-tabset active="active">
+    <uib-tab index="0" heading="Calendar" select="$ctrl.renderCalendar('myCalendar');">
+        <hr />
+        <div>
+            <div ui-calendar="$ctrl.uiConfig.calendar" ng-model="$ctrl.eventSources" calendar="myCalendar" class="calendar"></div>
+        </div>
+    </uib-tab>
+
+    <uib-tab index="1" heading="Table" select="$ctrl.getMonthYear('myCalendar')">
+        <hr />
+
+        <div>
+            <span class="form-group ">
+                <a class="glyphicon glyphicon-triangle-left"></a><input ng-model="$ctrl.monthYear" disabled class="centerinput btn  btn-primary" />
+                <a class="glyphicon glyphicon-triangle-right"></a>
+            </span>
+          
+            <span>
+                <b>Filter by employee: </b> <input ng-model="$ctrl.searchValue" />
+                <!--<a class="btn btn-sm btn-primary" ng-click="" id="filter">
+                    <i class="glyphicon glyphicon-filter"></i>
+                </a>-->             
+            </span>
+            <hr />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Full name</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Status</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="vacation in $ctrl.vacations|filter:$ctrl.monthYear|filter:$ctrl.searchValue">
+                        <td>{{$index+1}}</td>
+                        <td>{{vacation.title}}</td>
+                        <td>{{vacation.start|date:"dd/MM/yyyy hh:mm a"}}</td>
+                        <td>{{vacation.end|date:"dd/MM/yyyy hh:mm a"}}</td>    
+                        <td>
+                            <div ng-if="vacation.color=='blue'">Pending</div>
+                            <div ng-if="vacation.color=='Green'">Approved</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </uib-tab>
+    <uib-tab index="2" heading="Employee">
+        <hr />
+        <div>
+           <table class="table table-striped">
+               <thead>
+                   <tr>
+                       <th>#</th>
+                       <th>Full Name</th>
+                       <th>Email</th>
+                       <th>Remaining Day Off</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <tr ng-repeat="employee in $ctrl.employees">
+                       <td>{{$index+1}}</td>
+                       <td>{{employee.firstName}} {{employee.lastName}}</td>
+                       <td>{{employee.email}}</td>
+                       <td>{{employee.remainingDayOff}}</td>
+                   </tr>
+               </tbody>
+           </table>
+        </div>
+    </uib-tab>
+</uib-tabset>
 

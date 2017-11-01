@@ -15,5 +15,6 @@ namespace FuturifyVacation.Models.ViewModels
         public string Color { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string RemainingDayOff { get; set; }
     }
 }

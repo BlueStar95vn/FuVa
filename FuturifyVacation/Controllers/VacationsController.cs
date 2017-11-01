@@ -64,6 +64,11 @@ namespace FuturifyVacation.Controllers
             await _vacationService.UpdateVacationAsync(model);
         }
 
+        [HttpDelete("cancel/{vacationId}")]
+        public async Task CancelUserVacation(int vacationId)
+        {
+            await _vacationService.CancelVacationAsync(vacationId);
+        }
         //Admin
         [Authorize(Roles = "ADMIN")]
         [HttpGet("getallvacation")]
@@ -77,7 +82,8 @@ namespace FuturifyVacation.Controllers
                 Start = p.Start,
                 End = p.End,
                 UserId = p.UserId,
-                Color = p.Color
+                Color = p.Color,
+                RemainingDayOff = p.User.RemainingDayOff
 
             }).ToList();
         }
@@ -103,13 +109,13 @@ namespace FuturifyVacation.Controllers
         public async Task AprroveVacation(int Id)
         {
             await _vacationService.ApproveVacation(Id);
-            
-          
+
+
         }
         [Authorize(Roles = "ADMIN")]
         [HttpPost("disapprove/{Id}")]
         public async Task DisaprroveVacation(int Id, [FromBody]DisapproveBindingModel model)
-        {           
+        {
             await _vacationService.DisapproveVacation(Id, model.Reason);
         }
     }

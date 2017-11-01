@@ -14,7 +14,7 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<UserVacation> GetVacationByVacationIdAsync(int vacationId); 
         Task AddVacationAsync(UserVacationViewModel model, string userId);
         Task<UserVacation> UpdateVacationAsync(UserVacationViewModel model);
-        Task<UserVacation> DeleteVacationAsync(int vacationId);
+        Task CancelVacationAsync(int vacationId );
 
         Task<List<UserVacation>> GetRequestVacationAsync();
         Task<List<UserVacation>> GetAllVacationAsync();

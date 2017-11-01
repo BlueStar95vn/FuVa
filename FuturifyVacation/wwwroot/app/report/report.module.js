@@ -1,1 +1,1 @@
-﻿angular.module('report', ['ngRoute','ui.calendar']);
+﻿angular.module('report', ['ngRoute','ui.calendar','ui.bootstrap']);

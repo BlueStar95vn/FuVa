@@ -20,7 +20,7 @@
      
     </div>
     <div>
-        <table class="table table-striped">
+        <table class="table table-striped" >
             <thead>
                 <tr>
                     <th>#</th>
@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="employee in $ctrl.employees|filter:$ctrl.search|orderBy:$ctrl.sort">
+                <tr ng-repeat="employee in $ctrl.employees|filter:$ctrl.search|orderBy:$ctrl.sort" >
                     <td>{{$index+1}}</td>
                     <td>{{employee.firstName}} {{employee.lastName}}</td>
                     <td>{{employee.gender}}</td>

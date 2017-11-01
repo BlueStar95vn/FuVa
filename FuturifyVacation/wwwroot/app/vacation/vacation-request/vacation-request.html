@@ -20,36 +20,39 @@
  
     <!--Request-->
     <div><h1><b>Vacation Request</b></h1></div>
-    <div ng-repeat="vacation in $ctrl.vacations">
-        <div class="panel panel-primary">
-            <div class="panel panel-heading">
-                <div class="panel-title">{{vacation.firstName}} {{vacation.lastName}}</div>
+    <div class="request-scoll">
+        <div ng-repeat="vacation in $ctrl.vacations">
+            <div class="panel panel-primary">
+                <div class="panel panel-heading">
+                    <div class="panel-title">{{vacation.firstName}} {{vacation.lastName}}</div>
 
-            </div>
-            <div class="vacation-request">
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>Reason: </th>
-                            <td>{{vacation.title}}</td>
-                        </tr>
-                        <tr>
-                            <th>From date: </th>
-                            <td>{{vacation.start | date: "dd/MM/yyyy hh:mm a"}}</td>
-                        </tr>
-                        <tr>
-                            <th>To date: </th>
-                            <td>{{vacation.end | date: "dd/MM/yyyy hh:mm a"}}</td>
-                        </tr>
-                        <tr>
-                            <th><a href="" class="btn btn-success" ng-click="$ctrl.approve(vacation.id,$index)">Approve</a></th>
-                            <td><a href="" class="btn btn-danger" ng-click="$ctrl.disaprrove(vacation.id,$index)">Disapprove</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+                </div>
+                <div class="vacation-request">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Reason: </th>
+                                <td>{{vacation.title}}</td>
+                            </tr>
+                            <tr>
+                                <th>From date: </th>
+                                <td>{{vacation.start | date: "dd/MM/yyyy hh:mm a"}}</td>
+                            </tr>
+                            <tr>
+                                <th>To date: </th>
+                                <td>{{vacation.end | date: "dd/MM/yyyy hh:mm a"}}</td>
+                            </tr>
+                            <tr>
+                                <th><a href="" class="btn btn-success" ng-click="$ctrl.approve(vacation.id,$index)">Approve</a></th>
+                                <td><a href="" class="btn btn-danger" ng-click="$ctrl.disaprrove(vacation.id,$index)">Disapprove</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+   
 
 
 </div>

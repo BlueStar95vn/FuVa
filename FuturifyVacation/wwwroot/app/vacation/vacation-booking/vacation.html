@@ -45,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-success" type="button" ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.update()">Update Vacation</button>
-                <button class="btn btn-danger" type="button"  ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate" ng-click="$ctrl.cancel()">Cancel Vacation</button>
+                <button class="btn btn-danger" type="button"  ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate"  ng-confirm-click="Are you sure to cancel this vacation?" confirmed-click="$ctrl.cancel($ctrl.vacationDetail.id)">Cancel Vacation</button>
                 <button class="btn btn-warning" type="button" ng-click="$ctrl.close()">Close</button>
             </div>
         </form>

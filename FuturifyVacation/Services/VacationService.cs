@@ -39,19 +39,60 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
         }
 
-        public Task<UserVacation> DeleteVacationAsync(int vacationId)
+        public async Task CancelVacationAsync(int vacationId)
         {
-            throw new NotImplementedException();
+            var getVacation = await _db.UserVacations.Include(u => u.User).FirstOrDefaultAsync(u => u.Id == vacationId);
+          
+            int hours = CountHours(getVacation.Start, getVacation.End);
+            var isApproved = getVacation.Color;
+            if (isApproved == "Green") //approved
+            {               
+                getVacation.User.RemainingDayOff = (int.Parse(getVacation.User.RemainingDayOff) + hours).ToString();
+            }       
+            _db.UserVacations.Remove(getVacation);            
+            await _db.SaveChangesAsync();
+
+            //var email = "bluestar95vn@gmail.com";
+            //var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + " canceled vacation!";
+            //var message = "\n\nVacation Detail: "
+            //                + "\n\nTitle: " + getVacation.Title
+            //                + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
+            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString();
+            //await _emailSender.SendEmailAsync(email, subject, message);
         }
 
         public async Task<UserVacation> UpdateVacationAsync(UserVacationViewModel model)
         {
-            var getVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == model.Id);
-            getVacation.Title = model.Title;
-            getVacation.Start = model.Start;
-            getVacation.End = model.End;
-            getVacation.Color = "blue"; //Return pending status
-            await _db.SaveChangesAsync();
+            var getVacation = await _db.UserVacations.Include(u => u.User).FirstOrDefaultAsync(u => u.Id == model.Id);
+
+            var isApproved = getVacation.Color;
+            int hours = CountHours(getVacation.Start, getVacation.End);
+            if(isApproved=="Green") //approved
+            {
+                getVacation.Title = model.Title;
+                getVacation.Start = model.Start;
+                getVacation.End = model.End;
+                getVacation.Color = "blue"; //Return pending status
+                getVacation.User.RemainingDayOff = (int.Parse(getVacation.User.RemainingDayOff) + hours).ToString();
+                await _db.SaveChangesAsync();
+            }
+            else if(isApproved=="blue")
+            {
+                getVacation.Title = model.Title;
+                getVacation.Start = model.Start;
+                getVacation.End = model.End;
+                getVacation.Color = "blue"; //Return pending status
+                await _db.SaveChangesAsync();
+            }
+
+            
+            //var email = "bluestar95vn@gmail.com";
+            //var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName+"has updated vacation!";
+            //var message =  "\n\nVacation Request Detail: "
+            //                + "\n\nReason: " + model.Title
+            //                + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
+            //                + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();                           
+            //await _emailSender.SendEmailAsync(email, subject, message);
             return getVacation;
         }
 
