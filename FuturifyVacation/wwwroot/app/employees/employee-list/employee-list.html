@@ -4,7 +4,7 @@
         <div  class="pull-right">
             <span>
                 <b>Sort By:  </b>
-                <select type="" ng-model="$ctrl.sort">
+                <select type=""  ng-model="$ctrl.sort">
                     <option>None</option>
                     <option value="firstName">First Name</option>
                     <option value="doB"> Day of birth</option>
@@ -30,7 +30,7 @@
                     <th>Department</th>
                     <th>Email</th>
                     <th>RDO</th> <!--Remaining day off-->
-                    <th>Status</th>
+                    <th>Position</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -40,11 +40,11 @@
                     <td>{{$index+1}}</td>
                     <td>{{employee.firstName}} {{employee.lastName}}</td>
                     <td>{{employee.gender}}</td>
-                    <td>{{employee.doB|date}}</td>
+                    <td>{{employee.doB|date:'dd/MM/yyyy'}}</td>
                     <td>{{employee.department}}</td>
                     <td>{{employee.email}}</td>
                     <td>{{employee.remainingDayOff}}</td>
-                    <td>{{employee.status}}</td>
+                    <td>{{employee.position}}</td>
                     <td>
                         <a href="" ng-click="$ctrl.editId(employee.userId)" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
                         <a href="" ng-click="$ctrl.detailId(employee.userId)" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i></a>

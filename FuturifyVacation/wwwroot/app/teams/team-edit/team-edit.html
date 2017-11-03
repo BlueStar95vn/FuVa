@@ -1,36 +1,114 @@
 ﻿<div>
-    <form>
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h2 align="center"><input value="TEAM NAME" /></h2>
+    <div class="container-fluid">
+        <div class="panel panel-info">
+            <div class="panel panel-heading">
+                <h3 class="panel-title"><b>Edit Team</b></h3>
             </div>
             <div class="panel-body">
-                <div class="">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" align="center">
+                        <div>
+                            <img alt="User_Pic" src="/image/team.png" class="img-responsive">
+                        </div>
+                    </div>
+                    <div class="col-sm-9 col-md-9 col-lg-9 ">
+                        <h3><label>Team Information</label></h3>
+                        <hr />
+                        <form>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Team Name: </th>
+                                        <td><input ng-change="$ctrl.teamNameOnChanging()" class="form-control" ng-model="$ctrl.teamNameModel.teamName" value="$ctrl.teamDetail.teamName" /></td>
+                                        <td>
+                                            <div ng-if="$ctrl.teamNameSaved==false">
+                                                <a ng-click="$ctrl.changeTeamName()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-check"></i></a>
+                                            </div>
+                                            <div ng-if="$ctrl.teamNameSaved==true">
+                                                <a class="btn btn-sm btn-success"><i class="glyphicon glyphicon-ok-sign"></i></a>
+                                            </div>
 
-                    <div class="well well-sm">
-                        <h4><b>Team Lead Management:</b> <input value="ABC" /></h4>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>Team Lead:</th>
+                                        <td>
+                                            <div ng-if="$ctrl.showTeamLead==false"><input class="form-control" value="{{$ctrl.teamLeadModel.firstName}} {{$ctrl.teamLeadModel.lastName}}" disabled /></div>
+                                            <div ng-if="$ctrl.showTeamLead==true">
+                                                <ui-select ng-model="$ctrl.teamLeadModel">
+                                                    <ui-select-match>
+                                                        <span ng-bind="$select.selected.firstName + ' ' + $select.selected.lastName"></span>
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="employee in ($ctrl.employeeList | filter: $select.search) track by employee.userId">
+                                                        <span ng-bind="employee.firstName + ' ' + employee.lastName"></span>
+                                                        <br />
+                                                        <small>
+                                                            email: <span ng-bind="''+employee.email | highlight: $select.search"></span>,
+                                                            phone: {{employee.phoneNumber}},
+                                                            gender: {{employee.gender}}
+                                                        </small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div ng-if="$ctrl.showTeamLead==false">
+                                                <a ng-click="$ctrl.showChangeTeamLead()" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-refresh"></i> Change</a>
+                                            </div>
+                                            <div ng-if="$ctrl.showTeamLead==true">
+                                                <a ng-click="$ctrl.hideChangeTeamLead()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-check"></i></a>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>Members:</th>
+                                        <th>
+                                            {{$ctrl.members.length}}
+                                        </th>
+                                        <td></td>
+                                    </tr>
+                                    <tr ng-repeat="member in $ctrl.members">
+                                        <th></th>
+                                        <td>
+                                            {{$index+1}}: {{member.firstName}} {{member.lastName}}
+                                        </td>
+                                        <td><a class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <td>
+                                            <ui-select ng-model="$ctrl.newMember">
+                                                <ui-select-match>
+                                                    <span ng-bind="$select.selected.firstName + ' ' + $select.selected.lastName"></span>
+                                                </ui-select-match>
+                                                <ui-select-choices repeat="employee in ($ctrl.employeeList | filter: $select.search) track by employee.userId">
+                                                    <span ng-bind="employee.firstName + ' ' + employee.lastName"></span>
+                                                    <br />
+                                                    <small>
+                                                        email: <span ng-bind="''+employee.email | highlight: $select.search"></span>,
+                                                        phone: {{employee.phoneNumber}},
+                                                        gender: {{employee.gender}}
+                                                    </small>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td><a ng-click="$ctrl.addMember()" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-plus"></i>Add New</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
-                    <hr />
-                    <div class="well">
-                        <h4><b>Members: </b>{{members.length}}</h4>
-                        <ul class="list-group">
-                            <li class="list-group-item" ng-repeat="member in members">
-                                <span><a href="" type="button" class="btn btn-sm btn-danger" ng-click="delMember($index)"><i class="glyphicon glyphicon-remove"></i> </a>{{member.name}}</span>
-                            </li>                          
-                            <li class="list-group-item">
-                                <input name="newMember" ng-model="newMember" />
-                                <span><a class="btn btn-sm btn-success" ng-click="addMember()"><i class="glyphicon glyphicon-plus-sign"></i> Add</a></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">
-                <div align="right">
-                    <a ng-href="" data-original-title="Save data" data-toggle="tooltip" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-ok"></i> Save</a>
-                    <a data-original-title="Cancel" data-toggle="tooltip" ng-href="#/teams/detail" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
                 </div>
             </div>
         </div>
-    </form>
+        <div class="panel-footer">
+            <!--<div align="right">
+                <a ng-click="$ctrl.save()" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-ok"></i> Save</a>
+                <a ng-href="#/teams" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+            </div>-->
+
+        </div>
+    </div>
 </div>

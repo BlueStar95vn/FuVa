@@ -40,9 +40,6 @@ namespace FuturifyVacation.Controllers
             var role = await _userManager.GetRolesAsync(user);
             var getUser = await _userManager.GetUserAsync(User);
             var getName = await _profileService.GetByIdAsync(getUser.Id);
-            
-
-
             return Ok(new
             {
                 Role = role.FirstOrDefault(),

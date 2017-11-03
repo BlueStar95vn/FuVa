@@ -14,7 +14,6 @@ namespace FuturifyVacation.Models
         [ForeignKey("UserId")]
         [Required]
         public ApplicationUser User { get; set; }     
-
         public string FirstName { set; get; }
         public string LastName { set; get; }      
         public string Position { set; get; }

@@ -12,7 +12,7 @@
     <link href="lib/jquery-ui/themes/redmond/jquery-ui.css" rel="stylesheet" />
     <link href="lib/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
     <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
-
+    <link href="lib/angular-ui-select/dist/select.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container-fluid">
@@ -21,16 +21,14 @@
         <div class="paddingtop">
             <div class="row">
                 <!--sidebar-->
-                <div class="col-sm-3 col-md-2  bgpage" ng-include="'app/partial/sidebar.html'" ng-if="location.path() !== '/login'"></div>
+                <div class="col-xs-3 col-md-2  bgpage" ng-include="'app/partial/sidebar.html'" ng-if="location.path() !== '/login'"></div>
 
-                <div class="col-sm-9 col-md-10 main">
+                <div class="col-xs-9 col-md-10 main">
                     <div ng-view></div>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <!--JS-->
     <script src="lib/moment/moment.js"></script>
@@ -44,6 +42,8 @@
     <script src="lib/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <script src="lib/angular-ui-select/dist/select.js"></script>
     <!--Index-->
 
     <script src="app/app.module.js"></script>

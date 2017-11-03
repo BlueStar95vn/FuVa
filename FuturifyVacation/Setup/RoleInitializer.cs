@@ -25,6 +25,10 @@ namespace FuturifyVacation.Setup
                 {
                     var role = roleManager.CreateAsync(new IdentityRole("ADMIN")).Result;
                 }
+                if (!roleManager.RoleExistsAsync("USER").Result)
+                {
+                    var userRole = roleManager.CreateAsync(new IdentityRole("USER")).Result;
+                }
             }
         }
 

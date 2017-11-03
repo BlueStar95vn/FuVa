@@ -30,6 +30,20 @@
             vm.detailId = function (userId) {
                 $location.path('/employees');
                 //$location.path('/employees/detail/' + userId);
-            }
+            };
+            vm.format = 'dd/MM/yyyy';
+            vm.open1 = function () {
+                vm.popup1.opened = true;
+            };
+            vm.dateOptions = {
+                dateDisabled: false,
+                maxDate: new Date(2050, 5, 22),
+                minDate: new Date(1950, 1, 1),
+                startingDay: 1
+            };
+            vm.popup1 = {
+                opened: false
+            };
+            vm.altInputFormats = ['M!/d!/yyyy'];
         }
     });

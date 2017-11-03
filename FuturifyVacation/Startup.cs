@@ -66,6 +66,7 @@ namespace FuturifyVacation
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IVacationService, VacationService>();
+            services.AddScoped<ITeamService, TeamService>();
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
             });

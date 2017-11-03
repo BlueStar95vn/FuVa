@@ -1,1 +1,1 @@
-﻿angular.module('profileEdit', ['ngRoute']);
+﻿angular.module('profileEdit', ['ngRoute','ui.bootstrap']);

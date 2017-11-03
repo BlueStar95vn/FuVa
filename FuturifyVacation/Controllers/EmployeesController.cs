@@ -114,8 +114,8 @@ namespace FuturifyVacation.Controllers
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, "ADMIN");
-
+                await _userManager.AddToRoleAsync(user, "USER");
+               
                 var subject = "[Vacation Tracking] Your account information";
                 var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
                     "\n This is your password: " + password;

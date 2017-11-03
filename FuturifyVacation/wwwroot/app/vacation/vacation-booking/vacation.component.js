@@ -284,6 +284,7 @@ angular.module('vacation').component('vacationModalComponent', {
         };
         vm.cancel = function (id) {
             $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function () {
+                vm.dismiss({ $value: 'cancel' });
                 alert("Delete Successfully");
             }).catch(function (err) {
                 console.log(err);

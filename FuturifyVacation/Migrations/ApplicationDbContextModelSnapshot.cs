@@ -71,6 +71,26 @@ namespace FuturifyVacation.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("FuturifyVacation.Models.TeamDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("RoleInTeam");
+
+                    b.Property<int>("TeamId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TeamDetails");
+                });
+
             modelBuilder.Entity("FuturifyVacation.Models.UserProfile", b =>
                 {
                     b.Property<string>("UserId");
@@ -94,6 +114,22 @@ namespace FuturifyVacation.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("FuturifyVacation.Models.UserTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("TeamLeadId");
+
+                    b.Property<string>("TeamName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamLeadId");
+
+                    b.ToTable("UserTeams");
                 });
 
             modelBuilder.Entity("FuturifyVacation.Models.UserVacation", b =>
@@ -227,12 +263,31 @@ namespace FuturifyVacation.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("FuturifyVacation.Models.TeamDetail", b =>
+                {
+                    b.HasOne("FuturifyVacation.Models.UserTeam", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FuturifyVacation.Models.UserProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("FuturifyVacation.Models.UserProfile", b =>
                 {
                     b.HasOne("FuturifyVacation.Models.ApplicationUser", "User")
                         .WithOne("UserProfile")
                         .HasForeignKey("FuturifyVacation.Models.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FuturifyVacation.Models.UserTeam", b =>
+                {
+                    b.HasOne("FuturifyVacation.Models.UserProfile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("TeamLeadId");
                 });
 
             modelBuilder.Entity("FuturifyVacation.Models.UserVacation", b =>

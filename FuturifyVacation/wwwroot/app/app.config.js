@@ -29,14 +29,14 @@
                         loginRedirect: false
                     }
                 }).
-                when('/profile/', {
+                when('/profile', {
                     template: '<profile-detail></profile-detail>',
                     restrictions: {
                         ensureAuthenticated: true,
                         loginRedirect: false
                     }
                 }).
-                when('/profile/edit/', {
+                when('/profile/edit', {
                     template: '<profile-edit></profile-edit>',
                     restrictions: {
                         ensureAuthenticated: true,
@@ -85,14 +85,14 @@
                         loginRedirect: false
                     }
                 }).
-                when('/teams/detail', {
+                when('/teams/detail/:teamId', {
                     template: '<team-detail></team-detail>',
                      restrictions: {
                         ensureAuthenticated: true,
                         loginRedirect: false
                     }
                 }).
-                when('/teams/edit', {
+                when('/teams/edit/:teamId', {
                     template: '<team-edit><team-edit>',
                      restrictions: {
                         ensureAuthenticated: true,
@@ -158,7 +158,7 @@
             }
             if (next.restrictions.loginRedirect) {              
                 authService.ensureAuthenticated().then(function () {
-                    $location.path('/profile/');
+                    $location.path('/profile');
                 });
             }
         })

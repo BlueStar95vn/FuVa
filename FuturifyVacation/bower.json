@@ -11,7 +11,8 @@
     "angular-local-storage": "v0.7.1",
     "angular-cookies": "v1.6.6",
     "angular-bootstrap": "2.5.0",
-    "ui-bootstrap": "2.5.0"
+    "ui-bootstrap": "2.5.0",
+    "angular-ui-select": "v0.19.8"
   },
   "resolutions": {
     "angular": "1.6.6",

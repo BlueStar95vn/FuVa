@@ -114,8 +114,33 @@
                 vm.getMY = date;
                 vm.intMonth = vm.getMY.getMonth()+1;
                 vm.intYear = vm.getMY.getFullYear();
-                vm.monthYear = vm.intYear + "-" + vm.intMonth;
+                vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
             };
+
+            vm.nextMonth = function () {
+                if (vm.intMonth == 12)
+                {
+                    vm.intMonth = 1;
+                    vm.intYear = vm.intYear + 1;                    
+                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                }
+                else {
+                    vm.intMonth++;
+                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                }
+            }
+            vm.previousMonth = function () {
+                if (vm.intMonth == 1)
+                {
+                    vm.intMonth = 12
+                    vm.intYear = vm.intYear - 1;
+                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                }
+                else{
+                    vm.intMonth--;
+                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                }
+            }
 
            
            

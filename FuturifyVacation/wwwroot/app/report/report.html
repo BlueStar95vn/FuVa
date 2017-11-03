@@ -56,8 +56,9 @@
 
         <div>
             <span class="form-group ">
-                <a class="glyphicon glyphicon-triangle-left"></a><input ng-model="$ctrl.monthYear" disabled class="centerinput btn  btn-primary" />
-                <a class="glyphicon glyphicon-triangle-right"></a>
+                <a type="button" href="" class="glyphicon glyphicon-triangle-left btn btn-primary" ng-click="$ctrl.previousMonth()"></a>
+                <a ng-model="$ctrl.monthYear" class="centerinput btn  btn-primary" >{{$ctrl.intMonth}}/{{$ctrl.intYear}}</a>
+                <a type="button" href="" class="glyphicon glyphicon-triangle-right btn btn-primary" ng-click="$ctrl.nextMonth()"></a>
             </span>
           
             <span>
@@ -110,7 +111,7 @@
                        <td>{{$index+1}}</td>
                        <td>{{employee.firstName}} {{employee.lastName}}</td>
                        <td>{{employee.email}}</td>
-                       <td>{{employee.remainingDayOff}}</td>
+                       <td>{{employee.remainingDayOff}} hour(s)</td>
                    </tr>
                </tbody>
            </table>

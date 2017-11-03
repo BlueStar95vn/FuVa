@@ -27,24 +27,31 @@
                                         </tr>
                                         <tr>
                                             <th>First Name:</th>
-                                            <td><input id="firstName" name="firstName" ng-model="$ctrl.employees.firstName" value="{{$ctrl.employees.firstName}}" /></td>
+                                            <td><input class="form-control" id="firstName" name="firstName" ng-model="$ctrl.employees.firstName" value="{{$ctrl.employees.firstName}}" /></td>
 
                                         </tr>
                                         <tr>
                                             <th>Last Name:</th>
-                                            <td><input id="lastName" name="lastName" ng-model="$ctrl.employees.lastName" value="{{$ctrl.employees.lastName}}" /></td>
+                                            <td><input class="form-control"  id="lastName" name="lastName" ng-model="$ctrl.employees.lastName" value="{{$ctrl.employees.lastName}}" /></td>
                                         </tr>
                                         <tr>
                                             <th>Date of Birth:</th>
-                                            <td><input id="dOB" name="dOB" type="datetime" value="{{$ctrl.employees.doB|date:medium}}" /></td>
+                                            <td>                                            
+                                                <p class="input-group">
+                                                    <input class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.employees.doB" value="$ctrl.employees.doB" datepicker-options="$ctrl.dateOptions" is-open="$ctrl.popup1.opened" ng-required="true" alt-input-formats="$ctrl.altInputFormats" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="$ctrl.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </p>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Gender:</th>
-                                            <td><input id="gender" name="gender" ng-model="$ctrl.employees.gender" value="{{$ctrl.employees.gender}}" /></td>
+                                            <td><input class="form-control"  id="gender" name="gender" ng-model="$ctrl.employees.gender" value="{{$ctrl.employees.gender}}" /></td>
                                         </tr>
                                         <tr>
                                             <th>Phone Number:</th>
-                                            <td><input id="phoneNumber" name="phoneNumber" ng-model="$ctrl.employees.phoneNumber" value="{{$ctrl.employees.phoneNumber}}" /></td>
+                                            <td><input class="form-control"  id="phoneNumber" name="phoneNumber" ng-model="$ctrl.employees.phoneNumber" value="{{$ctrl.employees.phoneNumber}}" /></td>
                                         </tr>
                                         <tr>
                                             <th>Email:</th>
@@ -52,11 +59,14 @@
                                         </tr>
                                         <tr>
                                             <th>Position:</th>
-                                            <td><input id="position" name="position" ng-model="$ctrl.employees.position" value="{{$ctrl.employees.position}}" /></td>
+                                            <td>
+                                                <label><input type="radio" name="gender" ng-model="$ctrl.employees.position" value="USER" checked="checked" />User  </label>
+                                                <label><input type="radio" name="gender" ng-model="$ctrl.employees.position" value="ADMIN" />Admin</label>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Remaining Day Off:</th>
-                                            <td><input id="remainingDayOff" name="remainingDayOff" ng-model="$ctrl.employees.remainingDayOff" value="{{$ctrl.employees.remainingDayOff}}" /></td>
+                                            <td><input class="form-control"  id="remainingDayOff" name="remainingDayOff" ng-model="$ctrl.employees.remainingDayOff" value="{{$ctrl.employees.remainingDayOff}}" /></td>
                                         </tr>
                                     </tbody>
                                 </table>
