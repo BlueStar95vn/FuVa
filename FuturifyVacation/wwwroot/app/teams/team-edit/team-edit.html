@@ -57,7 +57,7 @@
                                                 <a ng-click="$ctrl.showChangeTeamLead()" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-refresh"></i> Change</a>
                                             </div>
                                             <div ng-if="$ctrl.showTeamLead==true">
-                                                <a ng-click="$ctrl.hideChangeTeamLead()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-check"></i></a>
+                                                <a ng-click="$ctrl.changeTeamLead()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-check"></i></a>
                                             </div>
                                         </td>
 
@@ -74,7 +74,7 @@
                                         <td>
                                             {{$index+1}}: {{member.firstName}} {{member.lastName}}
                                         </td>
-                                        <td><a class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                        <td><a ng-confirm-click="Are you sure to remove this member?" confirmed-click="$ctrl.removeMember(member.id,$index)" class="btn btn-sm btn-danger" ><i class="glyphicon glyphicon-remove"></i></a></td>
                                     </tr>
                                     <tr>
                                         <th></th>
@@ -94,7 +94,7 @@
                                                 </ui-select-choices>
                                             </ui-select>
                                         </td>
-                                        <td><a ng-click="$ctrl.addMember()" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-plus"></i>Add New</a></td>
+                                        <td><a ng-click="$ctrl.addMember()" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-plus"></i> Add New</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -104,10 +104,9 @@
             </div>
         </div>
         <div class="panel-footer">
-            <!--<div align="right">
-                <a ng-click="$ctrl.save()" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-ok"></i> Save</a>
-                <a ng-href="#/teams" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
-            </div>-->
+            <div align="right">
+                <a ng-href="#/teams" class="btn btn-sm btn-default"><i class="glyphicon glyphicon-arrow-left"></i> Back</a>                
+            </div>
 
         </div>
     </div>

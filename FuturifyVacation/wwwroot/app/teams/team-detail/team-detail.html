@@ -1,30 +1,55 @@
 ﻿<div>
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <h2 align="center">TEAM NAME</h2>
-        </div>
-        <div class="panel-body">
-            <div class="">
+    <div class="container-fluid">
+        <div class="panel panel-info">
+            <div class="panel panel-heading">
+                <h3 class="panel-title"><b>{{$ctrl.teamNameModel.teamName}}</b></h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3" align="center">
+                        <div>
+                            <img alt="User_Pic" src="/image/team.png" class="img-responsive">
+                        </div>
+                    </div>
+                    <div class="col-sm-9 col-md-9 col-lg-9 ">
+                        <h3><label>Team Information</label></h3>
+                        <hr />
+                        <form>
+                            <table class="table table-hover">
+                                <tbody>                                   
+                                    <tr>
+                                        <th><div align="right">Team Lead:</div></th>
+                                        <td>
+                                            <input class="form-control" value="{{$ctrl.teamLeadModel.firstName}} {{$ctrl.teamLeadModel.lastName}}" disabled>
+                                        </td>
 
-                <div class="well well-sm">
-                    <h4><b>Team Lead Management:</b> ABC</h4>
+                                    </tr>
+                                    <tr>
+                                        <th><div align="right">Members:</div></th>
+                                        <td>
+                                            {{$ctrl.members.length}}
+                                        </td>
+
+                                    </tr>
+                                    <tr ng-repeat="member in $ctrl.members">
+                                        <th></th>
+                                        <td>
+                                            {{$index+1}}: {{member.firstName}} {{member.lastName}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
                 </div>
-                <hr />
-                <div class="well well-sm">
-                    <h4><b>Members: </b>{{members.length}}</h4>
-                    <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="member in members">
-                            <span><a class="btn btn-sm btn-primary disabled"></a> {{member.name}}</span>
-                        </li>
-                    </ul>
-                </div>
-               
             </div>
         </div>
         <div class="panel-footer">
             <div align="right">
-                <a ng-href="#/teams/edit" data-original-title="Edit this team" data-toggle="tooltip" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                <a ng-click="$ctrl.gotoEdit()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                <a ng-href="#/teams" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-arrow-left"></i> Back</a>
             </div>
+
         </div>
     </div>
 </div>

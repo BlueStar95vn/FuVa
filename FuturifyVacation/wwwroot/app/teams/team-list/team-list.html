@@ -22,7 +22,7 @@
                     <td>
                         <a ng-click="$ctrl.editId(team.id)"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> 
                         <a ng-click="$ctrl.detailId(team.id)" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i> Detail</a> 
-                        <a ng-click="$ctrl.remove(team.id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i> Remove</a>
+                        <a ng-confirm-click="Are you sure to remove this team?" confirmed-click="$ctrl.remove(team.id, $index)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i> Remove</a>
                     </td>
                 </tr>
             </tbody>

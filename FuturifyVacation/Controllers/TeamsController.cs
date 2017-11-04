@@ -41,11 +41,6 @@ namespace FuturifyVacation.Controllers
                 LastName = p.Profile.LastName
             }).ToList();
         }
-        [HttpDelete("delete/{teamId}")]
-        public async Task GetAllTeam(int teamId)
-        {
-            await _teamService.RemoveTeamAsync(teamId);
-        }
 
         [HttpGet("getteammember/{teamId}")]
         public async Task<List<TeamMemberBindingModel>> GetAllMember(int teamId)
@@ -53,6 +48,7 @@ namespace FuturifyVacation.Controllers
             var getMems = await _teamService.GetTeamMemberByTeamIdAsync(teamId);
             return getMems.Select(p => new TeamMemberBindingModel
             {
+                Id = p.Id,
                 TeamId = p.TeamId,
                 FirstName = p.Profile.FirstName,
                 LastName = p.Profile.LastName,
@@ -83,8 +79,25 @@ namespace FuturifyVacation.Controllers
         [HttpPost("changeteamname/{teamId}")]
         public async Task ChangeTeamName([FromBody]TeamViewModel model, int teamId)
         {
-            await _teamService.EditTeamNameAsync(teamId,model.TeamName);
+            await _teamService.EditTeamNameAsync(teamId, model.TeamName);
         }
 
+        [HttpPost("changeteamlead/{teamId}")]
+        public async Task ChangeTeamLead([FromBody]TeamViewModel model, int teamId)
+        {
+            await _teamService.EditTeamLeadAsync(teamId, model.UserId);
+        }
+
+        [HttpDelete("delete/{teamId}")]
+        public async Task DeleteTeam(int teamId)
+        {
+            await _teamService.RemoveTeamAsync(teamId);
+        }
+
+        [HttpDelete("deletemember/{memberId}")]
+        public async Task DeleteMember(int memberId)
+        {
+            await _teamService.RemoveMemberAsync(memberId);
+        }
     }
 }

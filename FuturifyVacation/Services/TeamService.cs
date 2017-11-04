@@ -55,20 +55,25 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
 
         }
-        public async Task RemoveTeamAsync(int teamId)
-        {
-            var getTeamDetail = _db.TeamDetails.Where(u => u.TeamId == teamId);
-            _db.TeamDetails.RemoveRange(getTeamDetail);
-            var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
-            _db.UserTeams.Remove(getTeam);
-            await _db.SaveChangesAsync();
-        }
+       
 
         public async Task EditTeamNameAsync(int teamId, string teamName)
         {
             var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
             getTeam.TeamName = teamName;
             await _db.SaveChangesAsync();
+        }
+
+        public async Task EditTeamLeadAsync(int teamId, string teamLeadId)
+        {
+            var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
+            if(getTeam.TeamLeadId!=teamLeadId)
+            {
+                var getDetail = await _db.TeamDetails.FirstOrDefaultAsync(u => u.UserId == getTeam.TeamLeadId);
+                getTeam.TeamLeadId = teamLeadId;
+                getDetail.UserId = teamLeadId;
+                await _db.SaveChangesAsync();
+            }
         }
 
         public async Task<List<UserTeam>> GetAllTeamAsync()
@@ -81,22 +86,29 @@ namespace FuturifyVacation.Services
              return await _db.UserTeams.Include(u => u.Profile).FirstOrDefaultAsync(u => u.Id == teamId);
         }
 
-        public Task<TeamDetail> RemoveMemberAsync()
+
+        public async Task RemoveTeamAsync(int teamId)
         {
-            throw new NotImplementedException();
+            var getTeamDetail = _db.TeamDetails.Where(u => u.TeamId == teamId);
+            _db.TeamDetails.RemoveRange(getTeamDetail);
+            var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
+            _db.UserTeams.Remove(getTeam);
+            await _db.SaveChangesAsync();
+        }
+        public async Task RemoveMemberAsync(int Memberid)
+        {
+            var getMember = await _db.TeamDetails.FirstOrDefaultAsync(u => u.Id == Memberid);
+            _db.TeamDetails.Remove(getMember);
+            await _db.SaveChangesAsync();
         }
 
-
-
-        public Task<TeamDetail> SetTeamLeadAsync()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<List<TeamDetail>> GetTeamMemberByTeamIdAsync(int teamId)
         {
             return await _db.TeamDetails.Include(u=>u.Profile).Where(u => u.TeamId == teamId && u.RoleInTeam == "Member").ToListAsync();
 
         }
+
+        
     }
 }

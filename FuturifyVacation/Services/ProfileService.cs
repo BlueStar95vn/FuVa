@@ -25,6 +25,11 @@ namespace FuturifyVacation.Services
             return await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
         }
 
+        public async Task<List<TeamDetail>> GetTeam(string userId)
+        {
+            return await _db.TeamDetails.Include(u => u.Team).Where(u => u.UserId == userId).ToListAsync();
+        }
+
         public async Task<UserProfile> UpdateByIdAsync(ProfileViewModel profile, string userId)
         {
             var getProfile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);

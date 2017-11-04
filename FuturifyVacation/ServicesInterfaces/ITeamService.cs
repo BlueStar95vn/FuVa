@@ -15,13 +15,12 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<List<UserTeam>> GetAllTeamAsync();
         Task<List<TeamDetail>> GetTeamMemberByTeamIdAsync(int teamId);
         Task AddMemberAsync(TeamMemberBindingModel model, int teamId);
-
         Task<UserTeam> GetDetailByTeamIdAsync(int teamId);
-
-
         Task EditTeamNameAsync(int teamId, string teamName);
+        Task EditTeamLeadAsync(int teamId, string teamLeadId);
        
-        Task<TeamDetail> RemoveMemberAsync();
-        Task<TeamDetail> SetTeamLeadAsync();
+
+        Task RemoveMemberAsync(int id);
+ 
     }
 }
