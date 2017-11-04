@@ -2,8 +2,12 @@
     module('teamDetail').
     component('teamDetail', {
         templateUrl: 'app/teams/team-detail/team-detail.html',
-        controller: function ($http, $routeParams,$location) {
+        controller: function ($http, $routeParams,$location, authService) {
             var vm = this;
+            authService.ensureAuthenticated().then(function (response) {
+                vm.getRole = response.data;
+            });
+
             $http.get('http://localhost:63237/api/teams/getteamdetail/' + $routeParams.teamId).then(function (response) {
                 vm.teamNameModel = response.data;
                 vm.teamLeadModel = response.data;

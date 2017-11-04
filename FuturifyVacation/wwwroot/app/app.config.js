@@ -146,12 +146,13 @@
                     if (response.data.role != 'ADMIN' && (next.$$route.originalPath == "/employees"
                         || next.$$route.originalPath == "/employees/detail/:userId" || next.$$route.originalPath == "/employees/add"
                         || next.$$route.originalPath == "/employees/edit/:userId"  || next.$$route.originalPath == "/teams" 
-                        || next.$$route.originalPath == "/teams/detail" || next.$$route.originalPath == "/teams/edit" 
+                        || next.$$route.originalPath == "/teams/edit/:teamId" 
                         || next.$$route.originalPath == "/teams/add" || next.$$route.originalPath == "/vacation/request"
                         || next.$$route.originalPath == "/report")) 
                     {
-                        $location.path('/status');
+                        $location.path('/');
                     }
+                   
                 }).catch(function () {
                     $location.path('/login');
                 });                

@@ -17,7 +17,7 @@
 
 
             vm.eventSources = [];
-            vm.vacations = {};
+            vm.vacations = [];
             $http.get("http://localhost:63237/api/vacations/getallvacation").then(function (response) {
 
                 vm.vacations = response.data;

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FuturifyVacation.Models.ViewModels;
 using FuturifyVacation.ServicesInterfaces;
 using System.Security.Claims;
+using FuturifyVacation.Models.BindingModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -91,5 +92,20 @@ namespace FuturifyVacation.Controllers
             return Ok();
         }
       
+        [HttpGet("getmyteam")]
+        public async Task<List<MyTeamBindingModel>> GetMyTeam()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            var teams = await _profileService.GetTeam(user.Id);
+            return teams.Select(p => new MyTeamBindingModel
+            {
+                TeamId=p.TeamId,
+                TeamName=p.Team.TeamName
+            }).ToList();
+        }
     }
 }

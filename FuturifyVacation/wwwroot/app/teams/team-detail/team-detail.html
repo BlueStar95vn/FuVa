@@ -46,8 +46,8 @@
         </div>
         <div class="panel-footer">
             <div align="right">
-                <a ng-click="$ctrl.gotoEdit()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-                <a ng-href="#/teams" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-arrow-left"></i> Back</a>
+                <a ng-if="$ctrl.getRole.role=='ADMIN'" ng-click="$ctrl.gotoEdit()" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                <a ng-if="$ctrl.getRole.role=='ADMIN'" ng-href="#/teams" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-arrow-left"></i> Back</a>
             </div>
 
         </div>

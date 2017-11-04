@@ -11,28 +11,33 @@
                     </div>
                 </div>
                 <div class="col-sm-9 col-md-9 col-lg-9 registerbg">
-                    <form action="" id="signupform" name="signupform" method="post" class="form-horizontal ">
-                        <div class="form-group">
-                        </div>
+                    <form name="form" class="form-horizontal" novalidate>
+                       
                         <div class="form-group ">
                             <label class="control-label col-sm-4">First Name: </label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" ng-model="$ctrl.employees.firstName"name="firstname" placeholder="" />
-                                <span class="text-danger" id="firstmess"> </span>
+                                <input type="text" class="form-control" ng-model="$ctrl.employees.firstName" name="firstname" required />
+                                <div ng-if="form.firstname.$touched">
+                                    <p ng-show="form.firstname.$error.required" class="text-danger">Enter Employee's First Name!</p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4">Last Name: </label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" ng-model="$ctrl.employees.lastName" name="lastname" placeholder="" />
-                                <span class="text-danger" id="lastmess"> </span>
+                                <input type="text" class="form-control" ng-model="$ctrl.employees.lastName" name="lastname" placeholder="" required/>
+                                <div ng-if="form.lastname.$touched">
+                                    <p ng-show="form.lastname.$error.required" class="text-danger">Enter Employee's Last Name!</p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Position: </label>
+                            <label class="control-label col-sm-4">Department: </label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" ng-model="$ctrl.employees.position" name="position" placeholder="" />
-                                <span class="text-danger" id="positionmess"> </span>
+                                <input type="text" class="form-control" ng-model="$ctrl.employees.department" name="department" placeholder="" required/>
+                                <div ng-if="form.department.$touched">
+                                    <p ng-show="form.department.$error.required" class="text-danger">Enter Employee's Department</p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -45,15 +50,20 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Phone Number: </label>
                             <div class="col-sm-6">
-                                <input type="tel" class="form-control" name="phoneNumber" ng-model="$ctrl.employees.phoneNumber" placeholder="" />
-                                <span class="text-danger" id="phonemess"> </span>
+                                <input type="tel" class="form-control" name="phoneNumber" ng-model="$ctrl.employees.phoneNumber" placeholder="" required/>
+                                <div ng-if="form.phoneNumber.$touched">
+                                    <p ng-show="form.phoneNumber.$error.required" class="text-danger">Enter Employee's Phone Number!</p>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4">Email: </label>
                             <div class="col-sm-6" name="emaildiv">
-                                <input type="email" class="form-control" name="email" ng-model="$ctrl.employees.email" placeholder="" />
-                                <label class="text-danger" id="emailmess" name="emailmess"> </label>
+                                <input type="email" class="form-control" name="email" ng-model="$ctrl.employees.email" placeholder="" required />
+                                <div ng-if="form.email.$touched">
+                                    <p ng-show="form.email.$error.required" class="text-danger">Enter Employee's Email!</p>
+                                    <p ng-show="form.email.$error.email" class="text-danger">Wrong Email!</p>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -62,7 +72,7 @@
         </div>
         <div class="panel panel-footer">
             <div align="right">
-                <a href="" type="submit" ng-click="$ctrl.register()" class="btn btn-md btn-success"><i class="glyphicon glyphicon-ok-sign"></i> Register</a>
+                <a ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.register()" class="btn btn-md btn-success"><i class="glyphicon glyphicon-ok-sign"></i> Register</a>
                 <a ng-href="#/employees" class="btn btn-md btn-danger"><i class="glyphicon glyphicon-remove-sign"></i> Cancel</a>
             </div>
         </div>

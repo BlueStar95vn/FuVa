@@ -6,12 +6,14 @@
             var vm = this;
             vm.employees = {};
             vm.register = function () {
-                $http.post("http://localhost:63237/api/employees/register", vm.employees).then(function () {
+                $http.post("http://localhost:63237/api/employees/register", vm.employees).then(function () {                   
                     alert("Register successfully!");
                     $location.path("/employees");
                 }).catch(function (error) {
                     console.log(error);
                 });
             }
+
+           
         }
     });

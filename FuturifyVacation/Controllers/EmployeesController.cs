@@ -100,14 +100,19 @@ namespace FuturifyVacation.Controllers
         [HttpPost("register")]
         public async Task<EmployeeViewModel> Register([FromBody]EmployeeViewModel employee)
         {
+            DateTime now = DateTime.Now;
+            var remainingDayOff = ((13 - now.Month)*8).ToString();
             var user = new ApplicationUser { UserName = employee.Email, Email = employee.Email, PhoneNumber = employee.PhoneNumber };
             user.UserProfile = new UserProfile
             {
                 //UserId = user.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Position = employee.Position,
-                Gender = employee.Gender
+                Department = employee.Department,
+                Gender = employee.Gender,
+                RemainingDayOff = remainingDayOff,
+                Position="USER"
+                
 
             };
             var password = GenerateRandomPassword();
@@ -119,7 +124,7 @@ namespace FuturifyVacation.Controllers
                 var subject = "[Vacation Tracking] Your account information";
                 var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
                     "\n This is your password: " + password;
-               //await _emailSender.SendEmailAsync(employee.Email, subject, message);
+               await _emailSender.SendEmailAsync(employee.Email, subject, message);
             }
             return employee;
         }

@@ -1,1 +1,1 @@
-﻿angular.module('profileDetail', ['ngRoute']);
+﻿angular.module('profileDetail', ['ngRoute', 'ui.bootstrap']);
