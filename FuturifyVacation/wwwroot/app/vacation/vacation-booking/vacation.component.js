@@ -207,8 +207,12 @@
             toTime.setMinutes(0);
             vm.newVacations.end = toTime;
 
+
+            vm.booked = false;
             vm.bookVacation = function () {
+                vm.booked = true;
                 $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function () {
+                    vm.booked = false;
                     alert("Success");
                     vm.refreshEvent();
                 }).catch(function (err) {
@@ -275,18 +279,30 @@ angular.module('vacation').component('vacationModalComponent', {
 
         vm.altInputFormats = ['M!/d!/yyyy'];
 
+
+        vm.updateClicked = false;
         vm.update = function () {
+            vm.updateClicked = true;
             $http.post('http://localhost:63237/api/vacations/updateuservacation', vm.vacationDetail).then(function () {
                 alert("Update successfully");
+                vm.updateClicked = false;
             }).catch(function (err) {
+                alert("Error");
+                vm.updateClicked = false;
                 console.log(err);
             });
         };
+
+        vm.cancelClicked = false;   
         vm.cancel = function (id) {
+            vm.cancelClicked = true; 
             $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function () {
+                vm.cancelClicked = false; 
                 vm.dismiss({ $value: 'cancel' });
                 alert("Delete Successfully");
             }).catch(function (err) {
+                alert("Error");
+                vm.cancelClicked = false; 
                 console.log(err);
             });
         }
@@ -297,19 +313,3 @@ angular.module('vacation').component('vacationModalComponent', {
 
     }
 });
-
-//angular.
-//    module('vacation').directive('ngConfirmClick', [
-//        function () {
-//            return {
-//                link: function (scope, element, attr) {
-//                    var msg = attr.ngConfirmClick || "Are you sure?";
-//                    var clickAction = attr.confirmedClick;
-//                    element.bind('click', function (event) {
-//                        if (window.confirm(msg)) {
-//                            scope.$eval(clickAction)
-//                        }
-//                    });
-//                }
-//            };
-//        }])

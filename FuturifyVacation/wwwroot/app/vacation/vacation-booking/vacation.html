@@ -6,7 +6,10 @@
                 <h3 class="modal-title" id="modal-title">Vacation Detail</h3>
             </div>
             <div class="modal-body" id="modal-body">
-                <span><label>Reason:</label> <input class="form-control" ng-model="$ctrl.vacationDetail.title" /> </span>
+                <span><label>Reason:</label> <input class="form-control" name="newReason" ng-model="$ctrl.vacationDetail.title" required /> </span>
+                <div ng-if="form.newReason.$touched">
+                    <p ng-show="form.newReason.$error.required" class="text-danger">Enter your reason!</p>
+                </div>
                 <br />
                 <div class="row">
                     <div class="col-md-12">
@@ -14,7 +17,7 @@
                             <div class="col-md-8">
                                 <label>From Date:</label>
                                 <p class="input-group">
-                                    <input type="text" class="form-control"  uib-datepicker-popup="{{$ctrl.formatModal}}" ng-model="$ctrl.vacationDetail.start" is-open="$ctrl.popup1.opened" datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" />
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.formatModal}}" ng-model="$ctrl.vacationDetail.start" is-open="$ctrl.popup1.opened" datepicker-options="$ctrl.dateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="$ctrl.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -44,8 +47,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" type="button" ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.update()">Update Vacation</button>
-                <button class="btn btn-danger" type="button"  ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate"  ng-confirm-click="Are you sure to cancel this vacation?" confirmed-click="$ctrl.cancel($ctrl.vacationDetail.id)">Cancel Vacation</button>
+                <span ng-if="$ctrl.updateClicked==false && $ctrl.cancelClicked==false">
+                    <button class="btn btn-success" type="button" ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.update()">Update Vacation</button>
+                    <button class="btn btn-danger" type="button" ng-if="$ctrl.vacationDetail.start >= $ctrl.getDate" ng-confirm-click="Are you sure to cancel this vacation?" confirmed-click="$ctrl.cancel($ctrl.vacationDetail.id)">Cancel Vacation</button>
+                </span>
+                <span ng-if="$ctrl.updateClicked==true"> <input class="btn btn-success" value="Updating..." disabled /></span>
+                <span ng-if="$ctrl.cancelClicked==true"> <input class="btn btn-danger" value="Canceling..." disabled /></span>
                 <button class="btn btn-warning" type="button" ng-click="$ctrl.close()">Close</button>
             </div>
         </form>
@@ -57,13 +64,16 @@
     <!-------------------------Calendar----------------------------->
     <div ui-calendar="$ctrl.uiConfig.calendar" ng-model="$ctrl.eventSources" calendar="myCalendar" class="calendar"></div>
     <hr />
-    <form>
+    <form name="form" novalidate>
         <div class="panel panel-success ">
             <div class="panel panel-heading">
-              <h4>Book Your Vacation</h4>
+                <h4>Book Your Vacation</h4>
             </div>
             <div class="panel panel-body">
-                <span>Reason: <input class="form-control" ng-model="$ctrl.newVacations.title"/> </span>
+                <span>Reason: <input class="form-control" name="reason" ng-model="$ctrl.newVacations.title" required /> </span>
+                <div ng-if="form.reason.$touched">
+                    <p ng-show="form.reason.$error.required" class="text-danger">Enter your reason!</p>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
@@ -98,40 +108,16 @@
 
                         </div>
                     </div>
-
                 </div>
-                <a type="submit" href="" ng-click="$ctrl.bookVacation()" class="btn-lg btn-success">Book</a>
+                <div ng-if="$ctrl.booked==false">
+                    <input ng-click="$ctrl.bookVacation()" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" class="btn btn-success" value="Book" />
+                </div>
+                <div ng-if="$ctrl.booked==true">
+                    <input class="btn btn-success" value="Booking..." disabled />
+                </div>
             </div>
 
         </div>
     </form>
-
-
-    <!--<div class="row">
-        <div class="col-lg-1 col-md-2 col-sm-2">
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.addEvent()">
-                Add Event
-            </button>
-            <div>
-                Events:
-                {{$ctrl.events.length}}
-            </div>
-        </div>
-        <div class="col-lg-11 col-md-10 col-sm-10">
-            <div class="event-scoll">
-                <ul>
-                    <li ng-repeat="e in $ctrl.vacations" class="list-unstyled event-calendar">
-                        <div class="alert alert-info">
-                            <a class="close" ng-click="$ctrl.remove($index)"><i class="glyphicon glyphicon-remove"></i></a>
-                            <b> <input ng-model="e.title"></b>
-                            {{e.start | date:"MMM dd"}} - {{e.end | date:"MMM dd"}}
-                            <a class="close" ng-click="$ctrl.update()"><i class="glyphicon glyphicon-check">Update</i> </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>-->
-
 </div>
 

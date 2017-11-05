@@ -1,6 +1,6 @@
 ﻿<div>
     <div>
-        <a ng-href="#/teams/add"  class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new team</a>
+        <a ng-href="#/teams/add" class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new team</a>
         <span class="pull-right"><b> Search team: </b><input /></span>
     </div>
     <div>
@@ -9,23 +9,30 @@
                 <tr>
                     <th>#</th>
                     <th>Team Name</th>
-                    <th>Team Lead</th>                  
+                    <th>Team Lead</th>
                     <th></th>
-                    
+
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="team in $ctrl.teams">
-                    <td>{{$index+1}}</td>
+                <tr ng-repeat="team in $ctrl.teams.slice((($ctrl.currentPage-1)*$ctrl.itemsPerPage), (($ctrl.currentPage)*$ctrl.itemsPerPage))">
+                    <td>{{(($ctrl.currentPage-1)*$ctrl.itemsPerPage)+$index+1}}</td>
                     <td>{{team.teamName}}</td>
-                    <td>{{team.firstName}} {{team.lastName}}</td>                  
+                    <td>{{team.firstName}} {{team.lastName}}</td>
                     <td>
-                        <a ng-click="$ctrl.editId(team.id)"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> 
-                        <a ng-click="$ctrl.detailId(team.id)" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i> Detail</a> 
+                        <a ng-click="$ctrl.editId(team.id)" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                        <a ng-click="$ctrl.detailId(team.id)" class="btn btn-sm btn-info"><i class="glyphicon glyphicon-info-sign"></i> Detail</a>
                         <a ng-confirm-click="Are you sure to remove this team?" confirmed-click="$ctrl.remove(team.id, $index)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash"></i> Remove</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <hr />
+        <div>
+            <div align="left">
+                <ul class="pagination-sm" uib-pagination total-items="$ctrl.teams.length" ng-model="$ctrl.currentPage" ng-change="$ctrl.pageChanged()" max-size="$ctrl.maxSize" items-per-page="$ctrl.itemsPerPage"></ul>
+            </div>
+            View <select ng-model="$ctrl.viewby" ng-change="$ctrl.setItemsPerPage($ctrl.viewby)"><option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select> teams at a time.
+        </div>
     </div>
 </div>

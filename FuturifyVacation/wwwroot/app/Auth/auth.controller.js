@@ -16,8 +16,7 @@
         vm.user = {};
         vm.onLogin = function () {
             authService.login(vm.user)
-                .then(/*(user) =>*/ function () {
-                 
+                .then(/*(user) =>*/ function () {                 
                     $location.path('/status');
                     alert("You have been successfully logged in...");
                 })

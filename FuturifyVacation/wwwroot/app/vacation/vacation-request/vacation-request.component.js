@@ -7,9 +7,14 @@
             $http.get('http://localhost:63237/api/vacations/getrequestvacation').then(function (response) {
                 vm.vacations = response.data;
 
-            })
+            });
+            vm.approveClicked = false;
+
             vm.approve = function (id, index) {
+                vm.approveClicked = true;
+                vm.indexClicked = index;
                 $http.post('http://localhost:63237/api/vacations/approve/' + id).then(function () {
+                    vm.approveClicked = false;
                     alert('Approved');
                     vm.vacations.splice(index, 1);
                 }).catch(function (err) {
@@ -67,7 +72,9 @@ angular.module('vacationRequest').component('modalComponent', {
             vm.index = vm.resolve.index;
         };
         vm.reasons = {};
+        vm.disapproveClicked = false;
         vm.ok = function () {
+            vm.disapproveClicked = true;
             $http.post('http://localhost:63237/api/vacations/disapprove/' + vm.resolve.vacationId, vm.reasons).then(function () {
                 vm.vacations.splice(vm.index, 1);
                 console.log(vm.index);

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using FuturifyVacation.Models;
 using FuturifyVacation.Models.ViewModels;
 using System.Security.Claims;
+using FuturifyVacation.Models.BindingModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -129,6 +130,16 @@ namespace FuturifyVacation.Controllers
             return employee;
         }
 
+        [HttpGet("getteam/{userId}")]
+        public async Task<List<EmployeeTeamBindingModel>> GetEmployeeTeam(string userId)
+        {                       
+            var teams = await _employeeService.GetTeam(userId);
+            return teams.Select(p => new EmployeeTeamBindingModel
+            {
+                TeamId = p.TeamId,
+                TeamName = p.Team.TeamName
+            }).ToList();
+        }
         public string GenerateRandomPassword(PasswordOptions opts = null)
         {
             if (opts == null) opts = new PasswordOptions()

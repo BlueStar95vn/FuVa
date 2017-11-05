@@ -2,7 +2,7 @@
     module('employeeList').
     component('employeeList', {
         templateUrl: "/app/employees/employee-list/employee-list.html",
-        controller: function ($http, $routeParams, $location) {
+        controller: function ($http, $routeParams, $location, $log) {
             var vm = this;
             
             $http.get('http://localhost:63237/api/employees/getall').then(function (response) {
@@ -23,6 +23,17 @@
                     }).catch(function (error) {
                         console.log(error)
                     });
+            }
+            vm.currentPage = 1;
+            vm.viewby = 10;                    
+            vm.itemsPerPage = vm.viewby;
+            vm.maxSize = 5;
+            vm.pageChanged = function () {
+                $log.log('Page changed to: ' + vm.currentPage);
+            };
+            vm.setItemsPerPage = function (num) {
+                vm.itemsPerPage = num;
+                vm.currentPage = 1;
             }
         }
     });

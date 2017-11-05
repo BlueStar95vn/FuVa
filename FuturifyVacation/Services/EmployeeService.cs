@@ -66,6 +66,9 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
         }
 
-     
+        public async Task<List<TeamDetail>> GetTeam(string userId)
+        {
+            return await _db.TeamDetails.Include(u => u.Team).Where(u => u.UserId == userId).ToListAsync();
+        }
     }
 }

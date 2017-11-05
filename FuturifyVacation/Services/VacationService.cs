@@ -37,6 +37,16 @@ namespace FuturifyVacation.Services
             };
             await _db.UserVacations.AddAsync(vacation);
             await _db.SaveChangesAsync();
+            var getUser = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
+
+            //Send Email
+            var email = GetEmailAdmin();
+            var subject = "[Vacation Tracking] - " + getUser.FirstName + " " + getUser.LastName + " booked a vacation!";
+            var message = "\n\nVacation Request Detail: "
+                            + "\n\nReason: " + model.Title
+                            + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
+                            + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();
+            await _emailSender.SendEmailAsync(email, subject, message);
         }
 
         public async Task CancelVacationAsync(int vacationId)
@@ -52,13 +62,13 @@ namespace FuturifyVacation.Services
             _db.UserVacations.Remove(getVacation);            
             await _db.SaveChangesAsync();
 
-            //var email = "bluestar95vn@gmail.com";
-            //var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + " canceled vacation!";
-            //var message = "\n\nVacation Detail: "
-            //                + "\n\nTitle: " + getVacation.Title
-            //                + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
-            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString();
-            //await _emailSender.SendEmailAsync(email, subject, message);
+            var email = GetEmailAdmin();
+            var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + " canceled vacation!";
+            var message = "\n\nVacation Detail: "
+                            + "\n\nTitle: " + getVacation.Title
+                            + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
+                            + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString();
+            await _emailSender.SendEmailAsync(email, subject, message);
         }
 
         public async Task<UserVacation> UpdateVacationAsync(UserVacationViewModel model)
@@ -85,14 +95,13 @@ namespace FuturifyVacation.Services
                 await _db.SaveChangesAsync();
             }
 
-            
-            //var email = "bluestar95vn@gmail.com";
-            //var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName+"has updated vacation!";
-            //var message =  "\n\nVacation Request Detail: "
-            //                + "\n\nReason: " + model.Title
-            //                + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
-            //                + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();                           
-            //await _emailSender.SendEmailAsync(email, subject, message);
+            var email = GetEmailAdmin();
+            var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + "has updated vacation!";
+            var message = "\n\nVacation Request Detail: "
+                            + "\n\nReason: " + model.Title
+                            + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
+                            + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();
+            await _emailSender.SendEmailAsync(email, subject, message);
             return getVacation;
         }
 
@@ -126,16 +135,20 @@ namespace FuturifyVacation.Services
             var getVacation = await _db.UserVacations.Include(u => u.User).Include(x => x.User.User).FirstOrDefaultAsync(u => u.Id == vacationId);
             int hours = CountHours(getVacation.Start, getVacation.End);
             int hoursleft = int.Parse(getVacation.User.RemainingDayOff) - hours;
-            //var email = getVacation.User.User.Email;
-            //var subject = "[Vacation Tracking] - Your vacation has been approved!";
-            //var message = "\nHi " + getVacation.User.FirstName
-            //                + ",\n\n Your vacation has been approved,"
-            //                + "\n\nVacation Request Detail: "
-            //                + "\n\nTitle: " + getVacation.Title
-            //                + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
-            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString()
-            //                + "\n\nYour Remaining Time: " + hoursleft.ToString() + " hour(s)";
-            //await _emailSender.SendEmailAsync(email, subject, message);
+
+
+            var email = getVacation.User.User.Email;
+            var subject = "[Vacation Tracking] - Your vacation is approved!";
+            var message = "\nHi " + getVacation.User.FirstName
+                            + ",\n\n Your vacation has been approved,"
+                            + "\n\nVacation Request Detail: "
+                            + "\n\nTitle: " + getVacation.Title
+                            + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
+                            + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString()
+                            + "\n\nYour Remaining Time: " + hoursleft.ToString() + " hour(s)";
+            await _emailSender.SendEmailAsync(email, subject, message);
+
+
             getVacation.Color = "Green";
             getVacation.User.RemainingDayOff = hoursleft.ToString();
             await _db.SaveChangesAsync();
@@ -147,16 +160,17 @@ namespace FuturifyVacation.Services
 
             int hours = CountHours(vacation.Start, vacation.End);
 
-            //var email = vacation.User.User.Email;
-            //var subject = "[Vacation Tracking] - Your vacation has been disapproved!";
-            //var message = "\nHi " + vacation.User.FirstName
-            //                + ",\n\n Your vacation has been disapproved,"
-            //                 + "\n\nVacation Request Detail: "
-            //                + "\n\nTitle: " + vacation.Title
-            //                + "\n\nFrom: " + vacation.Start.ToShortDateString() + " " + vacation.Start.ToShortTimeString()
-            //                + "\n\nTo: " + vacation.End.ToShortDateString() + " " + vacation.End.ToShortTimeString()
-            //                + "\n\nReason: " + reason;
-            //await _emailSender.SendEmailAsync(email, subject, message);
+            var email = vacation.User.User.Email;
+            var subject = "[Vacation Tracking] - Your vacation is disapproved!";
+            var message = "\nHi " + vacation.User.FirstName
+                            + ",\n\n Your vacation has been disapproved,"
+                             + "\n\nVacation Request Detail: "
+                            + "\n\nTitle: " + vacation.Title
+                            + "\n\nFrom: " + vacation.Start.ToShortDateString() + " " + vacation.Start.ToShortTimeString()
+                            + "\n\nTo: " + vacation.End.ToShortDateString() + " " + vacation.End.ToShortTimeString()
+                            + "\n\nReason: " + reason;
+            await _emailSender.SendEmailAsync(email, subject, message);
+
             await _db.SaveChangesAsync();
         }
 
@@ -175,6 +189,18 @@ namespace FuturifyVacation.Services
             }
             return hours;
         }
+        public  string GetEmailAdmin()
+        {
+            string allEmail = "";
+            var getEmail =    _db.UserProfiles.Include(u => u.User).Where(u => u.Position == "ADMIN").Select(u => u.User.Email).ToArray();
+            foreach(string email in getEmail)
+            {
+                allEmail = allEmail + "," + email;
+            }
+            return allEmail;
+        }
+
+        
         #endregion
     }
 }

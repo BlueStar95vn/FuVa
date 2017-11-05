@@ -7,12 +7,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" ng-href="#"><b>Vacation Tracking</b></a>
+                <a class="navbar-brand" ng-href="#/home"><b>Vacation Tracking</b></a>
             </div>
 
             <div class="collapse navbar-collapse " id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-controller="authStatusController as auth"><a ng-href="#/profile"><span class="glyphicon glyphicon-user"></span>Hello <i>{{auth.roles.name}}</i></a></li>
+                    <li ng-controller="authStatusController as auth"><a ng-href="#/profile"><span class="glyphicon glyphicon-user"></span><i> {{auth.roles.name}}</i></a></li>
                     <li ng-controller="authLogoutController as logoutCtrl"><a href="" ng-click="logoutCtrl.onLogout()"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
                 </ul>
             </div>

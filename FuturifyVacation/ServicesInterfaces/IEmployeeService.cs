@@ -13,6 +13,6 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<UserProfile> GetByIdAsync(string userId);
         Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId);
         Task DeleteByIdAsync(string userId);
-       
+        Task<List<TeamDetail>> GetTeam(string userId);
     }
 }

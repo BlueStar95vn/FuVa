@@ -25,6 +25,18 @@
             vm.editId = function (teamId) {
                 $location.path('/teams/edit/' + teamId);
             }
+
+            vm.currentPage = 1;
+            vm.viewby = 10;
+            vm.itemsPerPage = vm.viewby;
+            vm.maxSize = 5;
+            vm.pageChanged = function () {
+                $log.log('Page changed to: ' + vm.currentPage);
+            };
+            vm.setItemsPerPage = function (num) {
+                vm.itemsPerPage = num;
+                vm.currentPage = 1;
+            }
         }
 
     });

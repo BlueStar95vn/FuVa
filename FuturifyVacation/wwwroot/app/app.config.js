@@ -29,6 +29,13 @@
                         loginRedirect: false
                     }
                 }).
+                when('/home', {
+                    template: '<home></home>',
+                    restrictions: {
+                        ensureAuthenticated: true,
+                        loginRedirect: false
+                    }
+                }).
                 when('/profile', {
                     template: '<profile-detail></profile-detail>',
                     restrictions: {
@@ -128,7 +135,7 @@
                     }
                 }).
                 otherwise({
-                    redirectTo: '/',  
+                    redirectTo: '/home',  
                     restrictions: {
                         ensureAuthenticated: true,
                         loginRedirect: false
@@ -150,7 +157,7 @@
                         || next.$$route.originalPath == "/teams/add" || next.$$route.originalPath == "/vacation/request"
                         || next.$$route.originalPath == "/report")) 
                     {
-                        $location.path('/');
+                        $location.path('/home');
                     }
                    
                 }).catch(function () {
@@ -159,7 +166,7 @@
             }
             if (next.restrictions.loginRedirect) {              
                 authService.ensureAuthenticated().then(function () {
-                    $location.path('/profile');
+                    $location.path('/home');
                 });
             }
         })

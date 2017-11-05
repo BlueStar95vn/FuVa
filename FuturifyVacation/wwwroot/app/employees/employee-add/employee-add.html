@@ -72,8 +72,10 @@
         </div>
         <div class="panel panel-footer">
             <div align="right">
-                <a ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.register()" class="btn btn-md btn-success"><i class="glyphicon glyphicon-ok-sign"></i> Register</a>
-                <a ng-href="#/employees" class="btn btn-md btn-danger"><i class="glyphicon glyphicon-remove-sign"></i> Cancel</a>
+                <span  ng-if="$ctrl.addClicked==false" > <a ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.register()" class="btn btn-md btn-success"><i class="glyphicon glyphicon-ok-sign"></i> Register</a></span>
+                <span ng-if="$ctrl.addClicked==true"><input class="btn btn-md btn-success" value="Registering..." disabled /></span>
+               <span><a ng-href="#/employees" class="btn btn-md btn-danger"><i class="glyphicon glyphicon-remove-sign"></i> Cancel</a></span>
+               
             </div>
         </div>
     </div>    
