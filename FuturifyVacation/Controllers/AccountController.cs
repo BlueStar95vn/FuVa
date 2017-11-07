@@ -117,17 +117,17 @@ namespace FuturifyVacation.Controllers
                 redirectUrl = "/#/home";
                 return Redirect(redirectUrl);
             }
-            //if (result.IsLockedOut)
-            //{
-            //    return RedirectToAction(nameof(Lockout));
-            //}
+            if (result.IsLockedOut)
+            {               
+                return Redirect(redirectUrl);
+            }
             else
             {
                 // If the user does not have an account, then ask the user to create an account.
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                var user = await _userManager.FindByNameAsync(email);
+                var user = await _userManager.FindByEmailAsync(email);
                 if(user==null)
                 {                   
                     return Redirect(redirectUrl);
@@ -141,8 +141,7 @@ namespace FuturifyVacation.Controllers
                     _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                     redirectUrl = "/#/home";
                     return Redirect(redirectUrl);
-                }
-               
+                }               
                 return Redirect(redirectUrl); //redirect ve trang index
             }
         

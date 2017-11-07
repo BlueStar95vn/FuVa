@@ -43,7 +43,13 @@
                                         </tr>
                                         <tr>
                                             <th>Gender:</th>
-                                            <td><input id="gender" class="form-control" name="gender" ng-model="$ctrl.employees.gender" value="{{$ctrl.employees.gender}}" /></td>
+                                            <td>
+                                                <div class="btn-group" data-toggle="buttons-radio">
+                                                    <label class="btn-sm btn-primary"><input type="radio" name="gender" ng-model="$ctrl.employees.gender" value="Male" checked="checked" />Male  </label>
+                                                    <label class="btn-sm btn-danger"><input type="radio" name="gender" ng-model="$ctrl.employees.gender" value="Female" />Female</label>
+                                                </div>
+                                            </td>
+                                         
                                         </tr>
                                         <tr>
                                             <th>Phone Number:</th>

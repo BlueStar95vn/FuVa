@@ -34,10 +34,10 @@ namespace FuturifyVacation.Services
         public async Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId)
         {
             var getEmployee = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
-           
-            if(getEmployee.Position!=employee.Position)
+
+            if (getEmployee.Position != employee.Position)
             {
-               await _userManager.RemoveFromRoleAsync(getEmployee.User, getEmployee.Position);
+                await _userManager.RemoveFromRoleAsync(getEmployee.User, getEmployee.Position);
             }
             getEmployee.FirstName = employee.FirstName;
             getEmployee.LastName = employee.LastName;
@@ -47,7 +47,7 @@ namespace FuturifyVacation.Services
             {
                 await _userManager.AddToRoleAsync(getEmployee.User, "ADMIN");
             }
-            else if(employee.Position == "USER")
+            else if (employee.Position == "USER")
             {
                 await _userManager.AddToRoleAsync(getEmployee.User, "USER");
             }
@@ -63,12 +63,20 @@ namespace FuturifyVacation.Services
             var profile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
             //_db.UserProfiles.Remove(profile);
             _db.Users.Remove(profile.User);
-            var ExternalAccount = await _db.UserLogins.FirstOrDefaultAsync(u => u.UserId == userId);
-            if(ExternalAccount!=null)
+
+            var teams = await _db.TeamDetails.Where(u => u.UserId == userId).ToListAsync();
+            if(teams!=null)
             {
-                _db.UserLogins.Remove(ExternalAccount);
+                _db.TeamDetails.RemoveRange(teams);
             }
-          
+           
+
+            var externalAccount = await _db.UserLogins.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (externalAccount != null)
+            {
+                _db.UserLogins.Remove(externalAccount);
+            }
+
             await _db.SaveChangesAsync();
         }
 

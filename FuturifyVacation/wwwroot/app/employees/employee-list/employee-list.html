@@ -4,7 +4,7 @@
         <div  class="pull-right">
             <span>
                 <b>Sort By:  </b>
-                <select type=""  ng-model="$ctrl.sort">
+                <select type=""  ng-model="$ctrl.sort" class="custom-form-control">
                     <option>None</option>
                     <option value="firstName">First Name</option>
                     <option value="doB"> Day of birth</option>
@@ -13,7 +13,7 @@
                     <option value="remainingDayOff">Remaining day off</option>
                 </select>
             </span>
-            <span ><b> Search employee: </b><input ng-model="$ctrl.search" /></span>
+            <span ><b> Search employee: </b><input ng-change="$ctrl.searchChange()" ng-model="$ctrl.search" class="custom-form-control" /></span>
         </div>
         
         
@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="employee in $ctrl.employees.slice((($ctrl.currentPage-1)*$ctrl.itemsPerPage), (($ctrl.currentPage)*$ctrl.itemsPerPage))|filter:$ctrl.search|orderBy:$ctrl.sort" >
+                <tr ng-repeat="employee in $ctrl.employees| filter : $ctrl.search | limitTo:$ctrl.itemsPerPage:$ctrl.itemsPerPage*($ctrl.currentPage-1)|orderBy:$ctrl.sort" >
                     <td>{{(($ctrl.currentPage-1)*$ctrl.itemsPerPage)+$index+1}}</td>
                     <td>{{employee.firstName}} {{employee.lastName}}</td>
                     <td>{{employee.gender}}</td>

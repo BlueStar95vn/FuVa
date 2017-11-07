@@ -55,17 +55,17 @@ namespace FuturifyVacation
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
 
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    options.Cookie.Name = "UserCookie";
-            //    options.Cookie.HttpOnly = true;
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-            //    options.LoginPath = "/Login";
-            //    options.LogoutPath = "/Logout";
-            //    options.SlidingExpiration = true;
-            //    // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
-            //    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-            //});
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "UserCookie";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/Logout";
+                options.SlidingExpiration = true;
+                // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+            });
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IEmployeeService, EmployeeService>();

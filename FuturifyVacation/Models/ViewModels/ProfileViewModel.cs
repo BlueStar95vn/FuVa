@@ -18,5 +18,6 @@ namespace FuturifyVacation.Models.ViewModels
         public string Gender { set; get; }
         public string RemainingDayOff { set; get; }
         public string Status { set; get; }
+        public bool HasPassword { set; get; } 
     }
 }

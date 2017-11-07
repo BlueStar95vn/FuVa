@@ -47,11 +47,21 @@
                                         </tr>
                                         <tr>
                                             <th>Gender:</th>
-                                            <td><input class="form-control"  id="gender" name="gender" ng-model="$ctrl.employees.gender" value="{{$ctrl.employees.gender}}" /></td>
+                                            <td>
+                                                <div class="btn-group" data-toggle="buttons-radio">
+                                                    <label class="btn-sm btn-primary"><input type="radio" name="gender" ng-model="$ctrl.employees.gender" value="Male" checked="checked" />Male  </label>
+                                                    <label class="btn-sm btn-danger"><input type="radio" name="gender" ng-model="$ctrl.employees.gender" value="Female" />Female</label>
+                                                </div>
+                                            </td>
+                                           
                                         </tr>
                                         <tr>
                                             <th>Phone Number:</th>
                                             <td><input class="form-control"  id="phoneNumber" name="phoneNumber" ng-model="$ctrl.employees.phoneNumber" value="{{$ctrl.employees.phoneNumber}}" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Department:</th>
+                                            <td><input  class="form-control"  id="department" name="department" ng-model="$ctrl.employees.department"/></td>
                                         </tr>
                                         <tr>
                                             <th>Email:</th>
@@ -60,8 +70,10 @@
                                         <tr>
                                             <th>Position:</th>
                                             <td>
-                                                <label><input type="radio" name="gender" ng-model="$ctrl.employees.position" value="USER" checked="checked" />User  </label>
-                                                <label><input type="radio" name="gender" ng-model="$ctrl.employees.position" value="ADMIN" />Admin</label>
+                                                <div class="btn-group" data-toggle="buttons-radio">
+                                                    <label class="btn-sm btn-primary"><input type="radio" name="position" ng-model="$ctrl.employees.position" value="USER" checked="checked" />User  </label>
+                                                    <label class="btn-sm btn-danger"><input type="radio" name="position" ng-model="$ctrl.employees.position" value="ADMIN" />Admin</label>
+                                                </div>                                                
                                             </td>
                                         </tr>
                                         <tr>

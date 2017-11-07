@@ -29,7 +29,7 @@ namespace FuturifyVacation.Controllers
         {
             _userManager = userManager;
             _profileService = profileService;
-          
+
         }
 
         [HttpGet("myId")]
@@ -37,7 +37,13 @@ namespace FuturifyVacation.Controllers
         {
             var user = HttpContext.User;
             userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
-            var profile =  await _profileService.GetByIdAsync(userId);
+            var profile = await _profileService.GetByIdAsync(userId);
+            var hasPass = profile.User.PasswordHash;
+            bool password = false;
+            if (hasPass != null)
+            {
+                password = true;
+            }
             return new ProfileViewModel
             {
                 UserId = profile.UserId,
@@ -50,30 +56,31 @@ namespace FuturifyVacation.Controllers
                 Department = profile.Department,
                 RemainingDayOff = profile.RemainingDayOff,
                 Status = profile.Status,
-                PhoneNumber = profile.User.PhoneNumber
+                PhoneNumber = profile.User.PhoneNumber,
+                HasPassword = password
             };
         }
 
         //POST api/profiles/update
-       [HttpPost("update")]
+        [HttpPost("update")]
         public async Task<ProfileViewModel> UpdateProfile([FromBody] ProfileViewModel profile, string UserId)
         {
             var user = HttpContext.User;
             UserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
             var update = await _profileService.UpdateByIdAsync(profile, UserId);
-           return new ProfileViewModel
-           {
-               UserId = update.UserId,
-               FirstName = update.FirstName,
-               LastName = update.LastName,           
-               Gender = update.Gender,
-               Position = update.Position,
-               DoB = update.DoB,
-               Department = update.Department,
-               RemainingDayOff = update.RemainingDayOff,
-               Status = update.Status,
-               PhoneNumber = update.User.PhoneNumber
-           };
+            return new ProfileViewModel
+            {
+                UserId = update.UserId,
+                FirstName = update.FirstName,
+                LastName = update.LastName,
+                Gender = update.Gender,
+                Position = update.Position,
+                DoB = update.DoB,
+                Department = update.Department,
+                RemainingDayOff = update.RemainingDayOff,
+                Status = update.Status,
+                PhoneNumber = update.User.PhoneNumber
+            };
         }
         [HttpPost("changepassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePassViewModel model)
@@ -88,10 +95,10 @@ namespace FuturifyVacation.Controllers
             if (!changePasswordResult.Succeeded)
             {
                 return BadRequest();
-            }           
+            }
             return Ok();
         }
-      
+
         [HttpGet("getmyteam")]
         public async Task<List<MyTeamBindingModel>> GetMyTeam()
         {
@@ -103,8 +110,8 @@ namespace FuturifyVacation.Controllers
             var teams = await _profileService.GetTeam(user.Id);
             return teams.Select(p => new MyTeamBindingModel
             {
-                TeamId=p.TeamId,
-                TeamName=p.Team.TeamName
+                TeamId = p.TeamId,
+                TeamName = p.Team.TeamName
             }).ToList();
         }
     }

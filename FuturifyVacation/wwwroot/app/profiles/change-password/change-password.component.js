@@ -3,6 +3,14 @@
         templateUrl: '/app/profiles/change-password/change-password.html',
         controller: function ($location, $http) {
             var vm = this;
+            $http.get('http://localhost:63237/api/profiles/myId').then(function (response) {
+                vm.employees = response.data;
+                if (vm.employees.hasPassword == false) {
+                    $location.path('/profile');
+                };
+            });
+            
+
             vm.profiles = {};
             vm.changepass = function () {
                 $http.post('http://localhost:63237/api/profiles/changepassword', vm.profiles).then(function () {

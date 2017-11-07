@@ -1,7 +1,7 @@
 ﻿<div>
     <div>
         <a ng-href="#/teams/add" class="btn btn-md btn-success"><i class="glyphicon glyphicon-plus"></i> Add new team</a>
-        <span class="pull-right"><b> Search team: </b><input /></span>
+        <span class="pull-right"><b> Search team: </b><input ng-model="$ctrl.teamSearch" class="custom-form-control"/></span>
     </div>
     <div>
         <table class="table table-striped">
@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="team in $ctrl.teams.slice((($ctrl.currentPage-1)*$ctrl.itemsPerPage), (($ctrl.currentPage)*$ctrl.itemsPerPage))">
+                <tr ng-repeat="team in $ctrl.teams.slice((($ctrl.currentPage-1)*$ctrl.itemsPerPage), (($ctrl.currentPage)*$ctrl.itemsPerPage))|filter: $ctrl.teamSearch ">
                     <td>{{(($ctrl.currentPage-1)*$ctrl.itemsPerPage)+$index+1}}</td>
                     <td>{{team.teamName}}</td>
                     <td>{{team.firstName}} {{team.lastName}}</td>

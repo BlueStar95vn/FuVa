@@ -166,7 +166,7 @@
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,agendaWeek,agendaDay'
+                        right: 'month,agendaWeek,agendaDay,listMonth'
                     },
                     eventClick: vm.detailVacation,
                     eventDrop: vm.alertOnDrop,
@@ -184,10 +184,32 @@
                 }
             };
 
+            //pagination table
+            vm.currentPageTable = 1;
+            vm.viewbyTable = 10;
+            vm.itemsPerPageTable = vm.viewbyTable;
+            vm.maxSizeTable = 5;
+            vm.pageChangedTable = function () {
+                $log.log('Page Table changed to: ' + vm.currentPageTable);
+            };
+            vm.setItemsPerPageTable = function (num) {
+                vm.itemsPerPageTable = num;
+                vm.currentPageTable = 1;
+            };
 
-            /* event sources array*/
-            //vm.eventSources = [vm.events, vm.eventSource, vm.eventsF];
-            //vm.eventSources = [vm.calEventsExt, vm.eventsF, vm.events];
+            //pagination 
+            vm.currentPageEmp = 1;
+            vm.viewbyEmp = 10;
+            vm.itemsPerPageEmp = vm.viewbyEmp;
+            vm.maxSizeEmp = 5;
+            vm.pageChangedEmp = function () {
+                $log.log('Page Employee changed to: ' + vm.currentPageEmp);
+            };
+            vm.setItemsPerPageEmp = function (num) {
+                vm.itemsPerPageEmp = num;
+                vm.currentPageEmp = 1;
+            };
+           
 
         }
 

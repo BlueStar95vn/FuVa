@@ -116,17 +116,31 @@ namespace FuturifyVacation.Controllers
                 
 
             };
-            var password = GenerateRandomPassword();
-            var result = await _userManager.CreateAsync(user, password);
-            if (result.Succeeded)
+
+            ////Create account without password
+            var resultSaveGoogleEmail = await _userManager.CreateAsync(user);
+            if (resultSaveGoogleEmail.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "USER");
-               
-                var subject = "[Vacation Tracking] Your account information";
+
+                var subject = "[Vacation Tracking] Your account is created";
                 var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
-                    "\n This is your password: " + password;
-               await _emailSender.SendEmailAsync(employee.Email, subject, message);
+                    "\nLogin with google account! http://localhost:63237/";                   
+                await _emailSender.SendEmailAsync(employee.Email, subject, message);
             }
+
+            ////Create account with password
+            //var password = GenerateRandomPassword();
+            //var result = await _userManager.CreateAsync(user, password);           
+            //if (result.Succeeded)
+            //{
+            //    await _userManager.AddToRoleAsync(user, "USER");
+
+            //    var subject = "[Vacation Tracking] Your account information";
+            //    var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
+            //        "\n This is your password: " + password;
+            //   await _emailSender.SendEmailAsync(employee.Email, subject, message);
+            //}
             return employee;
         }
 

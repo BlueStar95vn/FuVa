@@ -4,7 +4,7 @@
         templateUrl: "/app/employees/employee-list/employee-list.html",
         controller: function ($http, $routeParams, $location, $log) {
             var vm = this;
-            
+            vm.employees = [];
             $http.get('http://localhost:63237/api/employees/getall').then(function (response) {
                 vm.employees = response.data;
             });
@@ -23,6 +23,10 @@
                     }).catch(function (error) {
                         console.log(error)
                     });
+            }
+
+            vm.searchChange = function () {
+                vm.currentPage = 1;
             }
             vm.currentPage = 1;
             vm.viewby = 10;                    

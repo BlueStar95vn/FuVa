@@ -7,7 +7,7 @@
             vm.employees = {};
             $http.get('http://localhost:63237/api/profiles/myId').then(function (response) {
                 vm.employees = response.data;
-               
+                vm.employees.doB = new Date(response.data.doB);
             });
             vm.save = function () {
                 $http.post('http://localhost:63237/api/profiles/update', vm.employees).then(function () {
