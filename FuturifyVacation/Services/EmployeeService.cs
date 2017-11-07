@@ -63,6 +63,12 @@ namespace FuturifyVacation.Services
             var profile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
             //_db.UserProfiles.Remove(profile);
             _db.Users.Remove(profile.User);
+            var ExternalAccount = await _db.UserLogins.FirstOrDefaultAsync(u => u.UserId == userId);
+            if(ExternalAccount!=null)
+            {
+                _db.UserLogins.Remove(ExternalAccount);
+            }
+          
             await _db.SaveChangesAsync();
         }
 

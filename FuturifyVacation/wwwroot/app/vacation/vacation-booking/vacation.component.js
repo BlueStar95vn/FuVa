@@ -308,8 +308,6 @@ angular.module('vacation').component('vacationModalComponent', {
         }
         vm.close = function () {
             vm.dismiss({ $value: 'cancel' });
-
         };
-
     }
 });

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using FuturifyVacation.ServicesInterfaces;
 using FuturifyVacation.Services;
 using FuturifyVacation.Setup;
+using Microsoft.Extensions.Logging;
 
 namespace FuturifyVacation
 {
@@ -48,25 +49,30 @@ namespace FuturifyVacation
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-
-
-            services.ConfigureApplicationCookie(options =>
+            services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                options.Cookie.Name = "UserCookie";
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-                options.LoginPath = "/Login";
-                options.LogoutPath = "/Logout";
-                options.SlidingExpiration = true;
-                // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
-                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
+
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.Cookie.Name = "UserCookie";
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+            //    options.LoginPath = "/Login";
+            //    options.LogoutPath = "/Logout";
+            //    options.SlidingExpiration = true;
+            //    // Requires `using Microsoft.AspNetCore.Authentication.Cookies;`
+            //    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+            //});
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IVacationService, VacationService>();
             services.AddScoped<ITeamService, TeamService>();
+          
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
             });

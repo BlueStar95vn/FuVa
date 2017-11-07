@@ -1,12 +1,12 @@
-﻿<div ng-controller="authLoginController as authLoginCtrl">
+﻿<div>
     <div class="col-sm-offset-2 col-md-offset-3">
         <div class="modal-dialog">
             <div class="loginmodal-container">
                 <h1>Login to Your Account</h1><br>
-                <form name="form" ng-submit="authLoginCtrl.onLogin()" novalidate>
+                <form name="form" ng-submit="$ctrl.onLogin()" novalidate>
                     <div class="form-group">
                         <label for="email">Email: </label>
-                        <input type="email" name="email" id="email" class="form-control" ng-model="authLoginCtrl.user.email" placeholder="Email" autofocus required>
+                        <input type="email" name="email" id="email" class="form-control" ng-model="$ctrl.user.email" placeholder="Email" autofocus required>
                     </div>
                     <div ng-show="form.email.$dirty && form.email.$invalid" class="text-danger">
                         <div ng-show="form.email.$error.required">Bạn chưa nhập địa chỉ email</div>
@@ -14,7 +14,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password: </label>
-                        <input type="password" ng-model="authLoginCtrl.user.password" class="form-control" name="password" placeholder="Password" required>
+                        <input type="password" ng-model="$ctrl.user.password" class="form-control" name="password" placeholder="Password" required>
                     </div>
                     <div ng-show="form.password.$dirty && form.password.$invalid" class="text-danger">
                         <div ng-show="form.password.$error.required">Bạn chưa nhập mật khẩu</div>
@@ -26,8 +26,13 @@
                     
                    
                 </form>
-                <div class="login-help">
-                    <a href="#">Forgot Password</a>
+               
+                <hr />
+                <center>Login with:</center>
+                <div>
+                    <form action="/api/Account/ExternalLogin?Provider=Google&ReturnUrl=/" method="post">
+                        <button type="submit" class="btn btn-info form-control" >Google Sign In</button>
+                    </form>
                 </div>
             </div>
         </div>

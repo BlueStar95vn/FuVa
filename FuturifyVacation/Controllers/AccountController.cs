@@ -11,26 +11,32 @@ using FuturifyVacation.Models.ViewModels;
 using System.Security.Claims;
 using FuturifyVacation.Models.BindingModels;
 using FuturifyVacation.ServicesInterfaces;
+using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FuturifyVacation.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/account")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IProfileService _profileService;
+        private readonly ILogger _logger;
+
         public AccountController(
            UserManager<ApplicationUser> userManager,
            SignInManager<ApplicationUser> signInManager,
-           IProfileService profileService)
+           IProfileService profileService, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _profileService = profileService;
+            _logger = logger;
         }
 
         [HttpGet("check-auth")]
@@ -51,7 +57,6 @@ namespace FuturifyVacation.Controllers
 
         [HttpPost("login")]
         [AllowAnonymous]
-
         public async Task<IActionResult> Login([FromBody]LoginViewModel model)
         {
             var acc = new ApplicationUser();
@@ -72,6 +77,78 @@ namespace FuturifyVacation.Controllers
             }
             return BadRequest(new { Success = false, Error = "asdjaks" });
         }
+
+
+        [HttpPost("externallogin")]
+        [AllowAnonymous]      
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            // Request a redirect to the external login provider.
+            
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+
+
+        [HttpGet("externallogincallback")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            var redirectUrl = "/#/login/";
+            if (remoteError != null)
+            {
+                return BadRequest(new { Success = false, Error = "Error from external provider" });
+
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {               
+                return Redirect(redirectUrl);
+            }
+
+            // Sign in the user with this external login provider if the user already has a login.
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+                redirectUrl = "/#/home";
+                return Redirect(redirectUrl);
+            }
+            //if (result.IsLockedOut)
+            //{
+            //    return RedirectToAction(nameof(Lockout));
+            //}
+            else
+            {
+                // If the user does not have an account, then ask the user to create an account.
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["LoginProvider"] = info.LoginProvider;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var user = await _userManager.FindByNameAsync(email);
+                if(user==null)
+                {                   
+                    return Redirect(redirectUrl);
+                }
+
+                var addProvider = await _userManager.AddLoginAsync(user, info);
+
+                if (addProvider.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                    redirectUrl = "/#/home";
+                    return Redirect(redirectUrl);
+                }
+               
+                return Redirect(redirectUrl); //redirect ve trang index
+            }
+        
+        }
+   
+
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
