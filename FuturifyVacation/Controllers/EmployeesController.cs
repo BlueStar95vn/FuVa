@@ -125,7 +125,7 @@ namespace FuturifyVacation.Controllers
 
                 var subject = "[Vacation Tracking] Your account is created";
                 var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
-                    "\nLogin with google account! http://localhost:63237/";                   
+                    "\nLogin with your email! http://localhost:63237/#/login";                   
                 await _emailSender.SendEmailAsync(employee.Email, subject, message);
             }
 
@@ -153,6 +153,13 @@ namespace FuturifyVacation.Controllers
                 TeamId = p.TeamId,
                 TeamName = p.Team.TeamName
             }).ToList();
+        }
+
+        [HttpPost("setdayoff")]
+        public async Task SetDayOff([FromBody]DayOffConfigBindingModel model)
+        {
+            int hours = model.RemainingDayOff * 8;
+            await _employeeService.SetDayOff(hours.ToString());
         }
         public string GenerateRandomPassword(PasswordOptions opts = null)
         {

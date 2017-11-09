@@ -23,5 +23,6 @@ namespace FuturifyVacation.Models
         public string RemainingDayOff { set; get; }
         public string Status { set; get; }
 
+
     }
 }

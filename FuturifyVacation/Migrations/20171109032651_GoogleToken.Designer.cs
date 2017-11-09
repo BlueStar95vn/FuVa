@@ -11,9 +11,10 @@ using System;
 namespace FuturifyVacation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171109032651_GoogleToken")]
+    partial class GoogleToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,8 +159,6 @@ namespace FuturifyVacation.Migrations
                     b.Property<string>("Color");
 
                     b.Property<DateTime>("End");
-
-                    b.Property<string>("GoogleCalendarId");
 
                     b.Property<DateTime>("Start");
 

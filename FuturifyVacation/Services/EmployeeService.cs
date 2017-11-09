@@ -1,5 +1,6 @@
 ﻿using FuturifyVacation.Data;
 using FuturifyVacation.Models;
+using FuturifyVacation.Models.BindingModels;
 using FuturifyVacation.Models.ViewModels;
 using FuturifyVacation.ServicesInterfaces;
 using Microsoft.AspNetCore.Identity;
@@ -60,16 +61,23 @@ namespace FuturifyVacation.Services
         }
         public async Task DeleteByIdAsync(string userId)
         {
-            var profile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
-            //_db.UserProfiles.Remove(profile);
-            _db.Users.Remove(profile.User);
+          
 
             var teams = await _db.TeamDetails.Where(u => u.UserId == userId).ToListAsync();
-            if(teams!=null)
+            if (teams != null)
             {
                 _db.TeamDetails.RemoveRange(teams);
             }
-           
+
+            var vacations = await _db.UserVacations.Where(u => u.User.UserId == userId).ToListAsync();
+            if (vacations != null)
+            {
+                _db.UserVacations.RemoveRange(vacations);
+            }
+
+            var profile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
+            //_db.UserProfiles.Remove(profile);
+            _db.Users.Remove(profile.User);
 
             var externalAccount = await _db.UserLogins.FirstOrDefaultAsync(u => u.UserId == userId);
             if (externalAccount != null)
@@ -77,12 +85,36 @@ namespace FuturifyVacation.Services
                 _db.UserLogins.Remove(externalAccount);
             }
 
+           
+
             await _db.SaveChangesAsync();
         }
 
         public async Task<List<TeamDetail>> GetTeam(string userId)
         {
             return await _db.TeamDetails.Include(u => u.Team).Where(u => u.UserId == userId).ToListAsync();
+        }
+
+        public async Task SetDayOff(string dayoff)
+        {
+            var getAll = await _db.UserProfiles.ToListAsync();
+            foreach (var mem in getAll)
+            {
+                //Transfer days off of employees in the previous year to next year
+                if (int.Parse(mem.RemainingDayOff) > 0)
+                {
+                    mem.RemainingDayOff = (int.Parse(mem.RemainingDayOff) + int.Parse(dayoff)).ToString();
+                }
+                else
+                {
+                    mem.RemainingDayOff = dayoff;
+                }
+
+                ////not transfer
+                //mem.RemainingDayOff = dayoff;
+
+            }
+            await _db.SaveChangesAsync();
         }
     }
 }

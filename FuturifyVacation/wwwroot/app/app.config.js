@@ -134,6 +134,13 @@
                         loginRedirect: false
                     }
                 }).
+                when('/setting', {
+                    template: '<setting></setting>',
+                    restrictions: {
+                        ensureAuthenticated: true,
+                        loginRedirect: false
+                    }
+                }).
                 otherwise({
                     redirectTo: '/home',
                     restrictions: {
@@ -155,7 +162,7 @@
                         || next.$$route.originalPath == "/employees/edit/:userId" || next.$$route.originalPath == "/teams"
                         || next.$$route.originalPath == "/teams/edit/:teamId"
                         || next.$$route.originalPath == "/teams/add" || next.$$route.originalPath == "/vacation/request"
-                        || next.$$route.originalPath == "/report")) {
+                        || next.$$route.originalPath == "/report" || next.$$route.originalPath == "/setting")) {
                         $location.path('/home');
                     }
 

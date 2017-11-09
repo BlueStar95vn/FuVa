@@ -15,6 +15,7 @@ using FuturifyVacation.ServicesInterfaces;
 using FuturifyVacation.Services;
 using FuturifyVacation.Setup;
 using Microsoft.Extensions.Logging;
+using Google.Apis.Calendar.v3;
 
 namespace FuturifyVacation
 {
@@ -53,6 +54,8 @@ namespace FuturifyVacation
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                googleOptions.SaveTokens = true;
+                googleOptions.Scope.Add(CalendarService.Scope.Calendar);
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -72,7 +75,7 @@ namespace FuturifyVacation
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IVacationService, VacationService>();
             services.AddScoped<ITeamService, TeamService>();
-          
+            services.AddScoped<IGoogleService, GoogleService>();
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
             });

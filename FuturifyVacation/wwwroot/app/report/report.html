@@ -63,9 +63,14 @@
           
             <span>
                 <b>Filter by employee: </b> <input ng-model="$ctrl.searchValue" class="custom-form-control"/>
-                <!--<a class="btn btn-sm btn-primary" ng-click="" id="filter">
-                    <i class="glyphicon glyphicon-filter"></i>
-                </a>-->             
+                <b>Sort By:  </b>
+                <select type="" ng-model="$ctrl.sort" class="custom-form-control">
+                    <option>None</option>
+                    <option value="firstName">First Name</option>
+                    <option value="start">Start</option>
+                    <option value="end">End</option>
+                    <option value="color">Status</option>                   
+                </select>             
             </span>
             <hr />
             <table class="table table-striped">
@@ -80,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="vacation in $ctrl.vacations|filter:$ctrl.monthYear|filter:$ctrl.searchValue">
+                    <tr ng-repeat="vacation in $ctrl.vacations|filter:$ctrl.monthYear|filter:$ctrl.searchValue|orderBy: $ctrl.sort">
                         <td>{{$index+1}}</td>
                         <td>{{vacation.title}}</td>
                         <td>{{vacation.start|date:"dd/MM/yyyy hh:mm a"}}</td>

@@ -148,7 +148,6 @@ namespace FuturifyVacation.Services
                             + "\n\nYour Remaining Time: " + hoursleft.ToString() + " hour(s)";
             await _emailSender.SendEmailAsync(email, subject, message);
 
-
             getVacation.Color = "Green";
             getVacation.User.RemainingDayOff = hoursleft.ToString();
             await _db.SaveChangesAsync();

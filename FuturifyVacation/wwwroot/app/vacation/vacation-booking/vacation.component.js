@@ -212,10 +212,20 @@
             vm.bookVacation = function () {
                 vm.booked = true;
                 $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function () {
+                    vm.addGoogleEvent();
                     vm.booked = false;
                     alert("Success");
                     vm.refreshEvent();
                 }).catch(function (err) {
+                    console.log(err);
+                });
+               
+            }
+            vm.addGoogleEvent = function () {
+                $http.post("http://localhost:63237/api/googlecalendars/addevent", vm.newVacations).then(function () {
+
+                }).catch(function (err) {
+                    console.log('Add event to google calendar err');
                     console.log(err);
                 });
             }
@@ -293,16 +303,16 @@ angular.module('vacation').component('vacationModalComponent', {
             });
         };
 
-        vm.cancelClicked = false;   
+        vm.cancelClicked = false;
         vm.cancel = function (id) {
-            vm.cancelClicked = true; 
+            vm.cancelClicked = true;
             $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function () {
-                vm.cancelClicked = false; 
+                vm.cancelClicked = false;
                 vm.dismiss({ $value: 'cancel' });
                 alert("Delete Successfully");
             }).catch(function (err) {
                 alert("Error");
-                vm.cancelClicked = false; 
+                vm.cancelClicked = false;
                 console.log(err);
             });
         }

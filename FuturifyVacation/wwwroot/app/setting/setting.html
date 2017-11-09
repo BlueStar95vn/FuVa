@@ -1,0 +1,26 @@
+﻿<div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-xs-3">
+            <a href="" ng-click="$ctrl.dayOffClicked()">
+                <div align="center" class="btn-lg btn-primary">
+                    <h1><i class="glyphicon glyphicon-alert"></i></h1>
+                    <h2>Change Day Off</h2>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-9 col-md-9 col-xs-9">
+            <div ng-if="$ctrl.changeDayOff==true">
+                <h2>Day Off</h2>
+                <label>Number of day off:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.dayOffModel.remainingDayOff" />
+
+                <a class="btn btn-success" ng-click="$ctrl.setDayOff()"><i class="glyphicon glyphicon-calendar"></i> Change</a>
+                <a class="btn btn-danger" ng-click="$ctrl.dayOffCanceled()"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+                <br /> <br />
+                Each employee will have {{$ctrl.dayOffModel.remainingDayOff||0}} day(s) off ({{$ctrl.dayOffModel.remainingDayOff * 8 ||0}} (hours)).
+            </div>           
+        </div>
+    </div>
+
+    <hr />
+</div>

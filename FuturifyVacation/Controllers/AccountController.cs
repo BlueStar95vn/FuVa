@@ -26,29 +26,32 @@ namespace FuturifyVacation.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IProfileService _profileService;
+        private readonly IGoogleService _googleService;
         private readonly ILogger _logger;
 
         public AccountController(
            UserManager<ApplicationUser> userManager,
            SignInManager<ApplicationUser> signInManager,
-           IProfileService profileService, ILogger<AccountController> logger)
+           IProfileService profileService, ILogger<AccountController> logger, IGoogleService googleService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _profileService = profileService;
             _logger = logger;
+            _googleService = googleService;
         }
 
         [HttpGet("check-auth")]
         public async Task<IActionResult> IsAuthorized()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);           
-            var role = await _userManager.GetRolesAsync(user);
             var getUser = await _userManager.GetUserAsync(User);
+                  
+            var role = await _userManager.GetRolesAsync(getUser);
+           
             var getName = await _profileService.GetByIdAsync(getUser.Id);
             return Ok(new
             {
-                Role = role.FirstOrDefault(),
+                Role = role,
                 Name = getName.FirstName
                 //var user = HttpContext.User;            
                 //return Ok(new { userId = user.FindFirstValue(ClaimTypes.NameIdentifier) });        
@@ -102,8 +105,13 @@ namespace FuturifyVacation.Controllers
                 return BadRequest(new { Success = false, Error = "Error from external provider" });
 
             }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            var info = await _signInManager.GetExternalLoginInfoAsync();            
+            var gettoken = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "access_token");
+            var accessToken = gettoken.Value;
+            var getExpireTime = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "expires_at");
+            var expireTime = getExpireTime.Value;
 
+            
             if (info == null)
             {               
                 return Redirect(redirectUrl);
@@ -113,8 +121,13 @@ namespace FuturifyVacation.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var user = await _userManager.FindByEmailAsync(email);
+                DateTime issuedAt = DateTime.Now;
+                await _googleService.SaveToken(user.Id, accessToken, issuedAt);
                 _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                redirectUrl = "/#/home";
+                
+                redirectUrl = "/#/status";
                 return Redirect(redirectUrl);
             }
             if (result.IsLockedOut)
@@ -133,13 +146,15 @@ namespace FuturifyVacation.Controllers
                     return Redirect(redirectUrl);
                 }
 
-                var addProvider = await _userManager.AddLoginAsync(user, info);
-
+                var addProvider = await _userManager.AddLoginAsync(user, info);               
+               
                 if (addProvider.Succeeded)
                 {
+                    DateTime issuedAt = DateTime.Now;
+                    await _googleService.SaveToken(user.Id, accessToken, issuedAt);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                    redirectUrl = "/#/home";
+                    redirectUrl = "/#/status";
                     return Redirect(redirectUrl);
                 }               
                 return Redirect(redirectUrl); //redirect ve trang index

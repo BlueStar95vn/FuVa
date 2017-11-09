@@ -23,9 +23,7 @@
                 vm.popup1.opened = true;
             };
             vm.dateOptions = {
-                dateDisabled: false,              
-                maxDate: new Date(2050, 5, 22),
-                minDate: new Date(1950,1,1),
+                dateDisabled: false,                            
                 startingDay: 1
             };
             vm.popup1 = {

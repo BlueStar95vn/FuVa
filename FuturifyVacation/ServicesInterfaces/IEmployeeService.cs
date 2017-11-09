@@ -1,4 +1,5 @@
 ﻿using FuturifyVacation.Models;
+using FuturifyVacation.Models.BindingModels;
 using FuturifyVacation.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId);
         Task DeleteByIdAsync(string userId);
         Task<List<TeamDetail>> GetTeam(string userId);
+        Task SetDayOff(string dayoff);
     }
 }
