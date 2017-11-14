@@ -16,5 +16,6 @@ namespace FuturifyVacation.Models
         public ApplicationUser User { set; get; }
         public string AccessToken { set; get; }
         public DateTime IssuedAt { set; get; }
+        public string RefreshToken { get; set; }
     }
 }

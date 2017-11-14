@@ -12,12 +12,12 @@
         <div class="col-lg-9 col-md-9 col-xs-9">
             <div ng-if="$ctrl.changeDayOff==true">
                 <h2>Day Off</h2>
-                <label>Number of day off:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.dayOffModel.remainingDayOff" />
+                <label>Number of day off:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.numberOfDayOff" />
 
                 <a class="btn btn-success" ng-click="$ctrl.setDayOff()"><i class="glyphicon glyphicon-calendar"></i> Change</a>
                 <a class="btn btn-danger" ng-click="$ctrl.dayOffCanceled()"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
                 <br /> <br />
-                Each employee will have {{$ctrl.dayOffModel.remainingDayOff||0}} day(s) off ({{$ctrl.dayOffModel.remainingDayOff * 8 ||0}} (hours)).
+                Each employee will have {{$ctrl.settings.numberOfDayOff||0}} day(s) off ({{$ctrl.settings.numberOfDayOff * 8 ||0}} (hours)).
             </div>           
         </div>
     </div>

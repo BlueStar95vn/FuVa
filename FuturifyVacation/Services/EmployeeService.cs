@@ -100,7 +100,7 @@ namespace FuturifyVacation.Services
             return await _db.TeamDetails.Include(u => u.Team).Where(u => u.UserId == userId).ToListAsync();
         }
 
-        public async Task SetDayOff(string dayoff)
+        public async Task SetDayOff(int dayoff)
         {
             var getAll = await _db.UserProfiles.ToListAsync();
             foreach (var mem in getAll)
@@ -108,11 +108,11 @@ namespace FuturifyVacation.Services
                 //Transfer days off of employees in the previous year to next year
                 if (int.Parse(mem.RemainingDayOff) > 0)
                 {
-                    mem.RemainingDayOff = (int.Parse(mem.RemainingDayOff) + int.Parse(dayoff)).ToString();
+                    mem.RemainingDayOff = (int.Parse(mem.RemainingDayOff) + dayoff).ToString();
                 }
                 else
                 {
-                    mem.RemainingDayOff = dayoff;
+                    mem.RemainingDayOff = dayoff.ToString();
                 }
 
                 ////not transfer

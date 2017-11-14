@@ -106,12 +106,9 @@ namespace FuturifyVacation.Controllers
 
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();            
-            var gettoken = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "access_token");
-            var accessToken = gettoken.Value;
-            var getExpireTime = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "expires_at");
-            var expireTime = getExpireTime.Value;
-
             
+
+
             if (info == null)
             {               
                 return Redirect(redirectUrl);
@@ -121,10 +118,10 @@ namespace FuturifyVacation.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                var user = await _userManager.FindByEmailAsync(email);
-                DateTime issuedAt = DateTime.Now;
-                await _googleService.SaveToken(user.Id, accessToken, issuedAt);
+                //var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                //var user = await _userManager.FindByEmailAsync(email);
+                //DateTime issuedAt = DateTime.Now;
+                //await _googleService.SaveToken(user.Id, accessToken, issuedAt);
                 _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
                 
                 redirectUrl = "/#/status";
@@ -146,12 +143,18 @@ namespace FuturifyVacation.Controllers
                     return Redirect(redirectUrl);
                 }
 
-                var addProvider = await _userManager.AddLoginAsync(user, info);               
-               
+                var addProvider = await _userManager.AddLoginAsync(user, info);
+                var gettoken = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "access_token");
+                var accessToken = gettoken.Value;
+                var getExpireTime = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "expires_at");
+                var expireTime = getExpireTime.Value;
+                var getRefreshToken = info.AuthenticationTokens.FirstOrDefault(u => u.Name == "refresh_token");
+                var refreshToken = getRefreshToken.Value;
+
                 if (addProvider.Succeeded)
                 {
                     DateTime issuedAt = DateTime.Now;
-                    await _googleService.SaveToken(user.Id, accessToken, issuedAt);
+                    await _googleService.SaveToken(user.Id, accessToken, issuedAt, refreshToken);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                     redirectUrl = "/#/status";

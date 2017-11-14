@@ -98,7 +98,7 @@ namespace FuturifyVacation.Controllers
             var subject = "[Vacation Tracking] - Your vacation is approved!";
             var message = "\nHi " + model.FirstName
                             + ",\n\n Your vacation has been approved,"
-                            + "\n\nVacation Request Detail: "
+                            + "\n\nYour Vacation Detail: "
                             + "\n\nTitle: " + model.Title
                             + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
                             + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();

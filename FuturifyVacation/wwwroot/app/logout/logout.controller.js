@@ -10,8 +10,7 @@
         vm.onLogout = function () {
             $location.path('/logout');
             authService.logout()
-                .then(function () {
-                    //localStorage.removeItem('userId');
+                .then(function () {                   
                     $location.path('/login');
                 })
                 .catch(function (err) {

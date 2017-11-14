@@ -96,25 +96,33 @@
                             <div class="col-md-8">
                                 To Date:
                                 <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.newVacations.end" is-open="$ctrl.popup2.opened" datepicker-options="$ctrl.toDateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats" />
+                                    <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.newVacations.end" is-open="$ctrl.popup2.opened" datepicker-options="$ctrl.toDateOptions" ng-required="true" close-text="Close" alt-input-formats="$ctrl.altInputFormats"  />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="$ctrl.open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
                                 </p>
                             </div>
                             <div class="col-md-4">
-                                <div uib-timepicker ng-model="$ctrl.newVacations.end" ng-change="$ctrl.changed()" hour-step="$ctrl.hstep" minute-step="$ctrl.mstep"></div>
+                                <div uib-timepicker name="end" ng-model="$ctrl.newVacations.end" ng-change="$ctrl.changed()" hour-step="$ctrl.hstep" minute-step="$ctrl.mstep"></div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                <div ng-if="$ctrl.booked==false">
-                    <input ng-click="$ctrl.bookVacation()" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" class="btn btn-success" value="Book" />
+                <div ng-if="$ctrl.newVacations.start>$ctrl.newVacations.end">
+                    <p class="text-danger">The end day cannot be before the start day!</p>
+                    <div>
+                        <input ng-disabled="true" class="btn btn-success" value="Book" />
+                    </div>
                 </div>
-                <div ng-if="$ctrl.booked==true">
-                    <input class="btn btn-success" value="Booking..." disabled />
-                </div>
+                <div ng-if="$ctrl.newVacations.start<$ctrl.newVacations.end">
+                    <div ng-if="$ctrl.booked==false">
+                        <input ng-click="$ctrl.bookVacation()" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" class="btn btn-success" value="Book" />
+                    </div>
+                    <div ng-if="$ctrl.booked==true">
+                        <input class="btn btn-success" value="Booking..." disabled />
+                    </div>
+                </div>                
             </div>
 
         </div>

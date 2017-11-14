@@ -39,8 +39,12 @@ namespace FuturifyVacation.Controllers
             var user = HttpContext.User;
             userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
             model.Color = "blue";
-           var getvacation = await _vacationService.AddVacationAsync(model, userId);
-            model.Id = getvacation.Id;
+            if (model.End>model.Start)
+            {
+                var getvacation = await _vacationService.AddVacationAsync(model, userId);
+                model.Id = getvacation.Id;
+            }
+
             return model;
         }
 

@@ -20,6 +20,7 @@ namespace FuturifyVacation.Data
         public DbSet<UserTeam> UserTeams { get; set; }
         public DbSet<TeamDetail> TeamDetails { get; set; }
         public DbSet<UserGoogleToken> UserGoogleToken { get; set; }
+        public DbSet<Setting> Settings { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

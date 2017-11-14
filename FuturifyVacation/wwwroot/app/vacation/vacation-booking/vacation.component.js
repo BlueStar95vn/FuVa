@@ -11,6 +11,16 @@
            
             vm.eventSources = [];
             vm.vacations = {};
+
+            //Get setting 
+            $http.get('http://localhost:63237/api/settings/allsetting').then(function (response) {
+                vm.settings = response.data;
+                vm.durationInWeek = vm.settings.durationInWeek;
+                vm.durationInMonth = vm.settings.durationInMonth;
+            }).catch(function (err) {
+                console.log(err);
+            });
+            //
             $http.get("http://localhost:63237/api/vacations/getuservacation").then(function (response) {
                 vm.vacations = response.data;
                 uiCalendarConfig.calendars['myCalendar'].fullCalendar('addEventSource', vm.vacations);
@@ -171,6 +181,7 @@
             vm.popup2 = {
                 opened: false
             };
+          
             vm.dateOptions = {
                 dateDisabled: disabled,
                 formatYear: 'yy',
@@ -272,6 +283,7 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.popup2 = {
             opened: false
         };
+        
         vm.dateOptions = {
             dateDisabled: disabled,
             formatYear: 'yy',

@@ -41,8 +41,8 @@ namespace FuturifyVacation.Controllers
         [HttpPost("addevent")]
         public async Task<UserVacationViewModel> AddEvent([FromBody]UserVacationViewModel model)
         {          
-            var getUser = await _userManager.GetUserAsync(User);
-            await _googleService.AddEvent(model, getUser.Id);
+           // var getUser = await _userManager.GetUserAsync(User);
+            await _googleService.AddEvent(model, model.UserId);
             return model;
         }
 

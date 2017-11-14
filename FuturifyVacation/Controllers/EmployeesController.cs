@@ -159,8 +159,8 @@ namespace FuturifyVacation.Controllers
         [HttpPost("setdayoff")]
         public async Task SetDayOff([FromBody]DayOffConfigBindingModel model)
         {
-            int hours = model.RemainingDayOff * 8;
-            await _employeeService.SetDayOff(hours.ToString());
+            int hours = model.NumberOfDayOff * 8;
+            await _employeeService.SetDayOff(hours);
         }
         public string GenerateRandomPassword(PasswordOptions opts = null)
         {

@@ -11,9 +11,10 @@ using System;
 namespace FuturifyVacation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171114080746_UpdateGoogleToken")]
+    partial class UpdateGoogleToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,26 +70,6 @@ namespace FuturifyVacation.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("FuturifyVacation.Models.Setting", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DurationInMonth");
-
-                    b.Property<int>("DurationInWeek");
-
-                    b.Property<int>("EndHour");
-
-                    b.Property<int>("NumberOfDayOff");
-
-                    b.Property<int>("StartHour");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("FuturifyVacation.Models.TeamDetail", b =>

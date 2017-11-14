@@ -17,13 +17,13 @@ angular.
                         console.log(error);
                     });
             };
-            vm.google = function () {
-                $http.post('http://localhost:63237/api/account/externallogin').then(function () {
+            //vm.google = function () {
+            //    $http.post('http://localhost:63237/api/account/externallogin').then(function () {
 
-                }).catch(function (err) {
-                    console.log(err);
-                });
-            }
+            //    }).catch(function (err) {
+            //        console.log(err);
+            //    });
+            //}
         }
     });
 

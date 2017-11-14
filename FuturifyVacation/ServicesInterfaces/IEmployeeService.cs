@@ -15,6 +15,6 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId);
         Task DeleteByIdAsync(string userId);
         Task<List<TeamDetail>> GetTeam(string userId);
-        Task SetDayOff(string dayoff);
+        Task SetDayOff(int dayoff);
     }
 }

@@ -44,7 +44,7 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task SaveToken(string userId, string token, DateTime issuedAt)
+        public async Task SaveToken(string userId, string token, DateTime issuedAt, string refreshToken )
         {
             var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
             if (getToken == null)
@@ -53,7 +53,8 @@ namespace FuturifyVacation.Services
                 {
                     UserId = userId,
                     AccessToken = token,
-                    IssuedAt = issuedAt.ToUniversalTime()
+                    IssuedAt = issuedAt.ToUniversalTime(),
+                    RefreshToken = refreshToken
                 };
                 await _db.UserGoogleToken.AddAsync(newToken);
             }
@@ -69,7 +70,7 @@ namespace FuturifyVacation.Services
             var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
             if (getToken != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -104,7 +105,7 @@ namespace FuturifyVacation.Services
             var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
             if (getToken != null && GoogleEventId != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -122,7 +123,7 @@ namespace FuturifyVacation.Services
             var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
             if (getEvent != null && getToken != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -155,7 +156,7 @@ namespace FuturifyVacation.Services
             var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == getEvent.UserId);
             if (getEvent != null && getToken != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -190,14 +191,14 @@ namespace FuturifyVacation.Services
 
 
 
-        private async Task<UserCredential> GetCredential(string aToken, DateTime issuedAt, string clientId, string clientSecret)
+        private async Task<UserCredential> GetCredential(string aToken, string refreshToken,DateTime issuedAt, string clientId, string clientSecret)
         {
             var token = new TokenResponse()
             {
                 AccessToken = aToken,
                 ExpiresInSeconds = 3600,
                 IssuedUtc = issuedAt,
-                RefreshToken = aToken
+                RefreshToken = refreshToken
             };
             //var token = new TokenResponse
             //{
@@ -218,7 +219,8 @@ namespace FuturifyVacation.Services
 
             if (credential.Token.IsExpired(credential.Flow.Clock))
             {
-                //await credential.RefreshTokenAsync(CancellationToken.None);
+                await credential.RefreshTokenAsync(CancellationToken.None);
+                await credential.GetAccessTokenForRequestAsync();
 
             }
             if (issuedAt.AddSeconds(3540) < DateTime.Now)
@@ -228,14 +230,6 @@ namespace FuturifyVacation.Services
                 var refresh = await credential.RefreshTokenAsync(CancellationToken.None);
                 await credential.GetAccessTokenForRequestAsync();
 
-                //var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.AccessToken == aToken);
-                //getToken.IssuedAt = DateTime.Now.ToUniversalTime();
-                //await _db.SaveChangesAsync();
-
-
-
-                // TODO update issuedat
-                // TODO update access token
             }
 
             return credential;
