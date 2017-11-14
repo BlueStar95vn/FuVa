@@ -12,7 +12,7 @@ namespace FuturifyVacation.ServicesInterfaces
     {
         Task<List<UserVacation>> GetVacationByUserIdAsync(string userId);
         Task<UserVacation> GetVacationByVacationIdAsync(int vacationId); 
-        Task AddVacationAsync(UserVacationViewModel model, string userId);
+        Task<UserVacation> AddVacationAsync(UserVacationViewModel model, string userId);
         Task<UserVacation> UpdateVacationAsync(UserVacationViewModel model);
         Task CancelVacationAsync(int vacationId );
 

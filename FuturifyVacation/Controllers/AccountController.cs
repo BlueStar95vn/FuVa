@@ -158,8 +158,7 @@ namespace FuturifyVacation.Controllers
                     return Redirect(redirectUrl);
                 }               
                 return Redirect(redirectUrl); //redirect ve trang index
-            }
-        
+            }        
         }
    
 

@@ -29,15 +29,18 @@ namespace FuturifyVacation.Controllers
             _emailSender = emailSender;
             _vacationService = vacationService;
         }
-        //User
 
+
+
+        //User
         [HttpPost("bookvacation")]
         public async Task<UserVacationViewModel> BookVacation([FromBody]UserVacationViewModel model, string userId)
         {
             var user = HttpContext.User;
             userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
             model.Color = "blue";
-            await _vacationService.AddVacationAsync(model, userId);
+           var getvacation = await _vacationService.AddVacationAsync(model, userId);
+            model.Id = getvacation.Id;
             return model;
         }
 
@@ -59,16 +62,28 @@ namespace FuturifyVacation.Controllers
         }
 
         [HttpPost("updateuservacation")]
-        public async Task UpdateUserVacation([FromBody] UserVacationViewModel model)
+        public async Task<UserVacationViewModel> UpdateUserVacation([FromBody] UserVacationViewModel model)
         {
             await _vacationService.UpdateVacationAsync(model);
+            var getVacation = await _vacationService.GetVacationByVacationIdAsync(model.Id);
+            model.GoogleCalendarId = getVacation.GoogleCalendarId;
+            return model;
         }
 
         [HttpDelete("cancel/{vacationId}")]
-        public async Task CancelUserVacation(int vacationId)
+        public async Task<string> CancelUserVacation(int vacationId)
         {
+            var getVacation = await _vacationService.GetVacationByVacationIdAsync(vacationId);
+            string googleCalendarEventId = getVacation.GoogleCalendarId;
             await _vacationService.CancelVacationAsync(vacationId);
+            return googleCalendarEventId;
         }
+
+
+
+
+
+
         //Admin
         [Authorize(Roles = "ADMIN")]
         [HttpGet("getallvacation")]
@@ -87,6 +102,8 @@ namespace FuturifyVacation.Controllers
 
             }).ToList();
         }
+
+
         [Authorize(Roles = "ADMIN")]
         [HttpGet("getrequestvacation")]
         public async Task<List<UserVacationViewModel>> GetRequestVacation()
@@ -101,7 +118,9 @@ namespace FuturifyVacation.Controllers
                 UserId = p.UserId,
                 Color = p.Color,
                 FirstName = p.User.FirstName,
-                LastName = p.User.LastName
+                LastName = p.User.LastName,
+                
+                
             }).ToList();
         }
         [Authorize(Roles = "ADMIN")]

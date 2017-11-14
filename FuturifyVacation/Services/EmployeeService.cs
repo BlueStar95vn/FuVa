@@ -69,6 +69,11 @@ namespace FuturifyVacation.Services
                 _db.TeamDetails.RemoveRange(teams);
             }
 
+            var getGoogle = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId==userId);
+            if(getGoogle!=null)
+            {
+                _db.UserGoogleToken.Remove(getGoogle);
+            }
             var vacations = await _db.UserVacations.Where(u => u.User.UserId == userId).ToListAsync();
             if (vacations != null)
             {

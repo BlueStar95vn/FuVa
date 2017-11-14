@@ -10,21 +10,58 @@
             });
             vm.approveClicked = false;
 
-            vm.approve = function (id, index) {
+            vm.approve = function (vacation, index) {
                 vm.approveClicked = true;
                 vm.indexClicked = index;
-                $http.post('http://localhost:63237/api/vacations/approve/' + id).then(function () {
+                $http.post('http://localhost:63237/api/vacations/approve/' + vacation.id).then(function () {
                     vm.approveClicked = false;
                     alert('Approved');
+                    vm.sendApproveEmail(vacation);
+                    $http.post("http://localhost:63237/api/googlecalendars/addevent", vacation).then(function (response) {
+                        var googleId = response.data.googleCalendarId;
+                        vm.saveEventGoogleId(googleId, vacation.id);
+                    }).catch(function (err) {
+                        console.log('Add event to google calendar err');
+                        console.log(err);
+                    });
                     vm.vacations.splice(index, 1);
                 }).catch(function (err) {
                     console.log(err);
-                })
+                });
 
             }
-            vm.disaprrove = function (id) {
-                console.log(id);
-            };
+
+            vm.sendApproveEmail = function (vacation) {
+                $http.post("http://localhost:63237/api/emailsenders/approvevacation", vacation).then(function () {
+
+                }).catch(function (err) {
+
+                    console.log(err);
+                });
+            }
+            //google approve
+            vm.saveEventGoogleId = function (googleId, fullId) {
+                $http.post("http://localhost:63237/api/googlecalendars/saveeventid/" + googleId + '/' + fullId).then(function () {
+
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }
+
+
+
+
+
+            //vm.disaprrove = function (id) {
+            //    console.log(id);
+            //};
+
+
+
+
+
+
+
 
             vm.animationsEnabled = true;
 
@@ -67,15 +104,26 @@ angular.module('vacationRequest').component('modalComponent', {
     },
     controller: function ($http) {
         var vm = this;
+        vm.vacations = {};
+        vm.thisVacation = {};
         vm.$onInit = function () {
-            vm.vacations = vm.resolve.vacations;
             vm.index = vm.resolve.index;
+            vm.vacations = vm.resolve.vacations;
+
         };
         vm.reasons = {};
+
         vm.disapproveClicked = false;
         vm.ok = function () {
             vm.disapproveClicked = true;
+            $http.post('http://localhost:63237/api/emailsenders/disapprovevacation/' + vm.resolve.vacationId, vm.reasons).then(function () {
+
+            }).catch(function (err) {
+                console.log(err);
+            });
+
             $http.post('http://localhost:63237/api/vacations/disapprove/' + vm.resolve.vacationId, vm.reasons).then(function () {
+                alert("Disapproved!");
                 vm.vacations.splice(vm.index, 1);
                 console.log(vm.index);
                 vm.close({ $value: 'cancel' });
@@ -87,5 +135,16 @@ angular.module('vacationRequest').component('modalComponent', {
             vm.dismiss({ $value: 'cancel' });
         };
 
+
+        //google calendar
+
+
+        vm.deleteGoogleCalendarEvent = function (googleEventId) {
+            $http.delete('http://localhost:63237/api/googleCalendars/deletegoogleevent/' + googleEventId).then(function () {
+
+            }).catch(function (err) {
+                console.log(err);
+            });
+        };
     }
 });

@@ -13,7 +13,8 @@
                     alert("Save successfully");
                     //$location.path('/employees/detail/' + $routeParams.userId);
                     $location.path('/employees');
-                }).catch(function(error){
+                }).catch(function (error) {
+                    alert("Day of birth is invalid!");
                     console.log(error);
                 });
             }

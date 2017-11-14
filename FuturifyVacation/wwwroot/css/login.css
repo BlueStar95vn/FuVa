@@ -2,14 +2,11 @@
     /*background: url("../image/background3.jpg");*/
     /* Center and scale the image nicely */
     background-color:#333;
-    background-position: center;
+    /*background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    position: absolute;
+    background-size: cover;*/
     width: 100%;
-    min-height: 100%;
-    left: 0;
-    top: 0;
+
 }
 .padding{
     padding-top:150px;

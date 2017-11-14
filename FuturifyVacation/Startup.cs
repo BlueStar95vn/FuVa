@@ -55,6 +55,8 @@ namespace FuturifyVacation
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
                 googleOptions.SaveTokens = true;
+                googleOptions.AccessType = "offline";
+              
                 googleOptions.Scope.Add(CalendarService.Scope.Calendar);
             });
 

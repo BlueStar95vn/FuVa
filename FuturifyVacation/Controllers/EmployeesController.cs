@@ -91,6 +91,7 @@ namespace FuturifyVacation.Controllers
                 PhoneNumber = update.User.PhoneNumber
             };
         }
+
         [HttpDelete("delete/{userId}")]
         public async Task DeleteProfile(string userId)
         {
@@ -123,10 +124,10 @@ namespace FuturifyVacation.Controllers
             {
                 await _userManager.AddToRoleAsync(user, "USER");
 
-                var subject = "[Vacation Tracking] Your account is created";
-                var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
-                    "\nLogin with your email! http://localhost:63237/#/login";                   
-                await _emailSender.SendEmailAsync(employee.Email, subject, message);
+                //var subject = "[Vacation Tracking] Your account is created";
+                //var message = "Hi " + employee.FirstName + " " + employee.LastName + "," +
+                //    "\nLogin with your email! http://localhost:63237/#/login";                   
+                //await _emailSender.SendEmailAsync(employee.Email, subject, message);
             }
 
             ////Create account with password

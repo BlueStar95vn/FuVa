@@ -8,7 +8,7 @@
             var d = date.getDate();
             var m = date.getMonth();
             var y = date.getFullYear();
-
+           
             vm.eventSources = [];
             vm.vacations = {};
             $http.get("http://localhost:63237/api/vacations/getuservacation").then(function (response) {
@@ -39,6 +39,9 @@
                         },
                         end: function () {
                             return event.end;
+                        },
+                        googleCalendarId: function () {
+                            return event.googleCalendarId;
                         }
                     }
                 });
@@ -207,25 +210,27 @@
             toTime.setMinutes(0);
             vm.newVacations.end = toTime;
 
-
+            vm.eventFull = {};
+            vm.eventGoogle = {};
             vm.booked = false;
+            vm.bookedVacation = {};
             vm.bookVacation = function () {
                 vm.booked = true;
-                $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function () {
-                    vm.addGoogleEvent();
+                $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function (response) {
                     vm.booked = false;
                     alert("Success");
                     vm.refreshEvent();
+                    vm.bookedVacation = response.data;
+                    vm.sendBookingEmail(vm.bookedVacation);
                 }).catch(function (err) {
                     console.log(err);
                 });
-               
             }
-            vm.addGoogleEvent = function () {
-                $http.post("http://localhost:63237/api/googlecalendars/addevent", vm.newVacations).then(function () {
+
+            vm.sendBookingEmail = function (bookedVacation) {
+                $http.post("http://localhost:63237/api/emailsenders/bookvacation/" + bookedVacation.id, bookedVacation).then(function () {
 
                 }).catch(function (err) {
-                    console.log('Add event to google calendar err');
                     console.log(err);
                 });
             }
@@ -246,11 +251,11 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.vacationDetail = {};
         vm.getDate = new Date();
         vm.$onInit = function () {
-
             vm.vacationDetail.id = vm.resolve.id;
             vm.vacationDetail.title = vm.resolve.title;
             vm.vacationDetail.start = new Date(vm.resolve.start);
             vm.vacationDetail.end = new Date(vm.resolve.end);
+            vm.vacationDetail.googleCalendarId = vm.resolve.googleCalendarId;
         };
         vm.hstep = 1;
         vm.mstep = 60;
@@ -293,9 +298,13 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.updateClicked = false;
         vm.update = function () {
             vm.updateClicked = true;
-            $http.post('http://localhost:63237/api/vacations/updateuservacation', vm.vacationDetail).then(function () {
+            $http.post('http://localhost:63237/api/vacations/updateuservacation', vm.vacationDetail).then(function (response) {
+                var googleCalendarId = response.data.googleCalendarId;
                 alert("Update successfully");
                 vm.updateClicked = false;
+                vm.sendUpdateEmail();
+                vm.deleteGoogleCalendarEvent(googleCalendarId);
+                // vm.updateGoogleCalendar(googleCalendarId);
             }).catch(function (err) {
                 alert("Error");
                 vm.updateClicked = false;
@@ -306,10 +315,13 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.cancelClicked = false;
         vm.cancel = function (id) {
             vm.cancelClicked = true;
-            $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function () {
-                vm.cancelClicked = false;
-                vm.dismiss({ $value: 'cancel' });
+            vm.sendCancelEmail();
+            $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function (response) {
+                var googleEventId = response.data;
+                vm.cancelClicked = false;               
                 alert("Delete Successfully");
+                vm.deleteGoogleCalendarEvent(googleEventId);
+                vm.dismiss({ $value: 'cancel' });
             }).catch(function (err) {
                 alert("Error");
                 vm.cancelClicked = false;
@@ -319,5 +331,40 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.close = function () {
             vm.dismiss({ $value: 'cancel' });
         };
+
+        //google calendar
+        vm.updateGoogleCalendar = function (googleCalendarId) {
+            $http.post('http://localhost:63237/api/googlecalendars/update/' + googleCalendarId, vm.vacationDetail).then(function () {
+
+            }).catch(function (err) {
+                console.log(err);
+            });
+        };
+
+        vm.deleteGoogleCalendarEvent = function (googleEventId) {
+            $http.delete('http://localhost:63237/api/googlecalendars/deletegoogleevent/' + googleEventId).then(function () {
+
+            }).catch(function (err) {
+                console.log(err);
+            });
+        };
+
+        //send Email
+        vm.sendUpdateEmail = function () {
+            $http.post('http://localhost:63237/api/emailsenders/updatevacation' , vm.vacationDetail).then(function () {
+
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+
+        vm.sendCancelEmail = function () {
+            $http.post('http://localhost:63237/api/emailsenders/cancelvacation', vm.vacationDetail).then(function () {
+
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+
     }
 });

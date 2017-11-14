@@ -13,12 +13,12 @@
             </div>
             <div class="modal-footer">
                 <span ng-if="$ctrl.disapproveClicked==false"><button class="btn btn-primary" type="button" ng-disabled="!form.$dirty || (form.$dirty && form.$invalid)" ng-click="$ctrl.ok()">OK</button></span>
-                <span ng-if="$ctrl.disapproveClicked==true"><input class="btn btn-primary" value="Wait..." disabled /></span>              
-               <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                <span ng-if="$ctrl.disapproveClicked==true"><input class="btn btn-primary" value="Wait..." disabled /></span>
+                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
             </div>
-        </form>       
+        </form>
     </script>
- 
+
     <!--Request-->
     <div><h1><b>Vacation Request</b></h1></div>
     <div class="request-scoll">
@@ -46,12 +46,12 @@
                             <tr>
                                 <th>
                                     <div ng-if="$ctrl.approveClicked==false||$ctrl.indexClicked!=$index">
-                                        <a href=""  class="btn btn-success" ng-click="$ctrl.approve(vacation.id,$index)">Approve</a>
-                                        </div>
-                                    <div ng-if="$ctrl.approveClicked==true&&$ctrl.indexClicked==$index">
-                                        <input value="Approving..." class="btn btn-success" disabled/>
+                                        <a href="" class="btn btn-success" ng-click="$ctrl.approve(vacation,$index)">Approve</a>
                                     </div>
-                                 
+                                    <div ng-if="$ctrl.approveClicked==true&&$ctrl.indexClicked==$index">
+                                        <input value="Approving..." class="btn btn-success" disabled />
+                                    </div>
+
                                 </th>
                                 <td><a href="" class="btn btn-danger" ng-click="$ctrl.disaprrove(vacation.id,$index)">Disapprove</a></td>
                             </tr>
@@ -61,7 +61,7 @@
             </div>
         </div>
     </div>
-   
+
 
 
 </div>

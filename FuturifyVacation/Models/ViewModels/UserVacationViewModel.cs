@@ -16,5 +16,6 @@ namespace FuturifyVacation.Models.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string RemainingDayOff { get; set; }
+        public string GoogleCalendarId { get; set; }
     }
 }

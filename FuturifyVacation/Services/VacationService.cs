@@ -23,12 +23,11 @@ namespace FuturifyVacation.Services
             _emailSender = emailSender;
         }
 
-        public async Task AddVacationAsync(UserVacationViewModel model, string userId)
+        public async Task<UserVacation> AddVacationAsync(UserVacationViewModel model, string userId)
         {
 
             var vacation = new UserVacation
-            {
-                Id = model.Id,
+            {               
                 Title = model.Title,
                 UserId = userId,
                 Start = model.Start,
@@ -39,14 +38,16 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
             var getUser = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
 
-            //Send Email
-            var email = GetEmailAdmin();
-            var subject = "[Vacation Tracking] - " + getUser.FirstName + " " + getUser.LastName + " booked a vacation!";
-            var message = "\n\nVacation Request Detail: "
-                            + "\n\nReason: " + model.Title
-                            + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
-                            + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();
-            await _emailSender.SendEmailAsync(email, subject, message);
+            ////Send Email
+            //var email = GetEmailAdmin();
+            //var subject = "[Vacation Tracking] - " + getUser.FirstName + " " + getUser.LastName + " booked a vacation!";
+            //var message = "\n\nVacation Request Detail: "
+            //                + "\n\nReason: " + model.Title
+            //                + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
+            //                + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();
+            //await _emailSender.SendEmailAsync(email, subject, message);
+            return vacation;
+          
         }
 
         public async Task CancelVacationAsync(int vacationId)
@@ -62,13 +63,13 @@ namespace FuturifyVacation.Services
             _db.UserVacations.Remove(getVacation);            
             await _db.SaveChangesAsync();
 
-            var email = GetEmailAdmin();
-            var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + " canceled vacation!";
-            var message = "\n\nVacation Detail: "
-                            + "\n\nTitle: " + getVacation.Title
-                            + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
-                            + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString();
-            await _emailSender.SendEmailAsync(email, subject, message);
+            //var email = GetEmailAdmin();
+            //var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + " canceled a vacation!";
+            //var message = "\n\nVacation Detail: "
+            //                + "\n\nTitle: " + getVacation.Title
+            //                + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
+            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString();
+            //await _emailSender.SendEmailAsync(email, subject, message);
         }
 
         public async Task<UserVacation> UpdateVacationAsync(UserVacationViewModel model)
@@ -95,13 +96,13 @@ namespace FuturifyVacation.Services
                 await _db.SaveChangesAsync();
             }
 
-            var email = GetEmailAdmin();
-            var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + "has updated vacation!";
-            var message = "\n\nVacation Request Detail: "
-                            + "\n\nReason: " + model.Title
-                            + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
-                            + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();
-            await _emailSender.SendEmailAsync(email, subject, message);
+            //var email = GetEmailAdmin();
+            //var subject = "[Vacation Tracking] - " + getVacation.User.FirstName + " " + getVacation.User.LastName + "has updated a vacation!";
+            //var message = "\n\nVacation Request Detail: "
+            //                + "\n\nReason: " + model.Title
+            //                + "\n\nFrom: " + model.Start.ToShortDateString() + " " + model.Start.ToShortTimeString()
+            //                + "\n\nTo: " + model.End.ToShortDateString() + " " + model.End.ToShortTimeString();
+            //await _emailSender.SendEmailAsync(email, subject, message);
             return getVacation;
         }
 
@@ -137,16 +138,16 @@ namespace FuturifyVacation.Services
             int hoursleft = int.Parse(getVacation.User.RemainingDayOff) - hours;
 
 
-            var email = getVacation.User.User.Email;
-            var subject = "[Vacation Tracking] - Your vacation is approved!";
-            var message = "\nHi " + getVacation.User.FirstName
-                            + ",\n\n Your vacation has been approved,"
-                            + "\n\nVacation Request Detail: "
-                            + "\n\nTitle: " + getVacation.Title
-                            + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
-                            + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString()
-                            + "\n\nYour Remaining Time: " + hoursleft.ToString() + " hour(s)";
-            await _emailSender.SendEmailAsync(email, subject, message);
+            //var email = getVacation.User.User.Email;
+            //var subject = "[Vacation Tracking] - Your vacation is approved!";
+            //var message = "\nHi " + getVacation.User.FirstName
+            //                + ",\n\n Your vacation has been approved,"
+            //                + "\n\nVacation Request Detail: "
+            //                + "\n\nTitle: " + getVacation.Title
+            //                + "\n\nFrom: " + getVacation.Start.ToShortDateString() + " " + getVacation.Start.ToShortTimeString()
+            //                + "\n\nTo: " + getVacation.End.ToShortDateString() + " " + getVacation.End.ToShortTimeString()
+            //                + "\n\nYour Remaining Time: " + hoursleft.ToString() + " hour(s)";
+            //await _emailSender.SendEmailAsync(email, subject, message);
 
             getVacation.Color = "Green";
             getVacation.User.RemainingDayOff = hoursleft.ToString();
@@ -159,16 +160,16 @@ namespace FuturifyVacation.Services
 
             int hours = CountHours(vacation.Start, vacation.End);
 
-            var email = vacation.User.User.Email;
-            var subject = "[Vacation Tracking] - Your vacation is disapproved!";
-            var message = "\nHi " + vacation.User.FirstName
-                            + ",\n\n Your vacation has been disapproved,"
-                             + "\n\nVacation Request Detail: "
-                            + "\n\nTitle: " + vacation.Title
-                            + "\n\nFrom: " + vacation.Start.ToShortDateString() + " " + vacation.Start.ToShortTimeString()
-                            + "\n\nTo: " + vacation.End.ToShortDateString() + " " + vacation.End.ToShortTimeString()
-                            + "\n\nReason: " + reason;
-            await _emailSender.SendEmailAsync(email, subject, message);
+            //var email = vacation.User.User.Email;
+            //var subject = "[Vacation Tracking] - Your vacation is disapproved!";
+            //var message = "\nHi " + vacation.User.FirstName
+            //                + ",\n\n Your vacation has been disapproved,"
+            //                 + "\n\nVacation Request Detail: "
+            //                + "\n\nTitle: " + vacation.Title
+            //                + "\n\nFrom: " + vacation.Start.ToShortDateString() + " " + vacation.Start.ToShortTimeString()
+            //                + "\n\nTo: " + vacation.End.ToShortDateString() + " " + vacation.End.ToShortTimeString()
+            //                + "\n\n Reason: " + reason ;
+            //await _emailSender.SendEmailAsync(email, subject, message);
 
             await _db.SaveChangesAsync();
         }
