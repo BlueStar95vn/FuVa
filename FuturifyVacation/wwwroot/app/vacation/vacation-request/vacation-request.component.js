@@ -176,16 +176,21 @@ angular.module('vacationRequest').component('detailRequestComponent', {
 
             $http.get('http://localhost:63237/api/vacations/checkteamondate/' + vm.vacation.userId + '/' + vm.vacation.id).then(function (response) {
                 vm.teams = response.data;
-               
-            })
-        };
+                vm.teamList = [];
+                vm.allTeams = [];
+                vm.teams.forEach(function (team) {
+                    if (vm.teamList.indexOf(team.id) === -1) {
+                        vm.teamList.push(team.id);
+                        var distinctTeam = { "id": team.id, "teamName": team.teamName };
+                        vm.allTeams.push(distinctTeam);
+                    }
+                });
+            });
 
 
-        vm.cancel = function () {
-            vm.dismiss({ $value: 'cancel' });
-        };
-
-
-
+            vm.cancel = function () {
+                vm.dismiss({ $value: 'cancel' });
+            };
+        }
     }
 });

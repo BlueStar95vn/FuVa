@@ -50,17 +50,6 @@ namespace FuturifyVacation.Controllers
             return result;
         }
 
-        [HttpGet("approvedvacationinmonth/{userId}/{vacationId}")] //all approved vacation in month
-        public async Task<int> ApprovedVacationInMonth(int vacationId, string userId)
-        {           
-            return await _vacationService.ApprovedVacationInMonth(vacationId, userId);
-        }
-
-        [HttpGet("checkteamondate/{userId}/{vacationId}")] //all approved vacation in month
-        public async Task<List<TeamDetail>> CheckTeamOnDate(int vacationId, string userId)
-        {
-            return await _vacationService.CheckTeamOnDate(vacationId, userId);
-        }
 
         [HttpPost("bookvacation")]
         public async Task<UserVacationViewModel> BookVacation([FromBody]UserVacationViewModel model, string userId)
@@ -168,6 +157,32 @@ namespace FuturifyVacation.Controllers
         public async Task DisaprroveVacation(int Id, [FromBody]DisapproveBindingModel model)
         {
             await _vacationService.DisapproveVacation(Id, model.Reason);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("approvedvacationinmonth/{userId}/{vacationId}")] //all approved vacation in month
+        public async Task<int> ApprovedVacationInMonth(int vacationId, string userId)
+        {
+            return await _vacationService.ApprovedVacationInMonth(vacationId, userId);
+        }
+
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("checkteamondate/{userId}/{vacationId}")] //all approved vacation in month
+        public async Task<List<TeamViewModel>> CheckTeamOnDate(int vacationId, string userId)
+        {
+            var teamMember = await _vacationService.CheckTeamOnDate(vacationId, userId);
+            return teamMember.Select(p => new TeamViewModel
+            {
+                Id = p.TeamId,
+                UserId = p.UserId,
+                TeamName = p.Team.TeamName,
+                FirstName = p.TeamMember.UserProfile.FirstName,
+                LastName = p.TeamMember.UserProfile.LastName,
+
+                Email = p.TeamMember.Email
+            }).ToList();
+
         }
     }
 }

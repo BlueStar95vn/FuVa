@@ -25,12 +25,19 @@
                 <h3 class="modal-title" id="modal-title">Vacation Request Detail</h3>
             </div>
             <div class="modal-body" id="modal-body">
-                <p>This employee has been approved <label>{{$ctrl.numberVacation}}</label> hour(s) in {{$ctrl.vacation.start|date: "MM/yyyy"}}</p>
+                <p><label>{{$ctrl.vacation.firstName}} {{$ctrl.vacation.lastName}}</label> has booked successfully <label>{{$ctrl.numberVacation}}</label> hour(s) in {{$ctrl.vacation.start|date: "MM/yyyy"}}</p>
 
-                <ul ng-repeat="team in teams">
-                    <li class="list-group"> <label>Team Name: </label></li>
-                    <li ng-repeat="member in members" class="list-group-item">
-
+                <label>All members in their teams booked on this day: <label ng-if="$ctrl.allTeams.length==0">0</label></label>
+                <ul class="list-group">                   
+                    <li ng-repeat="team in $ctrl.allTeams|orderBy:team" class="list-group-item">
+                        
+                        <div>
+                            <label>{{team.teamName}}: </label>
+                            <br />
+                            <ul >
+                                <li ng-repeat="member in $ctrl.teams|orderBy: member.id" ng-if="member.id ==team.id">{{member.firstName}} {{member.lastName}}</li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
 
@@ -46,7 +53,7 @@
     <!--Request-->
     <div><h1><b>Vacation Request</b></h1></div>
     <div class="request-scoll">
-        <div ng-repeat="vacation in $ctrl.vacations">
+        <div ng-repeat="vacation in $ctrl.vacations|orderBy:vacation.start">
             <div class="panel panel-primary">
                 <div class="panel panel-heading">
                     <div class="panel-title">{{vacation.firstName}} {{vacation.lastName}}</div>
