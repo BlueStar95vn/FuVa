@@ -8,18 +8,9 @@
             var d = date.getDate();
             var m = date.getMonth();
             var y = date.getFullYear();
-           
+
             vm.eventSources = [];
             vm.vacations = {};
-
-            //Get setting 
-            $http.get('http://localhost:63237/api/settings/allsetting').then(function (response) {
-                vm.settings = response.data;
-                vm.durationInWeek = vm.settings.durationInWeek;
-                vm.durationInMonth = vm.settings.durationInMonth;
-            }).catch(function (err) {
-                console.log(err);
-            });
             //
             $http.get("http://localhost:63237/api/vacations/getuservacation").then(function (response) {
                 vm.vacations = response.data;
@@ -140,11 +131,11 @@
             vm.uiConfig = {
                 calendar: {
                     height: 700,
-                    editable: true,
+                    editable: false,
                     navLinks: true,
                     selectable: true,
                     selectHelper: true,
-                    eventLimit: true,
+                    eventLimit: true,                    
 
                     header: {
                         left: 'prev,next today',
@@ -181,7 +172,7 @@
             vm.popup2 = {
                 opened: false
             };
-          
+
             vm.dateOptions = {
                 dateDisabled: disabled,
                 formatYear: 'yy',
@@ -204,22 +195,31 @@
             vm.altInputFormats = ['M!/d!/yyyy'];
 
             /* config object */
-            vm.newVacations = {};
+            //vm.newVacations = {};
             //add time
             vm.hstep = 1;
             vm.mstep = 60;
 
 
-            var fromTime = new Date();
-            fromTime.setHours(9);
-            fromTime.setMinutes(0);
+            vm.newVacations = {};
+            //Get setting 
+            $http.get('http://localhost:63237/api/settings/allsetting').then(function (response) {
+                vm.settings = response.data;
+                vm.durationInWeek = vm.settings.durationInWeek;
+                vm.durationInMonth = vm.settings.durationInMonth;
 
-            vm.newVacations.start = fromTime;
+                var fromTime = new Date();
+                fromTime.setHours(response.data.startAm);
+                fromTime.setMinutes(0);
+                vm.newVacations.start = fromTime;
 
-            var toTime = new Date();
-            toTime.setHours(18);
-            toTime.setMinutes(0);
-            vm.newVacations.end = toTime;
+                var toTime = new Date();
+                toTime.setHours(response.data.endPm);
+                toTime.setMinutes(0);
+                vm.newVacations.end = toTime;
+            }).catch(function (err) {
+                console.log(err);
+            });
 
             vm.eventFull = {};
             vm.eventGoogle = {};
@@ -227,15 +227,26 @@
             vm.bookedVacation = {};
             vm.bookVacation = function () {
                 vm.booked = true;
-                $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function (response) {
-                    vm.booked = false;
-                    alert("Success");
-                    vm.refreshEvent();
-                    vm.bookedVacation = response.data;
-                    vm.sendBookingEmail(vm.bookedVacation);
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                $http.post("http://localhost:63237/api/vacations/vacationinmonth", vm.newVacations).then(function (response) {
+                    if (response.data === 1)
+                    {
+                        alert("You cannot book vacation in this month!");
+                        vm.booked = false;
+                    }
+                    if(response.data === 0) //check if employee has booked under 5 times
+                    {
+                        $http.post("http://localhost:63237/api/vacations/bookvacation", vm.newVacations).then(function (response) {
+                            vm.booked = false;
+                            alert("Success");
+                            vm.refreshEvent();
+                            vm.bookedVacation = response.data;
+                            vm.sendBookingEmail(vm.bookedVacation);
+                        }).catch(function (err) {
+                            console.log(err);
+                        });
+                    }
+                })
+               
             }
 
             vm.sendBookingEmail = function (bookedVacation) {
@@ -283,7 +294,7 @@ angular.module('vacation').component('vacationModalComponent', {
         vm.popup2 = {
             opened: false
         };
-        
+
         vm.dateOptions = {
             dateDisabled: disabled,
             formatYear: 'yy',
@@ -330,9 +341,13 @@ angular.module('vacation').component('vacationModalComponent', {
             vm.sendCancelEmail();
             $http.delete('http://localhost:63237/api/vacations/cancel/' + id).then(function (response) {
                 var googleEventId = response.data;
-                vm.cancelClicked = false;               
+                vm.cancelClicked = false;
                 alert("Delete Successfully");
-                vm.deleteGoogleCalendarEvent(googleEventId);
+                if (googleEventId) {
+                    vm.deleteGoogleCalendarEvent(googleEventId);
+                }
+                
+               
                 vm.dismiss({ $value: 'cancel' });
             }).catch(function (err) {
                 alert("Error");
@@ -363,7 +378,7 @@ angular.module('vacation').component('vacationModalComponent', {
 
         //send Email
         vm.sendUpdateEmail = function () {
-            $http.post('http://localhost:63237/api/emailsenders/updatevacation' , vm.vacationDetail).then(function () {
+            $http.post('http://localhost:63237/api/emailsenders/updatevacation', vm.vacationDetail).then(function () {
 
             }).catch(function (err) {
                 console.log(err);

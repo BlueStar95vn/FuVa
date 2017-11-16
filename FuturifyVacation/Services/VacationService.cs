@@ -22,17 +22,64 @@ namespace FuturifyVacation.Services
             _db = db;
             _emailSender = emailSender;
         }
+        public async Task<int> CheckVacationInMonth(UserVacationViewModel model, string userId)
+        {
+            int isLarger = 0;
+            int totalHours = 0;
+            var getVacationInMonth = await _db.UserVacations.Where(u => u.UserId == userId && u.Start.Month == model.Start.Month && u.Start.Year == model.Start.Year).ToListAsync();
+            foreach(var vacation in getVacationInMonth)
+            {
+                totalHours = totalHours + vacation.Hours;
+            }
+            var getSetting = await _db.Settings.FirstOrDefaultAsync(u => u.Id == 1);
+
+            if(getVacationInMonth.Count()>=getSetting.DurationInMonth || totalHours >= getSetting.DurationInMonth*getSetting.HoursADay)
+            {
+                isLarger = 1;
+            }
+           
+            return isLarger;
+        }
+        public async Task<int> ApprovedVacationInMonth(int vacationId, string userId)
+        {
+            var getVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            var getVacationInMonth = await _db.UserVacations.Where(u => u.UserId == userId && u.Start.Month == getVacation.Start.Month && u.Start.Year == getVacation.Start.Year && u.Color=="Green").ToListAsync();
+            int totalHours = 0;
+            foreach (var vacation in getVacationInMonth)
+            {
+                totalHours = totalHours + vacation.Hours;
+            }
+            return totalHours;
+
+        }
+
+        public async Task<List<TeamDetail>> CheckTeamOnDate(int vacationId, string userId)
+        {
+            var teamDetail = await _db.TeamDetails.Where(u => u.UserId == userId).ToListAsync();
+            var teamIds = teamDetail.Select(u => u.TeamId).ToList();
+
+            var userVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            //var getAllMemberOnDate = await _db.UserVacations.Where(u => u.UserId != userId && u.Start.Month == getVacation.Start.Month && u.Start.Year == getVacation.Start.Year && u.Color == "Green").ToListAsync();
+            var vacationOnDate =  _db.UserVacations.Where(u => u.User.User.TeamDetail.Any(t =>teamIds.Contains(t.TeamId)) && u.Start < userVacation.End && userVacation.Start < u.End);
+
+            var teamMember = await vacationOnDate.Select(u => u.UserId).ToListAsync();
+
+            var list = await _db.TeamDetails.Where(u => teamMember.Contains(u.UserId)).ToListAsync();
+
+            return list;
+        }
 
         public async Task<UserVacation> AddVacationAsync(UserVacationViewModel model, string userId)
         {
-
+            int hours = CountHours(model.Start, model.End);
             var vacation = new UserVacation
             {               
                 Title = model.Title,
                 UserId = userId,
                 Start = model.Start,
                 End = model.End,
-                Color = model.Color
+                Color = model.Color,
+                Hours = hours
             };
             await _db.UserVacations.AddAsync(vacation);
             await _db.SaveChangesAsync();
@@ -85,6 +132,7 @@ namespace FuturifyVacation.Services
                 getVacation.End = model.End;
                 getVacation.Color = "blue"; //Return pending status
                 getVacation.User.RemainingDayOff = (int.Parse(getVacation.User.RemainingDayOff) + hours).ToString();
+                getVacation.Hours = hours;
                 await _db.SaveChangesAsync();
             }
             else if(isApproved=="blue")
@@ -93,6 +141,7 @@ namespace FuturifyVacation.Services
                 getVacation.Start = model.Start;
                 getVacation.End = model.End;
                 getVacation.Color = "blue"; //Return pending status
+                getVacation.Hours = hours;
                 await _db.SaveChangesAsync();
             }
 
@@ -174,14 +223,16 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
         }
 
-        public int CountHours(DateTime start, DateTime end)
+        public  int CountHours(DateTime start, DateTime end)
         {
+            var getSetting =  _db.Settings.FirstOrDefault(u => u.Id == 1);
+            
             var hours = 0;
             for (var i = start; i < end; i = i.AddHours(1))
             {
                 if (i.DayOfWeek != DayOfWeek.Saturday && i.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    if (i.TimeOfDay.Hours >= 9 && i.TimeOfDay.Hours < 12 || i.TimeOfDay.Hours >= 13 && i.TimeOfDay.Hours < 18)
+                    if (i.TimeOfDay.Hours >= getSetting.StartAm && i.TimeOfDay.Hours < getSetting.EndAm || i.TimeOfDay.Hours >= getSetting.StartPm && i.TimeOfDay.Hours < getSetting.EndPm)
                     {
                         hours++;
                     }
@@ -200,7 +251,12 @@ namespace FuturifyVacation.Services
             return allEmail;
         }
 
-        
+       
+
+
+
+
+
         #endregion
     }
 }

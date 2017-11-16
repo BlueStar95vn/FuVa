@@ -33,6 +33,35 @@ namespace FuturifyVacation.Controllers
 
 
         //User
+        [HttpPost("vacationinmonth")] //all request in month
+        public async Task<int> VacationInMonth([FromBody]UserVacationViewModel model, string userId)
+        {
+            var result = 0;
+            var user = HttpContext.User;
+            userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var check = await _vacationService.CheckVacationInMonth(model, userId);
+            if(check==1)
+            {
+                result = 1;
+            }
+         
+          /////////check
+            return result;
+        }
+
+        [HttpGet("approvedvacationinmonth/{userId}/{vacationId}")] //all approved vacation in month
+        public async Task<int> ApprovedVacationInMonth(int vacationId, string userId)
+        {           
+            return await _vacationService.ApprovedVacationInMonth(vacationId, userId);
+        }
+
+        [HttpGet("checkteamondate/{userId}/{vacationId}")] //all approved vacation in month
+        public async Task<List<TeamDetail>> CheckTeamOnDate(int vacationId, string userId)
+        {
+            return await _vacationService.CheckTeamOnDate(vacationId, userId);
+        }
+
         [HttpPost("bookvacation")]
         public async Task<UserVacationViewModel> BookVacation([FromBody]UserVacationViewModel model, string userId)
         {
@@ -43,8 +72,7 @@ namespace FuturifyVacation.Controllers
             {
                 var getvacation = await _vacationService.AddVacationAsync(model, userId);
                 model.Id = getvacation.Id;
-            }
-
+            }           
             return model;
         }
 

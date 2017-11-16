@@ -55,7 +55,7 @@ namespace FuturifyVacation.Controllers
                 DoB = profile.DoB,
                 Department = profile.Department,
                 RemainingDayOff = profile.RemainingDayOff,
-                Status = profile.Status,
+               
                 PhoneNumber = profile.User.PhoneNumber,
                 HasPassword = password
             };
@@ -78,7 +78,7 @@ namespace FuturifyVacation.Controllers
                 DoB = update.DoB,
                 Department = update.Department,
                 RemainingDayOff = update.RemainingDayOff,
-                Status = update.Status,
+               
                 PhoneNumber = update.User.PhoneNumber
             };
         }

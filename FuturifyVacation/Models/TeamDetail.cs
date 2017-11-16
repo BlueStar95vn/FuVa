@@ -15,9 +15,9 @@ namespace FuturifyVacation.Models
         public int TeamId { get; set; }
         public UserTeam Team { get; set; }
 
-        [ForeignKey("Profile")]
+        [ForeignKey("TeamMember")]
         public string UserId { get; set; }
-        public UserProfile Profile { get; set; }
+        public ApplicationUser TeamMember { get; set; }
         public string RoleInTeam { get; set; }
     }
 }

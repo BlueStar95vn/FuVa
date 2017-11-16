@@ -11,9 +11,10 @@ using System;
 namespace FuturifyVacation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171116082614_AddTeamToUser")]
+    partial class AddTeamToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,6 +103,8 @@ namespace FuturifyVacation.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("RoleInTeam");
 
                     b.Property<int>("TeamId");
@@ -109,6 +112,8 @@ namespace FuturifyVacation.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("TeamId");
 
@@ -313,13 +318,17 @@ namespace FuturifyVacation.Migrations
 
             modelBuilder.Entity("FuturifyVacation.Models.TeamDetail", b =>
                 {
+                    b.HasOne("FuturifyVacation.Models.ApplicationUser")
+                        .WithMany("TeamDetail")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("FuturifyVacation.Models.UserTeam", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("FuturifyVacation.Models.ApplicationUser", "TeamMember")
-                        .WithMany("TeamDetail")
+                    b.HasOne("FuturifyVacation.Models.UserProfile", "Profile")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

@@ -1,4 +1,5 @@
 ﻿using FuturifyVacation.Models;
+using FuturifyVacation.Models.BindingModels;
 using FuturifyVacation.Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace FuturifyVacation.ServicesInterfaces
     {
        
         Task<Setting> GetSetting();
-        Task SetDayOff(int numberOfDayOff);
+        Task SetDayOff(DayOffConfigBindingModel model);
+
+        Task SetWorkingTime(SettingViewModel model);
     }
 }

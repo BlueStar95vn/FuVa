@@ -4,7 +4,7 @@
         <div class="col-lg-3 col-md-3 col-xs-3">
             <a href="" ng-click="$ctrl.dayOffClicked()">
                 <div align="center" class="btn-lg btn-primary">
-                    <h1><i class="glyphicon glyphicon-alert"></i></h1>
+                    <h1><i class="glyphicon glyphicon-refresh"></i></h1>
                     <h2>Change Day Off</h2>
                 </div>
             </a>
@@ -13,14 +13,52 @@
             <div ng-if="$ctrl.changeDayOff==true">
                 <h2>Day Off</h2>
                 <label>Number of day off:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.numberOfDayOff" />
-
+                <label>X</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.hoursADay" /> hour(s)/day
+                <br /><br />
                 <a class="btn btn-success" ng-click="$ctrl.setDayOff()"><i class="glyphicon glyphicon-calendar"></i> Change</a>
                 <a class="btn btn-danger" ng-click="$ctrl.dayOffCanceled()"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
                 <br /> <br />
-                Each employee will have {{$ctrl.settings.numberOfDayOff||0}} day(s) off ({{$ctrl.settings.numberOfDayOff * 8 ||0}} (hours)).
+                Each employee will have {{$ctrl.settings.numberOfDayOff||0}} day(s) off ({{$ctrl.settings.numberOfDayOff * $ctrl.settings.hoursADay ||0}} (hours)).
             </div>           
         </div>
     </div>
+    <hr />
+</div>
 
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-xs-3">
+            <a href="" ng-click="$ctrl.workingTimeClicked()">
+                <div align="center" class="btn-lg btn-primary">
+                    <h1><i class="glyphicon glyphicon-time"></i></h1>
+                    <h2>Change Working Time</h2>
+                </div>
+            </a>
+        </div>
+        <form>
+            <div class="col-lg-9 col-md-9 col-xs-9">
+                <div ng-if="$ctrl.changeWorkingTime==true">
+                    <h2>Working Time</h2>
+                    <label>In the Morning:</label>
+                    <br />
+                    <label>Start:</label> <input type="number" class="custom-form-control" min="0" max="12" ng-model="$ctrl.workingTime.startAm" />
+                    <label>End:</label> <input type="number" class="custom-form-control" min="0" max="12" ng-model="$ctrl.workingTime.endAm" />
+                    <br /><br />
+
+                    <label>In the Afternoon and evening</label>
+                    <br />
+                    <label>Start:</label> <input type="number" class="custom-form-control" min="12" max="24" ng-model="$ctrl.workingTime.startPm" />
+                    <label>End:</label> <input type="number" class="custom-form-control" min="12" max="24" ng-model="$ctrl.workingTime.endPm" />
+                    <br /><br />
+                    <a class="btn btn-success" ng-click="$ctrl.setWorkingTime()"><i class="glyphicon glyphicon-time"></i> Change</a>
+                    <a class="btn btn-danger" ng-click="$ctrl.WorkingTimeCanceled()"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+                    <br /> <br />
+                    The company works from {{$ctrl.workingTime.startAm||0}}:00 - {{$ctrl.workingTime.endAm||0}}:00 and {{$ctrl.workingTime.startPm||0}}:00 - {{$ctrl.workingTime.endPm||0}}:00
+                </div>
+            </div>
+        </form>
+        
+    </div>
     <hr />
 </div>

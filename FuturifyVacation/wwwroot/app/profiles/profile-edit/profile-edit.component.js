@@ -17,11 +17,20 @@
                     console.log(error);
                 });
             };
-            
+            var date = new Date();
+            var y = date.getFullYear();
+
+            vm.currentDate = new Date();
+            vm.minAge = new Date(y - 18, 12, 31);
+            vm.maxAge = new Date(y - 60, 1, 1);
+           
+
             vm.format = 'dd/MM/yyyy';
             vm.open1 = function () {
                 vm.popup1.opened = true;
             };
+
+
             vm.dateOptions = {
                 dateDisabled: false,                            
                 startingDay: 1

@@ -21,7 +21,7 @@ namespace FuturifyVacation.Models
         public DateTime DoB { set; get; }   
         public string Gender { set; get; }
         public string RemainingDayOff { set; get; }
-        public string Status { set; get; }
+        //public string Status { set; get; }
 
 
     }

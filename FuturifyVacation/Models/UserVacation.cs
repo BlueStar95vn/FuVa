@@ -10,7 +10,6 @@ namespace FuturifyVacation.Models
     public class UserVacation
     {
         [Key]
-       
         public int Id { get; set; }
 
         [ForeignKey("User")]
@@ -23,6 +22,7 @@ namespace FuturifyVacation.Models
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public string Color { get; set; }
+        public int Hours { get; set; }
         public string GoogleCalendarId { get; set; }
 
     }

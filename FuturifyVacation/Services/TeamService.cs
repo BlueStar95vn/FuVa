@@ -25,7 +25,7 @@ namespace FuturifyVacation.Services
             var mem = new TeamDetail
             {
                 TeamId = teamId,
-                UserId = model.UserId,
+                UserId = model.UserId,                
                 RoleInTeam = "Member"
             };
             await _db.TeamDetails.AddAsync(mem);
@@ -72,6 +72,7 @@ namespace FuturifyVacation.Services
                 var getDetail = await _db.TeamDetails.FirstOrDefaultAsync(u => u.UserId == getTeam.TeamLeadId);
                 getTeam.TeamLeadId = teamLeadId;
                 getDetail.UserId = teamLeadId;
+                
                 await _db.SaveChangesAsync();
             }
         }
@@ -105,7 +106,7 @@ namespace FuturifyVacation.Services
 
         public async Task<List<TeamDetail>> GetTeamMemberByTeamIdAsync(int teamId)
         {
-            return await _db.TeamDetails.Include(u=>u.Profile).Where(u => u.TeamId == teamId && u.RoleInTeam == "Member").ToListAsync();
+            return await _db.TeamDetails.Include(u=>u.TeamMember.UserProfile).Where(u => u.TeamId == teamId && u.RoleInTeam == "Member").ToListAsync();
 
         }
 

@@ -10,6 +10,6 @@ namespace FuturifyVacation.Models
     public class ApplicationUser : IdentityUser
     {
         public UserProfile UserProfile { get; set; }
-       
+       public List<TeamDetail> TeamDetail { get; set; }
     }
 }

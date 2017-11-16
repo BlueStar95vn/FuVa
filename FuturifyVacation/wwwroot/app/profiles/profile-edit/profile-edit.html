@@ -1,7 +1,7 @@
 ﻿<div>
     <div class="container-fluid">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xs-offset-0 col-sm-offset-0 col-md-offset-0 col-lg-offset-0 toppad">
-            <form > 
+            <form>
                 <div class="panel panel-info">
 
                     <div class="panel-heading">
@@ -20,7 +20,7 @@
                             <div class="col-sm-9 col-md-9 col-lg-9 ">
 
                                 <table class="table table-hover">
-                                    <tbody>                                       
+                                    <tbody>
                                         <tr>
                                             <th>First Name:</th>
                                             <td><input class="form-control" id="firstName" name="firstName" ng-model="$ctrl.employees.firstName" value="{{$ctrl.employees.firstName}}" /></td>
@@ -34,12 +34,15 @@
                                             <th>Date of Birth:</th>
                                             <td>
                                                 <p class="input-group">
-                                                    <input  class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.employees.doB" value="$ctrl.employees.doB" datepicker-options="$ctrl.dateOptions" is-open="$ctrl.popup1.opened" ng-required="true" alt-input-formats="$ctrl.altInputFormats" />
+                                                    <input type="datetime" class="form-control" uib-datepicker-popup="{{$ctrl.format}}" ng-model="$ctrl.employees.doB" value="$ctrl.employees.doB" datepicker-options="$ctrl.dateOptions" is-open="$ctrl.popup1.opened" ng-required="true" alt-input-formats="$ctrl.altInputFormats" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="$ctrl.open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                     </span>
                                                 </p>
-                                            </td>                                            
+                                                <div ng-if="$ctrl.employees.doB.getFullYear()<$ctrl.maxAge ||$ctrl.employees.doB > $ctrl.minAge">
+                                                    <p class="text-danger">Please, choose age from 18-60! </p>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Gender:</th>
@@ -49,7 +52,7 @@
                                                     <label class="btn-sm btn-danger"><input type="radio" name="gender" ng-model="$ctrl.employees.gender" value="Female" />Female</label>
                                                 </div>
                                             </td>
-                                         
+
                                         </tr>
                                         <tr>
                                             <th>Phone Number:</th>
@@ -63,7 +66,7 @@
                                             <th>Position:</th>
                                             <td>{{$ctrl.employees.position}}</td>
                                         </tr>
-                                        
+
                                     </tbody>
                                 </table>
 
@@ -73,7 +76,13 @@
                 </div>
                 <div class="panel-footer">
                     <div align="right">
-                        <a class="btn btn-sm btn-success" type="submit" ng-click="$ctrl.save()" href="" ><i class="glyphicon glyphicon-ok"></i> Save</a>
+                        <span ng-if="$ctrl.employees.doB < $ctrl.maxAge || $ctrl.employees.doB > $ctrl.minAge">
+                            <a class="btn btn-sm btn-success" ng-disabled="true"  href=""><i class="glyphicon glyphicon-ok"></i> Save</a>
+                        </span>
+                        <span ng-if="$ctrl.employees.doB > $ctrl.maxAge && $ctrl.employees.doB < $ctrl.minAge">                            
+                            <a class="btn btn-sm btn-success"  type="submit" ng-click="$ctrl.save()" href=""><i class="glyphicon glyphicon-ok"></i> Save</a>
+                        </span>
+
                         <a data-original-title="Cancel" data-toggle="tooltip" ng-href="#/profile" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
                     </div>
                 </div>

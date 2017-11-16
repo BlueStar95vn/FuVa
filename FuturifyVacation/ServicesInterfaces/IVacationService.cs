@@ -20,5 +20,9 @@ namespace FuturifyVacation.ServicesInterfaces
         Task<List<UserVacation>> GetAllVacationAsync();
         Task ApproveVacation(int vacationId);
         Task DisapproveVacation(int vacationId, string reason);
+
+        Task<int> CheckVacationInMonth(UserVacationViewModel model, string userId);
+        Task<int> ApprovedVacationInMonth(int vacationId, string userId);
+        Task<List<TeamDetail>> CheckTeamOnDate(int vacationId, string userId);
     }
 }

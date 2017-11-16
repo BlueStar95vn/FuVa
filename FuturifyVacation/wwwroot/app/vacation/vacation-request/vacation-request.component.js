@@ -49,20 +49,6 @@
             }
 
 
-
-
-
-            //vm.disaprrove = function (id) {
-            //    console.log(id);
-            //};
-
-
-
-
-
-
-
-
             vm.animationsEnabled = true;
 
             vm.disaprrove = function (id, index) {
@@ -78,6 +64,27 @@
                         },
                         vacations: function () {
                             return vm.vacations;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (selectedItem) {
+                    vm.selected = selectedItem;
+                }, function () {
+                    $log.info('modal-component dismissed at: ' + new Date());
+                });
+            };
+
+            vm.detail = function (vacation, index) {
+                var modalInstance = $uibModal.open({
+                    animation: vm.animationsEnabled,
+                    component: 'detailRequestComponent',
+                    resolve: {
+                        index: function () {
+                            return index;
+                        },
+                        vacation: function () {
+                            return vacation;
                         }
                     }
                 });
@@ -146,5 +153,39 @@ angular.module('vacationRequest').component('modalComponent', {
                 console.log(err);
             });
         };
+    }
+});
+
+angular.module('vacationRequest').component('detailRequestComponent', {
+    templateUrl: 'detailRequestModal.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    controller: function ($http) {
+        var vm = this;
+
+        vm.$onInit = function () {
+            vm.index = vm.resolve.index;
+
+            vm.vacation = vm.resolve.vacation;
+            $http.get('http://localhost:63237/api/vacations/approvedvacationinmonth/' + vm.vacation.userId + '/' + vm.vacation.id).then(function (response) {
+                vm.numberVacation = response.data;
+            });
+
+            $http.get('http://localhost:63237/api/vacations/checkteamondate/' + vm.vacation.userId + '/' + vm.vacation.id).then(function (response) {
+                vm.teams = response.data;
+               
+            })
+        };
+
+
+        vm.cancel = function () {
+            vm.dismiss({ $value: 'cancel' });
+        };
+
+
+
     }
 });

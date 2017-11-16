@@ -45,7 +45,7 @@ namespace FuturifyVacation.Controllers
                 DoB = p.DoB,
                 Department = p.Department,
                 RemainingDayOff = p.RemainingDayOff,
-                Status = p.Status,
+             
                 PhoneNumber = p.User.PhoneNumber
             }).ToList();
         }
@@ -65,7 +65,7 @@ namespace FuturifyVacation.Controllers
                 DoB = profile.DoB,
                 Department = profile.Department,
                 RemainingDayOff = profile.RemainingDayOff,
-                Status = profile.Status,
+               
                 PhoneNumber = profile.User.PhoneNumber
             };
         }
@@ -87,7 +87,7 @@ namespace FuturifyVacation.Controllers
                 DoB = update.DoB,
                 Department = update.Department,
                 RemainingDayOff = update.RemainingDayOff,
-                Status = update.Status,
+              
                 PhoneNumber = update.User.PhoneNumber
             };
         }
@@ -159,7 +159,7 @@ namespace FuturifyVacation.Controllers
         [HttpPost("setdayoff")]
         public async Task SetDayOff([FromBody]DayOffConfigBindingModel model)
         {
-            int hours = model.NumberOfDayOff * 8;
+            int hours = model.NumberOfDayOff * model.HoursADay;
             await _employeeService.SetDayOff(hours);
         }
         public string GenerateRandomPassword(PasswordOptions opts = null)

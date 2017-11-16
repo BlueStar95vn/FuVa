@@ -50,8 +50,8 @@ namespace FuturifyVacation.Controllers
             {
                 Id = p.Id,
                 TeamId = p.TeamId,
-                FirstName = p.Profile.FirstName,
-                LastName = p.Profile.LastName,
+                FirstName = p.TeamMember.UserProfile.FirstName,
+                LastName = p.TeamMember.UserProfile.LastName,
                 RoleInTeam = p.RoleInTeam
             }).ToList();
         }
