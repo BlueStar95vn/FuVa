@@ -9,5 +9,6 @@ namespace FuturifyVacation.Models.BindingModels
     {
         public int NumberOfDayOff { get; set; }
         public int HoursADay { get; set; }
+        public int DurationInMonth { get; set; }
     }
 }

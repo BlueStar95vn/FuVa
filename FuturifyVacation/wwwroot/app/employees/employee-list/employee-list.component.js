@@ -21,8 +21,8 @@
                         vm.employees.splice(index, 1);
                         
                     }).catch(function (error) {
-                        alert("Change team lead before deteting this employee!")
-                        console.log(error)
+                        alert("Change team lead before deteting this employee!");
+                        console.log(error);
                     });
             }
 

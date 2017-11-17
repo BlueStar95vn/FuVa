@@ -12,13 +12,23 @@
         <div class="col-lg-9 col-md-9 col-xs-9">
             <div ng-if="$ctrl.changeDayOff==true">
                 <h2>Day Off</h2>
-                <label>Number of day off:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.numberOfDayOff" />
+                <label>Number of days off in year:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.numberOfDayOff" />
                 <label>X</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.hoursADay" /> hour(s)/day
+                <br /><br />
+                <p> Each employee will have {{$ctrl.settings.numberOfDayOff||0}} day(s) off in year({{$ctrl.settings.numberOfDayOff * $ctrl.settings.hoursADay ||0}} (hours)).</p>
+
+                <br /><br />
+                <label>Maximum days off in month:</label> <input type="number" class="custom-form-control" ng-model="$ctrl.settings.durationInMonth" />
+                
+                <br /><br />
+                <p> Each employee can book {{$ctrl.settings.durationInMonth||0}} maximum day(s) off in month ({{$ctrl.settings.durationInMonth * $ctrl.settings.hoursADay ||0}} (hours)).</p>
+                
                 <br /><br />
                 <a class="btn btn-success" ng-click="$ctrl.setDayOff()"><i class="glyphicon glyphicon-calendar"></i> Change</a>
                 <a class="btn btn-danger" ng-click="$ctrl.dayOffCanceled()"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
                 <br /> <br />
-                Each employee will have {{$ctrl.settings.numberOfDayOff||0}} day(s) off ({{$ctrl.settings.numberOfDayOff * $ctrl.settings.hoursADay ||0}} (hours)).
+               
+                
             </div>           
         </div>
     </div>
@@ -30,7 +40,7 @@
     <div class="row">
         <div class="col-lg-3 col-md-3 col-xs-3">
             <a href="" ng-click="$ctrl.workingTimeClicked()">
-                <div align="center" class="btn-lg btn-primary">
+                <div align="center" class="btn-lg btn-success">
                     <h1><i class="glyphicon glyphicon-time"></i></h1>
                     <h2>Change Working Time</h2>
                 </div>
@@ -57,8 +67,8 @@
                     The company works from {{$ctrl.workingTime.startAm||0}}:00 - {{$ctrl.workingTime.endAm||0}}:00 and {{$ctrl.workingTime.startPm||0}}:00 - {{$ctrl.workingTime.endPm||0}}:00
                 </div>
             </div>
-        </form>
-        
+        </form>       
     </div>
     <hr />
 </div>
+

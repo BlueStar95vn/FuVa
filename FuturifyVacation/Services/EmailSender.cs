@@ -32,13 +32,13 @@ namespace FuturifyVacation.Services
 
         public string GetEmailAdmin()
         {
-            string allEmail = "";
-            var getEmail = _db.UserProfiles.Include(u => u.User).Where(u => u.Position == "ADMIN").Select(u => u.User.Email).ToArray();
-            foreach (string email in getEmail)
+            string allAdminEmail = "";
+            var adminEmail = _db.UserProfiles.Include(u => u.User).Where(u => u.Position == "ADMIN").Select(u => u.User.Email).ToArray();
+            foreach (string email in adminEmail)
             {
-                allEmail = allEmail + "," + email;
+                allAdminEmail = allAdminEmail + "," + email;
             }
-            return allEmail;
+            return allAdminEmail;
         }
     }
 }

@@ -3,7 +3,7 @@
         templateUrl: '/app/vacation/vacation-request/vacation-request.html',
         controller: function ($http, $uibModal, $log, $document) {
             var vm = this;
-            vm.vacations = {};
+            vm.vacations = [];
             $http.get('http://localhost:63237/api/vacations/getrequestvacation').then(function (response) {
                 vm.vacations = response.data;
 
@@ -111,7 +111,7 @@ angular.module('vacationRequest').component('modalComponent', {
     },
     controller: function ($http) {
         var vm = this;
-        vm.vacations = {};
+        vm.vacations = [];
         vm.thisVacation = {};
         vm.$onInit = function () {
             vm.index = vm.resolve.index;
@@ -165,10 +165,9 @@ angular.module('vacationRequest').component('detailRequestComponent', {
     },
     controller: function ($http) {
         var vm = this;
-
+       
         vm.$onInit = function () {
-            vm.index = vm.resolve.index;
-
+            vm.index = vm.resolve.index;         
             vm.vacation = vm.resolve.vacation;
             $http.get('http://localhost:63237/api/vacations/approvedvacationinmonth/' + vm.vacation.userId + '/' + vm.vacation.id).then(function (response) {
                 vm.numberVacation = response.data;

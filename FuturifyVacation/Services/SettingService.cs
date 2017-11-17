@@ -28,20 +28,21 @@ namespace FuturifyVacation.Services
 
         public async Task SetDayOff(DayOffConfigBindingModel model)
         {
-            var getSetting = await _db.Settings.FirstOrDefaultAsync(u => u.Id == 1);
-            getSetting.NumberOfDayOff = model.NumberOfDayOff;
-            getSetting.HoursADay = model.HoursADay;
+            var setting = await _db.Settings.FirstOrDefaultAsync(u => u.Id == 1);
+            setting.NumberOfDayOff = model.NumberOfDayOff;
+            setting.HoursADay = model.HoursADay;
+            setting.DurationInMonth = model.DurationInMonth;
             await _db.SaveChangesAsync();
         }
 
         public async Task SetWorkingTime(SettingViewModel model)
         {
             var hours = 0;
-            var getSetting = await _db.Settings.FirstOrDefaultAsync(u => u.Id == 1);
-            getSetting.StartAm = model.StartAm;
-            getSetting.EndAm = model.EndAm;
-            getSetting.StartPm = model.StartPm;
-            getSetting.EndPm = model.EndPm;
+            var setting = await _db.Settings.FirstOrDefaultAsync(u => u.Id == 1);
+            setting.StartAm = model.StartAm;
+            setting.EndAm = model.EndAm;
+            setting.StartPm = model.StartPm;
+            setting.EndPm = model.EndPm;
            
             for (var i = 0; i < 24; i++)
             {
@@ -50,7 +51,7 @@ namespace FuturifyVacation.Services
                     hours++;
                 }
             }
-            getSetting.HoursADay = hours;
+            setting.HoursADay = hours;
             await _db.SaveChangesAsync();
         }
     }

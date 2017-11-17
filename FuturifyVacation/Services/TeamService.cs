@@ -59,19 +59,19 @@ namespace FuturifyVacation.Services
 
         public async Task EditTeamNameAsync(int teamId, string teamName)
         {
-            var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
-            getTeam.TeamName = teamName;
+            var userTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
+            userTeam.TeamName = teamName;
             await _db.SaveChangesAsync();
         }
 
         public async Task EditTeamLeadAsync(int teamId, string teamLeadId)
         {
-            var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
-            if(getTeam.TeamLeadId!=teamLeadId)
+            var userTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
+            if(userTeam.TeamLeadId!=teamLeadId)
             {
-                var getDetail = await _db.TeamDetails.FirstOrDefaultAsync(u => u.UserId == getTeam.TeamLeadId);
-                getTeam.TeamLeadId = teamLeadId;
-                getDetail.UserId = teamLeadId;
+                var teamDetail = await _db.TeamDetails.FirstOrDefaultAsync(u => u.UserId == userTeam.TeamLeadId);
+                userTeam.TeamLeadId = teamLeadId;
+                teamDetail.UserId = teamLeadId;
                 
                 await _db.SaveChangesAsync();
             }
@@ -90,16 +90,16 @@ namespace FuturifyVacation.Services
 
         public async Task RemoveTeamAsync(int teamId)
         {
-            var getTeamDetail = _db.TeamDetails.Where(u => u.TeamId == teamId);
-            _db.TeamDetails.RemoveRange(getTeamDetail);
-            var getTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
-            _db.UserTeams.Remove(getTeam);
+            var teamDetail = _db.TeamDetails.Where(u => u.TeamId == teamId);
+            _db.TeamDetails.RemoveRange(teamDetail);
+            var userTeam = await _db.UserTeams.FirstOrDefaultAsync(u => u.Id == teamId);
+            _db.UserTeams.Remove(userTeam);
             await _db.SaveChangesAsync();
         }
         public async Task RemoveMemberAsync(int Memberid)
         {
-            var getMember = await _db.TeamDetails.FirstOrDefaultAsync(u => u.Id == Memberid);
-            _db.TeamDetails.Remove(getMember);
+            var teamMember = await _db.TeamDetails.FirstOrDefaultAsync(u => u.Id == Memberid);
+            _db.TeamDetails.Remove(teamMember);
             await _db.SaveChangesAsync();
         }
 

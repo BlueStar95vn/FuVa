@@ -112,21 +112,32 @@
             vm.getMonthYear = function (calendar) {
                 var date = new Date(uiCalendarConfig.calendars[calendar].fullCalendar('getDate'));
                 vm.getMY = date;
-                vm.intMonth = vm.getMY.getMonth()+1;
+                vm.intMonth = vm.getMY.getMonth() + 1;
+                var newMonth = vm.intMonth;
+                if (newMonth - 10 < 0)
+                {
+                    newMonth = "0" + "" + newMonth;
+                }
                 vm.intYear = vm.getMY.getFullYear();
-                vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                vm.monthYear = vm.intYear + "-" + newMonth + "-";
             };
 
             vm.nextMonth = function () {
                 if (vm.intMonth == 12)
                 {
                     vm.intMonth = 1;
+                    var newMonth = "0" + 1;
                     vm.intYear = vm.intYear + 1;                    
-                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                    vm.monthYear = vm.intYear + "-" + newMonth + "-";
                 }
                 else {
                     vm.intMonth++;
-                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                    var newMonth = vm.intMonth;
+                    if (newMonth - 10 < 0)
+                    {
+                        newMonth = "0" + newMonth;
+                    }
+                    vm.monthYear = vm.intYear + "-" + newMonth + "-";
                 }
             }
             vm.previousMonth = function () {
@@ -138,7 +149,11 @@
                 }
                 else{
                     vm.intMonth--;
-                    vm.monthYear = vm.intYear + "-" + vm.intMonth + "-";
+                    var newMonth = vm.intMonth;
+                    if (newMonth - 10 < 0) {
+                        newMonth = "0" + newMonth;
+                    }
+                    vm.monthYear = vm.intYear + "-" + newMonth + "-";
                 }
             }
 
@@ -166,7 +181,7 @@
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listMonth'
+                        right: 'month,agendaWeek,agendaDay'
                     },
                     eventClick: vm.detailVacation,
                     eventDrop: vm.alertOnDrop,

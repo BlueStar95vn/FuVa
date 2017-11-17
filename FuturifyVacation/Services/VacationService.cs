@@ -62,53 +62,7 @@ namespace FuturifyVacation.Services
         }
 
 
-        public async Task<int> ApprovedVacationInMonth(int vacationId, string userId)
-        {
-            var userVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
-            var vacationInMonth = await _db.UserVacations.Where(u => u.UserId == userId
-                                     && ((u.Start.Month == userVacation.Start.Month && u.Start.Year == userVacation.Start.Year)
-                                     || u.End.Month == userVacation.End.Month && u.End.Year == userVacation.End.Year)
-                                     && u.Color == "Green").ToListAsync();
-            int totalHours = 0;
-            foreach (var vacation in vacationInMonth)
-            {
-                if ((vacation.Start.Month == vacation.End.Month))
-                {
-                    totalHours = totalHours + vacation.Hours;
-                }
-                if (vacation.Start.Month < userVacation.Start.Month)
-                {
-                    DateTime startDate = new DateTime(vacation.End.Year, vacation.End.Month, 1, 0, 0, 1);
-                    int hours = CountHours(startDate, vacation.End);
-                    totalHours = totalHours + hours;
-                }
-                if (vacation.End.Month > userVacation.Start.Month)
-                {
-                    DateTime endDate = new DateTime(vacation.Start.Year, vacation.Start.Month, DateTime.DaysInMonth(vacation.Start.Year, vacation.Start.Month), 23, 59, 59);
-                    int hours = CountHours(vacation.Start, endDate);
-                    totalHours = totalHours + hours;
-                }
-
-            }
-            return totalHours;
-
-        }
-
-        public async Task<List<TeamDetail>> CheckTeamOnDate(int vacationId, string userId)
-        {
-            var teamDetail = await _db.TeamDetails.Where(u => u.UserId == userId).ToListAsync();
-            var teamIds = teamDetail.Select(u => u.TeamId).ToList();
-
-            var userVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
-            //var getAllMemberOnDate = await _db.UserVacations.Where(u => u.UserId != userId && u.Start.Month == userVacation.Start.Month && u.Start.Year == userVacation.Start.Year && u.Color == "Green").ToListAsync();
-            var vacationOnDate = _db.UserVacations.Where(u => u.User.User.TeamDetail.Any(t => teamIds.Contains(t.TeamId)) && u.Start < userVacation.End && userVacation.Start < u.End && u.UserId != userId);
-
-            var teamMember = await vacationOnDate.Select(u => u.UserId).ToListAsync();
-
-            var list = await _db.TeamDetails.Include(u => u.TeamMember).Include(u => u.TeamMember.UserProfile).Include(u => u.Team).Where(u => teamMember.Contains(u.UserId)).ToListAsync();
-
-            return list;
-        }
+        
 
         public async Task<UserVacation> AddVacationAsync(UserVacationViewModel model, string userId)
         {
@@ -264,16 +218,64 @@ namespace FuturifyVacation.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task<int> ApprovedVacationInMonth(int vacationId, string userId)
+        {
+            var userVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            var vacationInMonth = await _db.UserVacations.Where(u => u.UserId == userId
+                                     && ((u.Start.Month == userVacation.Start.Month && u.Start.Year == userVacation.Start.Year)
+                                     || u.End.Month == userVacation.End.Month && u.End.Year == userVacation.End.Year)
+                                     && u.Color == "Green").ToListAsync();
+            int totalHours = 0;
+            foreach (var vacation in vacationInMonth)
+            {
+                if ((vacation.Start.Month == vacation.End.Month))
+                {
+                    totalHours = totalHours + vacation.Hours;
+                }
+                if (vacation.Start.Month < userVacation.Start.Month)
+                {
+                    DateTime startDate = new DateTime(vacation.End.Year, vacation.End.Month, 1, 0, 0, 1);
+                    int hours = CountHours(startDate, vacation.End);
+                    totalHours = totalHours + hours;
+                }
+                if (vacation.End.Month > userVacation.Start.Month)
+                {
+                    DateTime endDate = new DateTime(vacation.Start.Year, vacation.Start.Month, DateTime.DaysInMonth(vacation.Start.Year, vacation.Start.Month), 23, 59, 59);
+                    int hours = CountHours(vacation.Start, endDate);
+                    totalHours = totalHours + hours;
+                }
+
+            }
+            return totalHours;
+
+        }
+
+        public async Task<List<TeamDetail>> CheckTeamOnDate(int vacationId, string userId)
+        {
+            var teamDetail = await _db.TeamDetails.Where(u => u.UserId == userId).ToListAsync();
+            var teamIds = teamDetail.Select(u => u.TeamId).ToList();
+
+            var userVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            //var getAllMemberOnDate = await _db.UserVacations.Where(u => u.UserId != userId && u.Start.Month == userVacation.Start.Month && u.Start.Year == userVacation.Start.Year && u.Color == "Green").ToListAsync();
+            var vacationOnDate = _db.UserVacations.Where(u => u.User.User.TeamDetail.Any(t => teamIds.Contains(t.TeamId)) && u.Start < userVacation.End && userVacation.Start < u.End && u.UserId != userId);
+
+            var teamMember = await vacationOnDate.Select(u => u.UserId).ToListAsync();
+
+            var teamMemberListInfo = await _db.TeamDetails.Include(u => u.TeamMember).Include(u => u.TeamMember.UserProfile).Include(u => u.Team).Where(u => teamMember.Contains(u.UserId) && teamIds.Contains(u.TeamId)).ToListAsync();
+
+            return teamMemberListInfo;
+        }
+
         public int CountHours(DateTime start, DateTime end)
         {
-            var getSetting = _db.Settings.FirstOrDefault(u => u.Id == 1);
+            var setting = _db.Settings.FirstOrDefault(u => u.Id == 1);
 
             var hours = 0;
             for (var i = start; i < end; i = i.AddHours(1))
             {
                 if (i.DayOfWeek != DayOfWeek.Saturday && i.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    if (i.TimeOfDay.Hours >= getSetting.StartAm && i.TimeOfDay.Hours < getSetting.EndAm || i.TimeOfDay.Hours >= getSetting.StartPm && i.TimeOfDay.Hours < getSetting.EndPm)
+                    if (i.TimeOfDay.Hours >= setting.StartAm && i.TimeOfDay.Hours < setting.EndAm || i.TimeOfDay.Hours >= setting.StartPm && i.TimeOfDay.Hours < setting.EndPm)
                     {
                         hours++;
                     }
@@ -284,8 +286,8 @@ namespace FuturifyVacation.Services
         public string GetEmailAdmin()
         {
             string allEmail = "";
-            var getEmail = _db.UserProfiles.Include(u => u.User).Where(u => u.Position == "ADMIN").Select(u => u.User.Email).ToArray();
-            foreach (string email in getEmail)
+            var adminEmail = _db.UserProfiles.Include(u => u.User).Where(u => u.Position == "ADMIN").Select(u => u.User.Email).ToArray();
+            foreach (string email in adminEmail)
             {
                 allEmail = allEmail + "," + email;
             }

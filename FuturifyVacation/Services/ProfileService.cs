@@ -32,17 +32,17 @@ namespace FuturifyVacation.Services
 
         public async Task<UserProfile> UpdateByIdAsync(ProfileViewModel profile, string userId)
         {
-            var getProfile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
-            getProfile.FirstName = profile.FirstName;
-            getProfile.LastName = profile.LastName;
-            getProfile.Gender = profile.Gender;
-            getProfile.Position = profile.Position;
-            getProfile.DoB = profile.DoB;
-            getProfile.Department = profile.Department;
-            getProfile.User.PhoneNumber = profile.PhoneNumber;
-            getProfile.RemainingDayOff = profile.RemainingDayOff;
+            var userProfile = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
+            userProfile.FirstName = profile.FirstName;
+            userProfile.LastName = profile.LastName;
+            userProfile.Gender = profile.Gender;
+            userProfile.Position = profile.Position;
+            userProfile.DoB = profile.DoB;
+            userProfile.Department = profile.Department;
+            userProfile.User.PhoneNumber = profile.PhoneNumber;
+            userProfile.RemainingDayOff = profile.RemainingDayOff;
             await _db.SaveChangesAsync();
-            return getProfile;
+            return userProfile;
         }
     }
 }

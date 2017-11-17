@@ -39,15 +39,15 @@ namespace FuturifyVacation.Services
 
         public async Task SaveEventId(string googleCalendarId, int id)
         {
-            var getVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == id);
-            getVacation.GoogleCalendarId = googleCalendarId;
+            var userVacation = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == id);
+            userVacation.GoogleCalendarId = googleCalendarId;
             await _db.SaveChangesAsync();
         }
 
         public async Task SaveToken(string userId, string token, DateTime issuedAt, string refreshToken )
         {
-            var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (getToken == null)
+            var userToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userToken == null)
             {
                 var newToken = new UserGoogleToken
                 {
@@ -60,17 +60,17 @@ namespace FuturifyVacation.Services
             }
             else
             {
-                getToken.AccessToken = token;
-                getToken.IssuedAt = issuedAt.ToUniversalTime();
+                userToken.AccessToken = token;
+                userToken.IssuedAt = issuedAt.ToUniversalTime();
             }
             await _db.SaveChangesAsync();
         }
         public async Task AddEvent(UserVacationViewModel model, string userId)
         {
-            var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (getToken != null)
+            var userToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userToken != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(userToken.AccessToken, userToken.RefreshToken, userToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -102,10 +102,10 @@ namespace FuturifyVacation.Services
         public async Task DeleteEvent(string GoogleEventId, string userId)
         {
 
-            var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (getToken != null && GoogleEventId != null)
+            var userToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userToken != null && GoogleEventId != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(userToken.AccessToken, userToken.RefreshToken, userToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -119,11 +119,11 @@ namespace FuturifyVacation.Services
 
         public async Task UpdateEvent(UserVacationViewModel model, string googleCalendarId, string userId)
         {
-            var getEvent = await _db.UserVacations.FirstOrDefaultAsync(u => u.GoogleCalendarId == googleCalendarId);
-            var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
-            if (getEvent != null && getToken != null)
+            var userEvent = await _db.UserVacations.FirstOrDefaultAsync(u => u.GoogleCalendarId == googleCalendarId);
+            var userToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userEvent != null && userToken != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(userToken.AccessToken, userToken.RefreshToken, userToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -146,17 +146,17 @@ namespace FuturifyVacation.Services
                     },
                     ColorId = "9",
                 };
-                EventsResource.UpdateRequest updateEvent = service.Events.Update(newEvent, calendarId, getEvent.GoogleCalendarId);
+                EventsResource.UpdateRequest updateEvent = service.Events.Update(newEvent, calendarId, userEvent.GoogleCalendarId);
                 var update = await updateEvent.ExecuteAsync();
             }
         }
         public async Task ApproveVacation(UserVacationViewModel model, int vacationId)
         {
-            var getEvent = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
-            var getToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == getEvent.UserId);
-            if (getEvent != null && getToken != null)
+            var userEvent = await _db.UserVacations.FirstOrDefaultAsync(u => u.Id == vacationId);
+            var userToken = await _db.UserGoogleToken.FirstOrDefaultAsync(u => u.UserId == userEvent.UserId);
+            if (userEvent != null && userToken != null)
             {
-                UserCredential credential = await GetCredential(getToken.AccessToken, getToken.RefreshToken, getToken.IssuedAt, clientId, clientSecret);
+                UserCredential credential = await GetCredential(userToken.AccessToken, userToken.RefreshToken, userToken.IssuedAt, clientId, clientSecret);
                 var service = new CalendarService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
@@ -179,7 +179,7 @@ namespace FuturifyVacation.Services
                     },
                     ColorId = "10",
                 };
-                EventsResource.UpdateRequest approveEvent = service.Events.Update(newEvent, calendarId, getEvent.GoogleCalendarId); //"primary"
+                EventsResource.UpdateRequest approveEvent = service.Events.Update(newEvent, calendarId, userEvent.GoogleCalendarId); //"primary"
                 approveEvent.SendNotifications = true;
                 var approve = await approveEvent.ExecuteAsync();
             }

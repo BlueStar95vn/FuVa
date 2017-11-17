@@ -34,30 +34,30 @@ namespace FuturifyVacation.Services
 
         public async Task<UserProfile> UpdateByIdAsync(EmployeeViewModel employee, string userId)
         {
-            var getEmployee = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
+            var employeeInfo = await _db.UserProfiles.Include(u => u.User).FirstOrDefaultAsync(u => u.UserId == userId);
 
-            if (getEmployee.Position != employee.Position)
+            if (employeeInfo.Position != employee.Position)
             {
-                await _userManager.RemoveFromRoleAsync(getEmployee.User, getEmployee.Position);
+                await _userManager.RemoveFromRoleAsync(employeeInfo.User, employeeInfo.Position);
             }
-            getEmployee.FirstName = employee.FirstName;
-            getEmployee.LastName = employee.LastName;
-            getEmployee.Gender = employee.Gender;
-            getEmployee.Position = employee.Position;
+            employeeInfo.FirstName = employee.FirstName;
+            employeeInfo.LastName = employee.LastName;
+            employeeInfo.Gender = employee.Gender;
+            employeeInfo.Position = employee.Position;
             if (employee.Position == "ADMIN")
             {
-                await _userManager.AddToRoleAsync(getEmployee.User, "ADMIN");
+                await _userManager.AddToRoleAsync(employeeInfo.User, "ADMIN");
             }
             else if (employee.Position == "USER")
             {
-                await _userManager.AddToRoleAsync(getEmployee.User, "USER");
+                await _userManager.AddToRoleAsync(employeeInfo.User, "USER");
             }
-            getEmployee.DoB = employee.DoB;
-            getEmployee.Department = employee.Department;
-            getEmployee.User.PhoneNumber = employee.PhoneNumber;
-            getEmployee.RemainingDayOff = employee.RemainingDayOff;
+            employeeInfo.DoB = employee.DoB;
+            employeeInfo.Department = employee.Department;
+            employeeInfo.User.PhoneNumber = employee.PhoneNumber;
+            employeeInfo.RemainingDayOff = employee.RemainingDayOff;
             await _db.SaveChangesAsync();
-            return getEmployee;
+            return employeeInfo;
         }
         public async Task DeleteByIdAsync(string userId)
         {
@@ -102,8 +102,8 @@ namespace FuturifyVacation.Services
 
         public async Task SetDayOff(int dayoff)
         {
-            var getAll = await _db.UserProfiles.ToListAsync();
-            foreach (var mem in getAll)
+            var allMember = await _db.UserProfiles.ToListAsync();
+            foreach (var mem in allMember)
             {
                 //Transfer days off of employees in the previous year to next year
                 if (int.Parse(mem.RemainingDayOff) > 0)

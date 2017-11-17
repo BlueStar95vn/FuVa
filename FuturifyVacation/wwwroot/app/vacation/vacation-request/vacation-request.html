@@ -27,7 +27,7 @@
             <div class="modal-body" id="modal-body">
                 <p><label>{{$ctrl.vacation.firstName}} {{$ctrl.vacation.lastName}}</label> has booked successfully <label>{{$ctrl.numberVacation}}</label> hour(s) in {{$ctrl.vacation.start|date: "MM/yyyy"}}</p>
 
-                <label>All members in their teams booked on this day: <label ng-if="$ctrl.allTeams.length==0">0</label></label>
+                <label>All members in their teams booked on the same day: <label ng-if="$ctrl.allTeams.length==0">0</label></label>
                 <ul class="list-group">                   
                     <li ng-repeat="team in $ctrl.allTeams|orderBy:team" class="list-group-item">
                         
@@ -57,7 +57,6 @@
             <div class="panel panel-primary">
                 <div class="panel panel-heading">
                     <div class="panel-title">{{vacation.firstName}} {{vacation.lastName}}</div>
-
                 </div>
                 <div class="vacation-request">
                     <table>
